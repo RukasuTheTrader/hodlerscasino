@@ -120,10 +120,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
     betSlider.addEventListener('input', function (e) {
         betNumber.value = e.target.value;
     });
-    
     document.getElementById('startButton').addEventListener('click', startGame);
     document.getElementById('reset').addEventListener('click', resetGame);
-
+    document.getElementById('reset').setAttribute('disabled', true);
     updateBetLimits();
 });
 
@@ -210,6 +209,7 @@ function hostTurn() {
 function endGame(playerWins) {
     gameInProgress = false;
     document.getElementById('reset').classList.remove('hidden');
+    document.getElementById('reset').removeAttribute('disabled');
     let bet = parseInt(document.getElementById('betNumber').value);
     if (playerWins) playerJack += bet * 2;
     updateJackDisplay();
@@ -231,6 +231,7 @@ function resetGame() {
     document.getElementById('hostArea').classList.add('hidden');
     document.getElementById('results').style.display = 'none';
     document.getElementById('startButton').removeAttribute('disabled');
+    document.getElementById('reset').setAttribute('disabled', true); // Hier wird der Button wieder deaktiviert
     document.getElementById('rollButton').setAttribute('disabled', true);
     document.getElementById('holdButton').setAttribute('disabled', true);
     playerScore = 0;
