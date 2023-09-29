@@ -113,14 +113,14 @@
 </div>
 <div id="results"></div>
 <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', (event) => {
     let betSlider = document.getElementById('bet');
     let betNumber = document.getElementById('betNumber');
-
+    
     betSlider.addEventListener('input', function (e) {
         betNumber.value = e.target.value;
     });
-
+    
     document.getElementById('startButton').addEventListener('click', startGame);
     document.getElementById('reset').addEventListener('click', resetGame);
 
@@ -136,7 +136,7 @@ let isFirstRoll = true;
 
 function startGame() {
     if (gameInProgress) return;
-
+    
     let bet = parseInt(document.getElementById('betNumber').value);
     if (isNaN(bet) || playerJack < bet || bet < 10) {
         alert('Invalid bet!');
@@ -156,9 +156,9 @@ function startGame() {
 
 function rollDice() {
     if (!gameInProgress || playerHeld) return;
-
+    
     let roll = Math.floor(Math.random() * 100) + 1;
-
+    
     if (isFirstRoll && roll <= 4) {
         endGame(false);
         showResults(false);
@@ -168,7 +168,7 @@ function rollDice() {
     isFirstRoll = false;
     playerScore += roll;
     document.getElementById('playerScore').innerText = playerScore.toString();
-
+    
     if (playerScore > 100) {
         endGame(false);
         showResults(false);
@@ -183,23 +183,25 @@ function hold() {
 }
 
 function hostTurn() {
-    if (!gameInProgress || hostScore > playerScore) return;
-
+    if (!gameInProgress || (hostScore > playerScore && hostScore <= 100)) return;
+    
     let roll = Math.floor(Math.random() * 100) + 1;
     if (isFirstRoll && roll <= 4) {
         endGame(false);
         showResults(false);
         return;
     }
-
+    
     isFirstRoll = false;
     hostScore += roll;
     document.getElementById('hostScore').innerText = hostScore.toString();
-
-    if (hostScore > 100 || hostScore > playerScore) {
-        let playerWins = hostScore <= 100 && hostScore <= playerScore;
-        endGame(playerWins);
-        showResults(playerWins);
+    
+    if (hostScore > 100) {
+        endGame(true);
+        showResults(true);
+    } else if (hostScore > playerScore) {
+        endGame(false);
+        showResults(false);
     } else {
         setTimeout(hostTurn, 1000);
     }
@@ -210,13 +212,11 @@ function endGame(playerWins) {
     document.getElementById('reset').classList.remove('hidden');
     let bet = parseInt(document.getElementById('betNumber').value);
     if (playerWins) playerJack += bet * 2;
-    else if (hostScore === playerScore) playerJack += bet;
     updateJackDisplay();
 }
 
 function showResults(playerWins) {
     let resultMessage = playerWins ? 'You win!' : 'You lose!';
-    if (hostScore === playerScore) resultMessage = 'It’s a draw! You get your bet back!';
     let resultsDiv = document.getElementById('results');
     resultsDiv.innerHTML = `<p>${resultMessage}</p><p>Player Score: ${playerScore}</p><p>Host Score: ${hostScore}</p>`;
     resultsDiv.style.display = 'block';
