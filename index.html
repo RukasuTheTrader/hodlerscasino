@@ -16,7 +16,8 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center; /* In der Mitte horizontal ausrichten */
+            align-items: center;
+            justify-content: center; /* In der Mitte horizontal und vertikal ausrichten */
         }
 
         #header {
@@ -36,6 +37,15 @@
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             margin-right: 20px; /* Abstand zum rechten Rand */
         }
+        
+        .container {
+            width: 80%;
+            margin: auto;
+            text-align: center; /* In der Mitte ausrichten */
+        }
+
+        /* Weitere CSS-Stile hier */
+
         /* ... */
     </style>
 </head>
@@ -48,7 +58,29 @@
 </div>
 
 <div class="container">
-    <!-- ... restlicher HTML-Code ... -->
+    <div id="gameList">
+        <ul>
+            <li onclick="loadGame('diceJack')">DiceJack</li>
+            <!-- Hier können Sie weitere Spiele hinzufügen, wenn sie verfügbar sind -->
+        </ul>
+    </div>
+    <div id="gameArea">
+        <div id="diceJack" class="game">
+            <label for="bet">Bet:</label>
+            <input type="range" id="bet" min="10" max="1000" value="10" step="5">
+            <input type="number" id="betNumber" value="10" min="10">
+            <button id="startButton" onclick="startGame()">Start</button>
+            <div id="playerArea" class="hidden">
+                <button id="rollButton" onclick="rollDice()" disabled>Roll</button>
+                <button id="holdButton" onclick="hold()" disabled>Hold</button>
+                <p id="playerScore">0</p>
+            </div>
+            <div id="hostArea" class="hidden">
+                <p id="hostScore">0</p>
+            </div>
+            <button id="reset" class="hidden" onclick="resetGame()">Reset</button>
+        </div>
+    </div>
 </div>
 <script>
     let playerJack = 1000;
