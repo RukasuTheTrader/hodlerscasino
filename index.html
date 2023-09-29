@@ -92,18 +92,17 @@
         playerHeld = false;
     }
 
-    function rollDice() {
-        if (!gameInProgress || playerHeld) return;
+  function rollDice() {
+    if (!gameInProgress || playerHeld) return;
 
-        let roll = Math.floor(Math.random() * 100) + 1;
-        if (roll <= 4) {
-            endGame(false);
-            return;
-        }
-        playerScore += roll;
-        if (playerScore > 100) endGame(false);
-        document.getElementById('playerScore').innerText = playerScore.toString();
+    let roll = Math.floor(Math.random() * 100) + 1;
+    playerScore += roll;
+    document.getElementById('playerScore').innerText = playerScore.toString();
+
+    if (roll <= 4 || playerScore > 100) {
+        endGame(false);
     }
+}
 
     function hold() {
         if (!gameInProgress || playerHeld) return;
