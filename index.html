@@ -171,40 +171,46 @@
     }
 }
 
-    function hold() {
-        if (!gameInProgress || playerHeld) return;
+function hold() {
+    if (!gameInProgress || playerHeld) return;
 
-        document.getElementById('hostArea').classList.remove('hidden');
-        hostRoll(); // Start des Hosts, um seine Würfe anzuzeigen
-        playerHeld = true;
+    document.getElementById('hostArea').classList.remove('hidden');
+    playerHeld = true; // Spieler hat "Hold" ausgewählt
+    hostTurn(); // Startet die Würfe des Hosts
+}
+
+function hostTurn() {
+    if (hostScore > playerScore) {
+        endGame(false); // Spieler verliert, wenn der Host über der Punktzahl des Spielers ist
+        return;
     }
-
-    function hostRoll() {
-        setTimeout(function() {
-            let roll = Math.floor(Math.random() * 100) + 1;
-            hostScore += roll;
-            lastRoll = roll; // Speichern des letzten Wurfs
-            document.getElementById('hostScore').innerText = hostScore.toString();
-
-            if (hostScore > 100 || hostScore < playerScore) {
-                setTimeout(function() {
-                    endGame(true);
-                }, 2000); // 2 Sekunden Verzögerung, um die Würfe des Hosts anzuzeigen
-                showResults(true); // Anzeige der Gesamtzahlen
-            } else {
-                hostRoll(); // Fortsetzen der Würfe des Hosts
-            }
-        }, 1000); // 1 Sekunde Verzögerung zwischen den Würfen des Hosts
+    if (hostScore === playerScore) {
+        endGame(true, true); // Spieler bekommt seinen Einsatz zurück, wenn die Punktzahlen gleich sind
+        return;
     }
+    
+    let roll = Math.floor(Math.random() * 100) + 1;
+    hostScore += roll;
+    document.getElementById('hostScore').innerText = hostScore.toString();
 
-    function endGame(playerWins) {
-        gameInProgress = false;
-        document.getElementById('reset').classList.remove('hidden');
-        let bet = parseInt(document.getElementById('betNumber').value);
-        if (playerWins) playerJack += bet * 2;
-        updateJackDisplay();
+    if (hostScore > 100) {
+        endGame(true); // Host verliert, wenn er über 100 Punkte erzielt
+    } else if (hostScore <= playerScore) {
+        setTimeout(hostTurn, 1000); // Host würfelt weiter, wenn er unter oder gleich der Punktzahl des Spielers ist
+    } else {
+        endGame(false); // Spieler verliert, wenn der Host über der Punktzahl des Spielers ist
     }
+}
 
+function endGame(playerWins, isDraw = false) {
+    gameInProgress = false;
+    document.getElementById('reset').classList.remove('hidden');
+    let bet = parseInt(document.getElementById('betNumber').value);
+    if (playerWins) playerJack += isDraw ? bet : bet * 2; // Bei einem Unentschieden bekommt der Spieler seinen Einsatz zurück
+    updateJackDisplay();
+    showResults(playerWins, isDraw);
+}
+    
     function showResults(playerWins) {
         let resultMessage = playerWins ? 'You win!' : 'You lose!';
         let resultsDiv = document.getElementById('results');
