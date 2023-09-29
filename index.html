@@ -120,6 +120,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     betSlider.addEventListener('input', function (e) {
         betNumber.value = e.target.value;
     });
+
     document.getElementById('startButton').addEventListener('click', startGame);
     document.getElementById('reset').addEventListener('click', resetGame);
     document.getElementById('reset').setAttribute('disabled', true);
@@ -135,7 +136,7 @@ let isFirstRoll = true;
 
 function startGame() {
     if (gameInProgress) return;
-    
+
     let bet = parseInt(document.getElementById('betNumber').value);
     if (isNaN(bet) || playerJack < bet || bet < 10) {
         alert('Invalid bet!');
@@ -144,6 +145,11 @@ function startGame() {
 
     playerJack -= bet;
     updateJackDisplay();
+
+    // Einsatz-Slider und Einsatz-Feld deaktivieren
+    document.getElementById('bet').setAttribute('disabled', true);
+    document.getElementById('betNumber').setAttribute('disabled', true);
+
     document.getElementById('playerArea').classList.remove('hidden');
     document.getElementById('startButton').setAttribute('disabled', true);
     document.getElementById('rollButton').removeAttribute('disabled');
@@ -157,10 +163,9 @@ function rollDice() {
     if (!gameInProgress || playerHeld) return;
     
     let roll = Math.floor(Math.random() * 100) + 1;
-    
+
     if (isFirstRoll && roll <= 4) {
         endGame(false);
-        showResults(false);
         return;
     }
 
@@ -170,7 +175,6 @@ function rollDice() {
     
     if (playerScore > 100) {
         endGame(false);
-        showResults(false);
     }
 }
 
@@ -182,25 +186,20 @@ function hold() {
 }
 
 function hostTurn() {
-    if (!gameInProgress || (hostScore > playerScore && hostScore <= 100)) return;
-    
+    if (!gameInProgress || hostScore > playerScore) return;
+
     let roll = Math.floor(Math.random() * 100) + 1;
     if (isFirstRoll && roll <= 4) {
         endGame(false);
-        showResults(false);
         return;
     }
-    
+
     isFirstRoll = false;
     hostScore += roll;
     document.getElementById('hostScore').innerText = hostScore.toString();
-    
-    if (hostScore > 100) {
-        endGame(true);
-        showResults(true);
-    } else if (hostScore > playerScore) {
-        endGame(false);
-        showResults(false);
+
+    if (hostScore > 100 || hostScore > playerScore) {
+        endGame(hostScore <= 100 && hostScore <= playerScore);
     } else {
         setTimeout(hostTurn, 1000);
     }
@@ -210,9 +209,11 @@ function endGame(playerWins) {
     gameInProgress = false;
     document.getElementById('reset').classList.remove('hidden');
     document.getElementById('reset').removeAttribute('disabled');
+
     let bet = parseInt(document.getElementById('betNumber').value);
-    if (playerWins) playerJack += bet * 2;
+    if (playerWins) playerJack += bet * 2; // Gewinn des Spielers ist das Zweifache des Einsatzes
     updateJackDisplay();
+    showResults(playerWins);
 }
 
 function showResults(playerWins) {
@@ -226,14 +227,20 @@ function resetGame() {
     gameInProgress = false;
     playerHeld = false;
     isFirstRoll = true;
+
+    // Einsatz-Slider und Einsatz-Feld aktivieren
+    document.getElementById('bet').removeAttribute('disabled');
+    document.getElementById('betNumber').removeAttribute('disabled');
+
     document.getElementById('reset').classList.add('hidden');
     document.getElementById('playerArea').classList.add('hidden');
     document.getElementById('hostArea').classList.add('hidden');
     document.getElementById('results').style.display = 'none';
     document.getElementById('startButton').removeAttribute('disabled');
-    document.getElementById('reset').setAttribute('disabled', true); // Hier wird der Button wieder deaktiviert
+    document.getElementById('reset').setAttribute('disabled', true);
     document.getElementById('rollButton').setAttribute('disabled', true);
     document.getElementById('holdButton').setAttribute('disabled', true);
+
     playerScore = 0;
     hostScore = 0;
     document.getElementById('playerScore').innerText = '0';
