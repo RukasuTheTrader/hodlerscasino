@@ -152,7 +152,6 @@
     gameInProgress = true;
     playerHeld = false;
     lastRoll = 0; // Zurücksetzen des letzten Wurfs
-    rollDice(); // Erster Wurf beim Start
 }
 
 
@@ -169,33 +168,8 @@
             endGame(false);
         }, 2000); // 2 Sekunden Verzögerung, um die Würfe des Hosts anzuzeigen
         showResults(false); // Anzeige der Gesamtzahlen
-    } else {
-        // Rollen des Hosts nach einer kurzen Verzögerung
-        setTimeout(function() {
-            hostRoll();
-        }, 1000);
     }
 }
-
-    function hostRoll() {
-        if (!gameInProgress || playerHeld) return;
-
-        let roll = Math.floor(Math.random() * 100) + 1;
-        hostScore += roll;
-        document.getElementById('hostScore').innerText = hostScore.toString();
-
-        if (hostScore > 100 || hostScore < playerScore) {
-            setTimeout(function() {
-                endGame(true);
-            }, 2000); // 2 Sekunden Verzögerung, um die Würfe des Hosts anzuzeigen
-            showResults(true); // Anzeige der Gesamtzahlen
-        } else {
-            // Rollen des Spielers nach einer kurzen Verzögerung
-            setTimeout(function() {
-                rollDice();
-            }, 1000);
-        }
-    }
 
     function hold() {
         if (!gameInProgress || playerHeld) return;
@@ -205,13 +179,30 @@
         playerHeld = true;
     }
 
+    function hostRoll() {
+        setTimeout(function() {
+            let roll = Math.floor(Math.random() * 100) + 1;
+            hostScore += roll;
+            lastRoll = roll; // Speichern des letzten Wurfs
+            document.getElementById('hostScore').innerText = hostScore.toString();
+
+            if (hostScore > 100 || hostScore < playerScore) {
+                setTimeout(function() {
+                    endGame(true);
+                }, 2000); // 2 Sekunden Verzögerung, um die Würfe des Hosts anzuzeigen
+                showResults(true); // Anzeige der Gesamtzahlen
+            } else {
+                hostRoll(); // Fortsetzen der Würfe des Hosts
+            }
+        }, 1000); // 1 Sekunde Verzögerung zwischen den Würfen des Hosts
+    }
+
     function endGame(playerWins) {
         gameInProgress = false;
         document.getElementById('reset').classList.remove('hidden');
         let bet = parseInt(document.getElementById('betNumber').value);
         if (playerWins) playerJack += bet * 2;
         updateJackDisplay();
-        showResults(playerWins);
     }
 
     function showResults(playerWins) {
