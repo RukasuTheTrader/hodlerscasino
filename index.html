@@ -186,24 +186,31 @@ function hold() {
 }
 
 function hostTurn() {
-    if (!gameInProgress || hostScore > playerScore) return;
-
+    if (!gameInProgress) return;
+    
     let roll = Math.floor(Math.random() * 100) + 1;
+    
     if (isFirstRoll && roll <= 4) {
-        endGame(false);
+        endGame(true); // Spieler gewinnt, wenn der Host im ersten Wurf <= 4 würfelt
+        showResults(true);
         return;
     }
-
+    
     isFirstRoll = false;
     hostScore += roll;
     document.getElementById('hostScore').innerText = hostScore.toString();
-
-    if (hostScore > 100 || hostScore > playerScore) {
-        endGame(hostScore <= 100 && hostScore <= playerScore);
+    
+    if (hostScore > 100) {
+        endGame(true); // Spieler gewinnt, wenn der Host über 100 Punkte hat
+        showResults(true);
+    } else if (hostScore > playerScore) {
+        endGame(false); // Spieler verliert, wenn der Host mehr Punkte hat aber <= 100
+        showResults(false);
     } else {
-        setTimeout(hostTurn, 1000);
+        setTimeout(hostTurn, 1000); // Wenn keine der obigen Bedingungen zutrifft, ist der Host wieder an der Reihe
     }
 }
+
 
 function endGame(playerWins) {
     gameInProgress = false;
