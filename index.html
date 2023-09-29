@@ -16,44 +16,40 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            align-items: center; /* In der Mitte horizontal ausrichten */
+        }
+
+        #header {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
+            width: 80%;
+            padding: 10px 0;
+        }
+
+        #jackCurrency {
+            background-color: rgba(51, 51, 51, 0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: #FFD700;
+            font-size: 20px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-right: 20px; /* Abstand zum rechten Rand */
         }
         /* ... */
     </style>
 </head>
 <body>
-<div id="jackCurrency">
-    <span id="jackAmount">1000</span> Jack
+<div id="header">
+    <h1>Rukasu's Casino</h1>
+    <div id="jackCurrency">
+        <span id="jackAmount">1,000</span> Jack
+    </div>
 </div>
 
 <div class="container">
-    <h1>Rukasu's Casino</h1>
-    <div id="gameList">
-        <ul>
-            <li onclick="loadGame('diceJack')">DiceJack</li>
-            <!-- Hier können Sie weitere Spiele hinzufügen, wenn sie verfügbar sind -->
-        </ul>
-    </div>
-    <div id="gameArea">
-        <div id="diceJack" class="game">
-            <label for="bet">Bet:</label>
-            <input type="range" id="bet" min="10" max="1000" value="10" step="5">
-            <input type="number" id="betNumber" value="10" min="10">
-            <button id="startButton" onclick="startGame()">Start</button>
-            <div id="playerArea" class="hidden">
-                <button id="rollButton" onclick="rollDice()">Roll</button>
-                <button id="holdButton" onclick="hold()">Hold</button>
-                <p id="playerScore">0</p>
-            </div>
-            <div id="hostArea" class="hidden">
-                <p id="hostScore">0</p>
-            </div>
-            <button id="reset" class="hidden" onclick="resetGame()">Reset</button>
-        </div>
-    </div>
+    <!-- ... restlicher HTML-Code ... -->
 </div>
-
 <script>
     let playerJack = 1000;
     let playerScore = 0;
