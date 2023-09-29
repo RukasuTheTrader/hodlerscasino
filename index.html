@@ -113,30 +113,30 @@
 </div>
 <div id="results"></div>
 <script>
-    let playerJack = 1000;
-    let playerScore = 0;
-    let hostScore = 0;
-    let gameInProgress = false;
-    let playerHeld = false;
-    let lastRoll = 0;
+document.addEventListener('DOMContentLoaded', (event) => {
+    let betSlider = document.getElementById('bet');
+    let betNumber = document.getElementById('betNumber');
 
-    document.addEventListener('DOMContentLoaded', (event) => {
-        let betSlider = document.getElementById('bet');
-        let betNumber = document.getElementById('betNumber');
-
-        betSlider.addEventListener('input', function (e) {
-            betNumber.value = e.target.value;
-        });
-
-        document.getElementById('startButton').addEventListener('click', startGame);
-        document.getElementById('reset').addEventListener('click', resetGame);
-
-        updateBetLimits();
+    betSlider.addEventListener('input', function (e) {
+        betNumber.value = e.target.value;
     });
 
-   function startGame() {
+    document.getElementById('startButton').addEventListener('click', startGame);
+    document.getElementById('reset').addEventListener('click', resetGame);
+
+    updateBetLimits();
+});
+
+let playerJack = 1000;
+let playerScore = 0;
+let hostScore = 0;
+let gameInProgress = false;
+let playerHeld = false;
+let isFirstRoll = true; // Neue Variable, um den ersten Wurf zu überprüfen.
+
+function startGame() {
     if (gameInProgress) return; // Das Spiel läuft bereits.
-    
+
     let bet = parseInt(document.getElementById('betNumber').value);
     if (isNaN(bet) || playerJack < bet || bet < 10) {
         alert('Invalid bet!');
@@ -151,93 +151,93 @@
     document.getElementById('holdButton').removeAttribute('disabled');
     gameInProgress = true;
     playerHeld = false;
-    lastRoll = 0; // Zurücksetzen des letzten Wurfs
+    isFirstRoll = true; // Setzen, dass der nächste Wurf der erste ist.
 }
 
-
-  function rollDice() {
+function rollDice() {
     if (!gameInProgress || playerHeld) return;
 
     let roll = Math.floor(Math.random() * 100) + 1;
+
+    if (isFirstRoll && roll <= 4) {
+        endGame(false);
+        showResults(false);
+        return;
+    }
+
+    isFirstRoll = false; // Den Zustand des ersten Wurfs aktualisieren.
     playerScore += roll;
-    lastRoll = roll; // Speichern des letzten Wurfs
     document.getElementById('playerScore').innerText = playerScore.toString();
 
-    if (roll <= 4 || playerScore > 100) {
-        setTimeout(function() {
-            endGame(false);
-        }, 2000); // 2 Sekunden Verzögerung, um die Würfe des Hosts anzuzeigen
-        showResults(false); // Anzeige der Gesamtzahlen
+    if (playerScore > 100) {
+        endGame(false);
+        showResults(false);
     }
 }
 
 function hold() {
     if (!gameInProgress || playerHeld) return;
-
     document.getElementById('hostArea').classList.remove('hidden');
-    playerHeld = true; // Spieler hat "Hold" ausgewählt
-    hostTurn(); // Startet die Würfe des Hosts
+    playerHeld = true;
+    hostTurn(); // Host würfelt, wenn der Spieler "Hold" wählt.
 }
 
 function hostTurn() {
-    if (hostScore > playerScore) {
-        endGame(false); // Spieler verliert, wenn der Host über der Punktzahl des Spielers ist
-        return;
-    }
-    if (hostScore === playerScore) {
-        endGame(true, true); // Spieler bekommt seinen Einsatz zurück, wenn die Punktzahlen gleich sind
-        return;
-    }
-    
+    if (!gameInProgress || hostScore > playerScore) return; // Host hört auf zu würfeln, wenn sein Score größer ist.
+
     let roll = Math.floor(Math.random() * 100) + 1;
+    if (isFirstRoll && roll <= 4) {
+        endGame(false);
+        showResults(false);
+        return;
+    }
+
+    isFirstRoll = false; // Den Zustand des ersten Wurfs aktualisieren.
     hostScore += roll;
     document.getElementById('hostScore').innerText = hostScore.toString();
 
-    if (hostScore > 100) {
-        endGame(true); // Host verliert, wenn er über 100 Punkte erzielt
-    } else if (hostScore <= playerScore) {
-        setTimeout(hostTurn, 1000); // Host würfelt weiter, wenn er unter oder gleich der Punktzahl des Spielers ist
+    if (hostScore > 100 || hostScore > playerScore) {
+        let playerWins = hostScore <= 100 && hostScore <= playerScore;
+        endGame(playerWins);
+        showResults(playerWins);
     } else {
-        endGame(false); // Spieler verliert, wenn der Host über der Punktzahl des Spielers ist
+        setTimeout(hostTurn, 1000); // Weiter würfeln.
     }
 }
 
-function endGame(playerWins, isDraw = false) {
+function endGame(playerWins) {
     gameInProgress = false;
     document.getElementById('reset').classList.remove('hidden');
     let bet = parseInt(document.getElementById('betNumber').value);
-    if (playerWins) playerJack += isDraw ? bet : bet * 2; // Bei einem Unentschieden bekommt der Spieler seinen Einsatz zurück
+    if (playerWins) playerJack += bet * 2;
+    else if (hostScore === playerScore) playerJack += bet; // Einsatz zurück bei Unentschieden.
     updateJackDisplay();
-    showResults(playerWins, isDraw);
 }
-    
-    function showResults(playerWins) {
-        let resultMessage = playerWins ? 'You win!' : 'You lose!';
-        let resultsDiv = document.getElementById('results');
-        resultsDiv.innerHTML = `
-            <p>${resultMessage}</p>
-            <p>Player Score: ${playerScore}</p>
-            <p>Host Score: ${hostScore}</p>
-        `;
-        resultsDiv.style.display = 'block';
-    }
 
-    function resetGame() {
-        gameInProgress = false;
-        playerHeld = false;
-        document.getElementById('reset').classList.add('hidden');
-        document.getElementById('playerArea').classList.add('hidden');
-        document.getElementById('hostArea').classList.add('hidden');
-        document.getElementById('results').style.display = 'none'; // Ergebnisse ausblenden
-        document.getElementById('startButton').removeAttribute('disabled');
-        document.getElementById('rollButton').setAttribute('disabled', true);
-        document.getElementById('holdButton').setAttribute('disabled', true);
-        playerScore = 0;
-        hostScore = 0;
-        document.getElementById('playerScore').innerText = '0';
-        document.getElementById('hostScore').innerText = '0';
-    }
+function showResults(playerWins) {
+    let resultMessage = playerWins ? 'You win!' : 'You lose!';
+    if (hostScore === playerScore) resultMessage = 'It’s a draw! You get your bet back!';
+    let resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = `<p>${resultMessage}</p><p>Player Score: ${playerScore}</p><p>Host Score: ${hostScore}</p>`;
+    resultsDiv.style.display = 'block';
+}
 
+function resetGame() {
+    gameInProgress = false;
+    playerHeld = false;
+    isFirstRoll = true; // Zurücksetzen für das nächste Spiel.
+    document.getElementById('reset').classList.add('hidden');
+    document.getElementById('playerArea').classList.add('hidden');
+    document.getElementById('hostArea').classList.add('hidden');
+    document.getElementById('results').style.display = 'none';
+    document.getElementById('startButton').removeAttribute('disabled');
+    document.getElementById('rollButton').setAttribute('disabled', true);
+    document.getElementById('holdButton').setAttribute('disabled', true);
+    playerScore = 0;
+    hostScore = 0;
+    document.getElementById('playerScore').innerText = '0';
+    document.getElementById('hostScore').innerText = '0';
+}
    function updateJackDisplay() {
     const jackAmountElement = document.getElementById('jackAmount');
     jackAmountElement.textContent = new Intl.NumberFormat('en-US', {
