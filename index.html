@@ -148,4 +148,102 @@
   function rollDice() {
     if (!gameInProgress || playerHeld) return;
 
-    let roll = Math.floor
+    let roll = Math.floor(Math.random() * 100) + 1;
+    playerScore += roll;
+    lastRoll = roll; // Speichern des letzten Wurfs
+    document.getElementById('playerScore').innerText = playerScore.toString();
+
+    if (roll <= 4 || playerScore > 100) {
+        endGame(false);
+    }
+}
+
+    function hold() {
+        if (!gameInProgress || playerHeld) return;
+
+        document.getElementById('hostArea').classList.remove('hidden');
+        do {
+            let roll = Math.floor(Math.random() * 100) + 1;
+            hostScore += roll;
+        } while (hostScore < playerScore && hostScore <= 100);
+        document.getElementById('hostScore').innerText = hostScore.toString();
+        if (hostScore > 100 || hostScore < playerScore) {
+            endGame(true);
+        } else {
+            endGame(false);
+        }
+        playerHeld = true;
+    }
+
+    function endGame(playerWins) {
+        gameInProgress = false;
+        document.getElementById('reset').classList.remove('hidden');
+        let bet = parseInt(document.getElementById('betNumber').value);
+        if (playerWins) playerJack += bet * 2;
+        updateJackDisplay();
+        
+        // Anzeigen des letzten Wurfs
+        let resultMessage = playerWins ? 'You win!' : 'You lose!';
+        resultMessage += '\nLast roll: ' + lastRoll;
+        alert(resultMessage);
+    }
+
+    function resetGame() {
+        gameInProgress = false;
+        playerHeld = false;
+        document.getElementById('reset').classList.add('hidden');
+        document.getElementById('playerArea').classList.add('hidden');
+        document.getElementById('hostArea').classList.add('hidden');
+        document.getElementById('startButton').removeAttribute('disabled');
+        document.getElementById('rollButton').setAttribute('disabled', true);
+        document.getElementById('holdButton').setAttribute('disabled', true);
+        playerScore = 0;
+        hostScore = 0;
+        document.getElementById('playerScore').innerText = '0';
+        document.getElementById('hostScore').innerText = '0';
+    }
+
+   function updateJackDisplay() {
+    const jackAmountElement = document.getElementById('jackAmount');
+    jackAmountElement.textContent = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0
+    }).format(playerJack);
+
+    updateBetLimits();
+}
+
+    function updateBetLimits() {
+        let betSlider = document.getElementById('bet');
+        let betNumber = document.getElementById('betNumber');
+
+        betSlider.max = playerJack;
+        betNumber.max = playerJack;
+
+        if (playerJack < 10) {
+            betSlider.disabled = true;
+            betNumber.disabled = true;
+        } else {
+            betSlider.disabled = false;
+            betNumber.disabled = false;
+            if (betSlider.value < 10) {
+                betSlider.value = 10;
+                betNumber.value = 10;
+            } else if (betSlider.value > playerJack) {
+                betSlider.value = playerJack;
+                betNumber.value = playerJack;
+            }
+        }
+    }
+
+    function loadGame(gameName) {
+        // Hier können Sie den Code hinzufügen, um verschiedene Spiele zu laden.
+        // Aktuell ist nur das "DiceJack"-Spiel verfügbar.
+        if (gameName === 'diceJack') {
+            // Fügen Sie hier den Code hinzu, um das "DiceJack"-Spiel zu starten.
+        }
+    }
+</script>
+</body>
+</html>
