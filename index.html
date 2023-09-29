@@ -42,8 +42,8 @@
             <input type="number" id="betNumber" value="10" min="10">
             <button id="startButton" onclick="startGame()">Start</button>
             <div id="playerArea" class="hidden">
-                <button onclick="rollDice()">Roll</button>
-                <button onclick="hold()">Hold</button>
+                <button id="rollButton" onclick="rollDice()">Roll</button>
+                <button id="holdButton" onclick="hold()">Hold</button>
                 <p id="playerScore">0</p>
             </div>
             <div id="hostArea" class="hidden">
@@ -58,6 +58,8 @@
     let playerJack = 1000;
     let playerScore = 0;
     let hostScore = 0;
+    let gameInProgress = false;
+    let playerHeld = false;
 
     document.addEventListener('DOMContentLoaded', (event) => {
         let betSlider = document.getElementById('bet');
@@ -87,10 +89,16 @@
         playerJack -= bet;
         updateJackDisplay();
         document.getElementById('playerArea').classList.remove('hidden');
-        document.getElementById('startButton').setAttribute('disabled', 'true');
+        document.getElementById('startButton').setAttribute('disabled', true);
+        document.getElementById('rollButton').removeAttribute('disabled');
+        document.getElementById('holdButton').removeAttribute('disabled');
+        gameInProgress = true;
+        playerHeld = false;
     }
 
     function rollDice() {
+        if (!gameInProgress || playerHeld) return;
+
         let roll = Math.floor(Math.random() * 100) + 1;
         if (roll <= 4) {
             endGame(false);
@@ -102,6 +110,8 @@
     }
 
     function hold() {
+        if (!gameInProgress || playerHeld) return;
+
         document.getElementById('hostArea').classList.remove('hidden');
         do {
             let roll = Math.floor(Math.random() * 100) + 1;
@@ -113,9 +123,11 @@
         } else {
             endGame(false);
         }
+        playerHeld = true;
     }
 
     function endGame(playerWins) {
+        gameInProgress = false;
         document.getElementById('reset').classList.remove('hidden');
         let bet = parseInt(document.getElementById('betNumber').value);
         if (playerWins) playerJack += bet * 2;
@@ -124,10 +136,14 @@
     }
 
     function resetGame() {
+        gameInProgress = false;
+        playerHeld = false;
         document.getElementById('reset').classList.add('hidden');
         document.getElementById('playerArea').classList.add('hidden');
         document.getElementById('hostArea').classList.add('hidden');
         document.getElementById('startButton').removeAttribute('disabled');
+        document.getElementById('rollButton').setAttribute('disabled', true);
+        document.getElementById('holdButton').setAttribute('disabled', true);
         playerScore = 0;
         hostScore = 0;
         document.getElementById('playerScore').innerText = '0';
