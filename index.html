@@ -134,41 +134,42 @@
         updateBetLimits();
     });
 
-    function startGame() {
-        if (gameInProgress) return; // Das Spiel läuft bereits.
-
-        let bet = parseInt(document.getElementById('betNumber').value);
-        if (isNaN(bet) || playerJack < bet || bet < 10) {
-            alert('Invalid bet!');
-            return;
-        }
-
-        playerJack -= bet;
-        updateJackDisplay();
-        document.getElementById('playerArea').classList.remove('hidden');
-        document.getElementById('startButton').setAttribute('disabled', true);
-        document.getElementById('rollButton').removeAttribute('disabled');
-        document.getElementById('holdButton').removeAttribute('disabled');
-        gameInProgress = true;
-        playerHeld = false;
-        lastRoll = 0; // Zurücksetzen des letzten Wurfs
+   function startGame() {
+    if (gameInProgress) return; // Das Spiel läuft bereits.
+    
+    let bet = parseInt(document.getElementById('betNumber').value);
+    if (isNaN(bet) || playerJack < bet || bet < 10) {
+        alert('Invalid bet!');
+        return;
     }
 
-    function rollDice() {
-        if (!gameInProgress || playerHeld) return;
+    playerJack -= bet;
+    updateJackDisplay();
+    document.getElementById('playerArea').classList.remove('hidden');
+    document.getElementById('startButton').setAttribute('disabled', true);
+    document.getElementById('rollButton').removeAttribute('disabled');
+    document.getElementById('holdButton').removeAttribute('disabled');
+    gameInProgress = true;
+    playerHeld = false;
+    lastRoll = 0; // Zurücksetzen des letzten Wurfs
+}
 
-        let roll = Math.floor(Math.random() * 100) + 1;
-        playerScore += roll;
-        lastRoll = roll; // Speichern des letzten Wurfs
-        document.getElementById('playerScore').innerText = playerScore.toString();
 
-        if (roll <= 4 || playerScore > 100) {
-            setTimeout(function() {
-                endGame(false);
-            }, 2000); // 2 Sekunden Verzögerung, um die Würfe des Hosts anzuzeigen
-            showResults(false); // Anzeige der Gesamtzahlen
-        }
+  function rollDice() {
+    if (!gameInProgress || playerHeld) return;
+
+    let roll = Math.floor(Math.random() * 100) + 1;
+    playerScore += roll;
+    lastRoll = roll; // Speichern des letzten Wurfs
+    document.getElementById('playerScore').innerText = playerScore.toString();
+
+    if (roll <= 4 || playerScore > 100) {
+        setTimeout(function() {
+            endGame(false);
+        }, 2000); // 2 Sekunden Verzögerung, um die Würfe des Hosts anzuzeigen
+        showResults(false); // Anzeige der Gesamtzahlen
     }
+}
 
     function hold() {
         if (!gameInProgress || playerHeld) return;
@@ -179,41 +180,33 @@
     }
 
     function hostRoll() {
-    setTimeout(function() {
-        if (hostScore > 100 || hostScore < playerScore) {
-            setTimeout(function() {
-                endGame(true);
-            }, 2000); // 2 Sekunden Verzögerung, um die Würfe des Hosts anzuzeigen
-            showResults(true); // Anzeige der Gesamtzahlen
-        } else if (hostScore === playerScore) {
-            setTimeout(function() {
-                endGame(null);
-            }, 2000); // 2 Sekunden Verzögerung, um die Würfe des Hosts anzuzeigen
-            showResults(null); // Anzeige der Gesamtzahlen für ein Unentschieden
-        } else {
+        setTimeout(function() {
             let roll = Math.floor(Math.random() * 100) + 1;
             hostScore += roll;
             lastRoll = roll; // Speichern des letzten Wurfs
             document.getElementById('hostScore').innerText = hostScore.toString();
-            hostRoll(); // Fortsetzen der Würfe des Hosts
-        }
-    }, 1000); // 1 Sekunde Verzögerung zwischen den Würfen des Hosts
-}
+
+            if (hostScore > 100 || hostScore < playerScore) {
+                setTimeout(function() {
+                    endGame(true);
+                }, 2000); // 2 Sekunden Verzögerung, um die Würfe des Hosts anzuzeigen
+                showResults(true); // Anzeige der Gesamtzahlen
+            } else {
+                hostRoll(); // Fortsetzen der Würfe des Hosts
+            }
+        }, 1000); // 1 Sekunde Verzögerung zwischen den Würfen des Hosts
+    }
 
     function endGame(playerWins) {
         gameInProgress = false;
         document.getElementById('reset').classList.remove('hidden');
         let bet = parseInt(document.getElementById('betNumber').value);
-        if (playerWins === true) {
-            playerJack += bet * 2;
-        } else if (playerWins === null) {
-            playerJack += bet; // Unentschieden, Einsatz zurückgeben
-        }
+        if (playerWins) playerJack += bet * 2;
         updateJackDisplay();
     }
 
     function showResults(playerWins) {
-        let resultMessage = playerWins === true ? 'You win!' : (playerWins === false ? 'You lose!' : 'It\'s a tie!');
+        let resultMessage = playerWins ? 'You win!' : 'You lose!';
         let resultsDiv = document.getElementById('results');
         resultsDiv.innerHTML = `
             <p>${resultMessage}</p>
@@ -239,16 +232,16 @@
         document.getElementById('hostScore').innerText = '0';
     }
 
-    function updateJackDisplay() {
-        const jackAmountElement = document.getElementById('jackAmount');
-        jackAmountElement.textContent = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 0
-        }).format(playerJack);
+   function updateJackDisplay() {
+    const jackAmountElement = document.getElementById('jackAmount');
+    jackAmountElement.textContent = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0
+    }).format(playerJack);
 
-        updateBetLimits();
-    }
+    updateBetLimits();
+}
 
     function updateBetLimits() {
         let betSlider = document.getElementById('bet');
