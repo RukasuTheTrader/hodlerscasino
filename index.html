@@ -149,9 +149,16 @@
     }
 
    function updateJackDisplay() {
-    document.getElementById('jackAmount').innerText = playerJack.toLocaleString('en-US', { minimumFractionDigits: 0 });
+    const jackAmountElement = document.getElementById('jackAmount');
+    jackAmountElement.textContent = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0
+    }).format(playerJack);
+
     updateBetLimits();
 }
+
 
 
     function updateBetLimits() {
