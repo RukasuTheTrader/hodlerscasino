@@ -80,9 +80,10 @@
     });
 
     function startGame() {
+        let bet = parseInt(document.getElementById('betNumber').value);
         if (isNaN(bet) || playerJack < bet || bet < 10) {
             alert('Invalid bet!');
-        let bet = parseInt(document.getElementById('betNumber').value);
+            return;
         }
 
         playerJack -= bet;
