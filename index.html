@@ -162,10 +162,11 @@ function startGame() {
 function rollDice() {
     if (!gameInProgress || playerHeld) return;
     
-    let roll = Math.floor(Math.random() * 100) + 1;
-
+    let roll = Math.floor(Math.random() * 100) + 1; // Dies garantiert, dass roll zwischen 1 und 100 ist.
+    
     if (isFirstRoll && roll <= 4) {
         endGame(false);
+        showResults(false);
         return;
     }
 
@@ -175,6 +176,7 @@ function rollDice() {
     
     if (playerScore > 100) {
         endGame(false);
+        showResults(false);
     }
 }
 
@@ -186,12 +188,12 @@ function hold() {
 }
 
 function hostTurn() {
-    if (!gameInProgress) return;
+    if (!gameInProgress || (hostScore > playerScore && hostScore <= 100)) return;
     
-    let roll = Math.floor(Math.random() * 100) + 1;
+    let roll = Math.floor(Math.random() * 100) + 1; // Dies garantiert, dass roll zwischen 1 und 100 ist.
     
     if (isFirstRoll && roll <= 4) {
-        endGame(true); // Spieler gewinnt, wenn der Host im ersten Wurf <= 4 würfelt
+        endGame(true);
         showResults(true);
         return;
     }
@@ -201,16 +203,15 @@ function hostTurn() {
     document.getElementById('hostScore').innerText = hostScore.toString();
     
     if (hostScore > 100) {
-        endGame(true); // Spieler gewinnt, wenn der Host über 100 Punkte hat
+        endGame(true);
         showResults(true);
     } else if (hostScore > playerScore) {
-        endGame(false); // Spieler verliert, wenn der Host mehr Punkte hat aber <= 100
+        endGame(false);
         showResults(false);
     } else {
-        setTimeout(hostTurn, 1000); // Wenn keine der obigen Bedingungen zutrifft, ist der Host wieder an der Reihe
+        setTimeout(hostTurn, 1000);
     }
 }
-
 
 function endGame(playerWins) {
     gameInProgress = false;
