@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <title>Rukasu's Casino</title>
     <style>
-        /* CSS-Anpassungen hier */
         body {
-            background-image: url('casino background.avif');
-            background-size: cover;
+            background-image: url('casino_background.avif'), url('poker_table_background.avif'); /* Hintergrundbild für das Spiel und den Pokertisch */
+            background-size: cover, cover;
             background-repeat: no-repeat;
             font-family: 'Arial', sans-serif;
             color: #fff;
@@ -37,16 +36,19 @@
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             margin-right: 20px; /* Abstand zum rechten Rand */
         }
-        
+
         .container {
             width: 80%;
             margin: auto;
             text-align: center; /* In der Mitte ausrichten */
         }
 
-        /* Weitere CSS-Stile hier */
-
-        /* ... */
+        .game {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
