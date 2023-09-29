@@ -166,7 +166,7 @@
     if (roll <= 4 || playerScore > 100) {
         setTimeout(function() {
             endGame(false);
-        }, 2000); // 2 Sekunden Verzögerung, um die Würfe des Hosts anzuzeigen
+        }, 2000); // 2 Sekunden Verzögerung, um den letzten Wurf anzuzeigen
         showResults(false); // Anzeige der Gesamtzahlen
     }
 }
@@ -175,7 +175,7 @@
         if (!gameInProgress || playerHeld) return;
 
         document.getElementById('hostArea').classList.remove('hidden');
-        hostRoll(); // Start des Hosts, um seine Würfe anzuzeigen
+        hostRoll(); // Starten der Würfe des Hosts
         playerHeld = true;
     }
 
@@ -186,10 +186,10 @@
             lastRoll = roll; // Speichern des letzten Wurfs
             document.getElementById('hostScore').innerText = hostScore.toString();
 
-            if (hostScore > 100 || hostScore < playerScore) {
+            if (hostScore < 101 && hostScore > playerScore) {
                 setTimeout(function() {
                     endGame(true);
-                }, 2000); // 2 Sekunden Verzögerung, um die Würfe des Hosts anzuzeigen
+                }, 2000); // 2 Sekunden Verzögerung, um den letzten Wurf anzuzeigen
                 showResults(true); // Anzeige der Gesamtzahlen
             } else {
                 hostRoll(); // Fortsetzen der Würfe des Hosts
