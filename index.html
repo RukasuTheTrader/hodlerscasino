@@ -130,11 +130,16 @@
         if (!gameInProgress || playerHeld) return;
 
         let roll = Math.floor(Math.random() * 100) + 1;
-        playerScore += roll;
-        document.getElementById('playerScore').innerText = playerScore.toString();
 
-        if (roll <= 4 || playerScore > 100) {
+        if (playerScore === 0 && (roll >= 1 && roll <= 4)) {
             endGame(false);
+        } else {
+            playerScore += roll;
+            document.getElementById('playerScore').innerText = playerScore.toString();
+
+            if (roll <= 4 || playerScore > 100) {
+                endGame(false);
+            }
         }
     }
 
