@@ -1,14 +1,173 @@
-function rollDice() {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rukasu's Casino</title>
+    <style>
+        body {
+            background-image: url('casino background.avif');
+            background-size: cover, cover;
+            background-repeat: no-repeat;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* In der Mitte horizontal und vertikal ausrichten */
+        }
+
+        #header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 80%;
+            padding: 10px 0;
+        }
+
+        #jackCurrency {
+            background-color: rgba(51, 51, 51, 0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: #75ff5e;
+            font-size: 20px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-right: 20px; /* Abstand zum rechten Rand */
+        }
+
+        .container {
+            width: 30%;
+            height: 30%;
+            margin: auto;
+            text-align: center; /* In der Mitte ausrichten */
+        }
+
+        .game {
+            background-image: url('poker_table_background.avif');
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        #gameList {
+            margin-top: 20px;
+        }
+
+        #gameList ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #gameList ul li {
+            background-color: #333;
+            padding: 10px;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+
+        #results {
+            display: none;
+            background-color: rgba(51, 51, 51, 0.7);
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 20px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div id="header">
+    <h1>Rukasu's Casino</h1>
+    <div id="jackCurrency">
+        <span id="jackAmount">1,000</span> Jack
+    </div>
+</div>
+
+<div class="container">
+    <div id="gameList">
+        <ul>
+            <li onclick="loadGame('diceJack')">DiceJack</li>
+            <!-- Hier können Sie weitere Spiele hinzufügen, wenn sie verfügbar sind -->
+        </ul>
+    </div>
+    <div id="gameArea">
+        <div id="diceJack" class="game">
+            <label for="bet">Bet:</label>
+            <input type="range" id="bet" min="10" max="1000" value="10" step="5">
+            <input type="number" id="betNumber" value="10" min="10">
+            <button id="startButton" onclick="startGame()">Start</button>
+            <div id="playerArea" class="hidden">
+                <button id="rollButton" onclick="rollDice()" disabled>Roll</button>
+                <button id="holdButton" onclick="hold()" disabled>Hold</button>
+                <p id="playerScore">0</p>
+            </div>
+            <div id="hostArea" class="hidden">
+                <p id="hostScore">0</p>
+            </div>
+            <button id="reset" class="hidden" onclick="resetGame()">Reset</button>
+        </div>
+    </div>
+</div>
+<div id="results"></div>
+<script>
+    let playerJack = 1000;
+    let playerScore = 0;
+    let hostScore = 0;
+    let gameInProgress = false;
+    let playerHeld = false;
+    let lastRoll = 0;
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        let betSlider = document.getElementById('bet');
+        let betNumber = document.getElementById('betNumber');
+
+        betSlider.addEventListener('input', function (e) {
+            betNumber.value = e.target.value;
+        });
+
+        document.getElementById('startButton').addEventListener('click', startGame);
+        document.getElementById('reset').addEventListener('click', resetGame);
+
+        updateBetLimits();
+    });
+
+   function startGame() {
+    if (gameInProgress) return; // Das Spiel läuft bereits.
+    
+    let bet = parseInt(document.getElementById('betNumber').value);
+    if (isNaN(bet) || playerJack < bet || bet < 10) {
+        alert('Invalid bet!');
+        return;
+    }
+
+    playerJack -= bet;
+    updateJackDisplay();
+    document.getElementById('playerArea').classList.remove('hidden');
+    document.getElementById('startButton').setAttribute('disabled', true);
+    document.getElementById('rollButton').removeAttribute('disabled');
+    document.getElementById('holdButton').removeAttribute('disabled');
+    gameInProgress = true;
+    playerHeld = false;
+    lastRoll = 0; // Zurücksetzen des letzten Wurfs
+}
+
+
+  function rollDice() {
     if (!gameInProgress || playerHeld) return;
 
-    let roll = Math.floor
     let roll = Math.floor(Math.random() * 100) + 1;
     playerScore += roll;
     lastRoll = roll; // Speichern des letzten Wurfs
     document.getElementById('playerScore').innerText = playerScore.toString();
 
     if (roll <= 4 || playerScore > 100) {
-        endGame(false);
+        setTimeout(function() {
+            endGame(false);
+        }, 2000); // 2 Sekunden Verzögerung, um die Würfe des Hosts anzuzeigen
+        showResults(false); // Anzeige der Gesamtzahlen
     }
 }
 
@@ -16,17 +175,26 @@ function rollDice() {
         if (!gameInProgress || playerHeld) return;
 
         document.getElementById('hostArea').classList.remove('hidden');
-        do {
+        hostRoll(); // Start des Hosts, um seine Würfe anzuzeigen
+        playerHeld = true;
+    }
+
+    function hostRoll() {
+        setTimeout(function() {
             let roll = Math.floor(Math.random() * 100) + 1;
             hostScore += roll;
-        } while (hostScore < playerScore && hostScore <= 100);
-        document.getElementById('hostScore').innerText = hostScore.toString();
-        if (hostScore > 100 || hostScore < playerScore) {
-            endGame(true);
-        } else {
-            endGame(false);
-        }
-        playerHeld = true;
+            lastRoll = roll; // Speichern des letzten Wurfs
+            document.getElementById('hostScore').innerText = hostScore.toString();
+
+            if (hostScore > 100 || hostScore < playerScore) {
+                setTimeout(function() {
+                    endGame(true);
+                }, 2000); // 2 Sekunden Verzögerung, um die Würfe des Hosts anzuzeigen
+                showResults(true); // Anzeige der Gesamtzahlen
+            } else {
+                hostRoll(); // Fortsetzen der Würfe des Hosts
+            }
+        }, 1000); // 1 Sekunde Verzögerung zwischen den Würfen des Hosts
     }
 
     function endGame(playerWins) {
@@ -35,11 +203,17 @@ function rollDice() {
         let bet = parseInt(document.getElementById('betNumber').value);
         if (playerWins) playerJack += bet * 2;
         updateJackDisplay();
+    }
 
-        // Anzeigen des letzten Wurfs
+    function showResults(playerWins) {
         let resultMessage = playerWins ? 'You win!' : 'You lose!';
-        resultMessage += '\nLast roll: ' + lastRoll;
-        alert(resultMessage);
+        let resultsDiv = document.getElementById('results');
+        resultsDiv.innerHTML = `
+            <p>${resultMessage}</p>
+            <p>Player Score: ${playerScore}</p>
+            <p>Host Score: ${hostScore}</p>
+        `;
+        resultsDiv.style.display = 'block';
     }
 
     function resetGame() {
@@ -48,6 +222,7 @@ function rollDice() {
         document.getElementById('reset').classList.add('hidden');
         document.getElementById('playerArea').classList.add('hidden');
         document.getElementById('hostArea').classList.add('hidden');
+        document.getElementById('results').style.display = 'none'; // Ergebnisse ausblenden
         document.getElementById('startButton').removeAttribute('disabled');
         document.getElementById('rollButton').setAttribute('disabled', true);
         document.getElementById('holdButton').setAttribute('disabled', true);
