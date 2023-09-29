@@ -147,61 +147,62 @@ function startGame() {
     updateJackDisplay();
     document.getElementById('playerArea').classList.remove('hidden');
     document.getElementById('startButton').setAttribute('disabled', true);
-    document.getElementById('rollButton').removeAttribute('disabled');
-    document.getElementById('holdButton').removeAttribute('disabled');
-    gameInProgress = true;
-    playerHeld = false;
-    isFirstRoll = true; // Setzen, dass der nächste Wurf der erste ist.
-}
+    document.getElementById('rollButton').addEventListener('click', rollDice);
+    document.getElementById('holdButton').addEventListener('click', hold);
+});
+
+let playerJack = 1000;
+let playerScore = 0;
+let hostScore = 0;
+let gameInProgress = false;
+let playerHeld = false;
+let isFirstRoll = true;
 
 function rollDice() {
     if (!gameInProgress || playerHeld) return;
 
     let roll = Math.floor(Math.random() * 100) + 1;
 
-    if (isFirstRoll && roll <= 4) {
+    if (isFirstRoll && (roll >= 1 && roll <= 4)) {
         endGame(false);
-        showResults(false);
+        alert('You lost! First roll was ' + roll);
         return;
     }
 
-    isFirstRoll = false; // Den Zustand des ersten Wurfs aktualisieren.
+    isFirstRoll = false;
     playerScore += roll;
     document.getElementById('playerScore').innerText = playerScore.toString();
-
-    if (playerScore > 100) {
-        endGame(false);
-        showResults(false);
-    }
 }
 
 function hold() {
     if (!gameInProgress || playerHeld) return;
     document.getElementById('hostArea').classList.remove('hidden');
     playerHeld = true;
-    hostTurn(); // Host würfelt, wenn der Spieler "Hold" wählt.
+
+    hostTurn();
 }
 
 function hostTurn() {
-    if (!gameInProgress || hostScore > playerScore) return; // Host hört auf zu würfeln, wenn sein Score größer ist.
+    if (!gameInProgress || !playerHeld || hostScore > playerScore) return;
 
     let roll = Math.floor(Math.random() * 100) + 1;
-    if (isFirstRoll && roll <= 4) {
-        endGame(false);
-        showResults(false);
+
+    if (isFirstRoll && (roll >= 1 && roll <= 4)) {
+        endGame(true); // Player wins
+        alert('You won! Host's first roll was ' + roll);
         return;
     }
 
-    isFirstRoll = false; // Den Zustand des ersten Wurfs aktualisieren.
+    isFirstRoll = false;
     hostScore += roll;
     document.getElementById('hostScore').innerText = hostScore.toString();
 
-    if (hostScore > 100 || hostScore > playerScore) {
-        let playerWins = hostScore <= 100 && hostScore <= playerScore;
+    if (hostScore > playerScore) {
+        let playerWins = false;
         endGame(playerWins);
-        showResults(playerWins);
+        alert('You lost! Host Score: ' + hostScore + ' Player Score: ' + playerScore);
     } else {
-        setTimeout(hostTurn, 1000); // Weiter würfeln.
+        setTimeout(hostTurn, 1000); // Host rolls again
     }
 }
 
@@ -209,8 +210,10 @@ function endGame(playerWins) {
     gameInProgress = false;
     document.getElementById('reset').classList.remove('hidden');
     let bet = parseInt(document.getElementById('betNumber').value);
+
     if (playerWins) playerJack += bet * 2;
-    else if (hostScore === playerScore) playerJack += bet; // Einsatz zurück bei Unentschieden.
+    else if (hostScore === playerScore) playerJack += bet; // Draw, player gets the bet back
+
     updateJackDisplay();
 }
 
