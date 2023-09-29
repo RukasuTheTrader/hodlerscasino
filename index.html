@@ -113,7 +113,7 @@
 </div>
 <div id="results"></div>
 <script>
-document.addEventListener('DOMContentLoaded', (event) => {
+    document.addEventListener('DOMContentLoaded', (event) => {
     let betSlider = document.getElementById('bet');
     let betNumber = document.getElementById('betNumber');
 
@@ -132,10 +132,10 @@ let playerScore = 0;
 let hostScore = 0;
 let gameInProgress = false;
 let playerHeld = false;
-let isFirstRoll = true; // Neue Variable, um den ersten Wurf zu überprüfen.
+let isFirstRoll = true;
 
 function startGame() {
-    if (gameInProgress) return; // Das Spiel läuft bereits.
+    if (gameInProgress) return;
 
     let bet = parseInt(document.getElementById('betNumber').value);
     if (isNaN(bet) || playerJack < bet || bet < 10) {
@@ -147,49 +147,48 @@ function startGame() {
     updateJackDisplay();
     document.getElementById('playerArea').classList.remove('hidden');
     document.getElementById('startButton').setAttribute('disabled', true);
-    document.getElementById('rollButton').addEventListener('click', rollDice);
-    document.getElementById('holdButton').addEventListener('click', hold);
-});
-
-let playerJack = 1000;
-let playerScore = 0;
-let hostScore = 0;
-let gameInProgress = false;
-let playerHeld = false;
-let isFirstRoll = true;
+    document.getElementById('rollButton').removeAttribute('disabled');
+    document.getElementById('holdButton').removeAttribute('disabled');
+    gameInProgress = true;
+    playerHeld = false;
+    isFirstRoll = true;
+}
 
 function rollDice() {
     if (!gameInProgress || playerHeld) return;
 
     let roll = Math.floor(Math.random() * 100) + 1;
 
-    if (isFirstRoll && (roll >= 1 && roll <= 4)) {
+    if (isFirstRoll && roll <= 4) {
         endGame(false);
-        alert('You lost! First roll was ' + roll);
+        showResults(false);
         return;
     }
 
     isFirstRoll = false;
     playerScore += roll;
     document.getElementById('playerScore').innerText = playerScore.toString();
+
+    if (playerScore > 100) {
+        endGame(false);
+        showResults(false);
+    }
 }
 
 function hold() {
     if (!gameInProgress || playerHeld) return;
     document.getElementById('hostArea').classList.remove('hidden');
     playerHeld = true;
-
     hostTurn();
 }
 
 function hostTurn() {
-    if (!gameInProgress || !playerHeld || hostScore > playerScore) return;
+    if (!gameInProgress || hostScore > playerScore) return;
 
     let roll = Math.floor(Math.random() * 100) + 1;
-
-    if (isFirstRoll && (roll >= 1 && roll <= 4)) {
-        endGame(true); // Player wins
-        alert('You won! Host's first roll was ' + roll);
+    if (isFirstRoll && roll <= 4) {
+        endGame(false);
+        showResults(false);
         return;
     }
 
@@ -197,12 +196,12 @@ function hostTurn() {
     hostScore += roll;
     document.getElementById('hostScore').innerText = hostScore.toString();
 
-    if (hostScore > playerScore) {
-        let playerWins = false;
+    if (hostScore > 100 || hostScore > playerScore) {
+        let playerWins = hostScore <= 100 && hostScore <= playerScore;
         endGame(playerWins);
-        alert('You lost! Host Score: ' + hostScore + ' Player Score: ' + playerScore);
+        showResults(playerWins);
     } else {
-        setTimeout(hostTurn, 1000); // Host rolls again
+        setTimeout(hostTurn, 1000);
     }
 }
 
@@ -210,10 +209,8 @@ function endGame(playerWins) {
     gameInProgress = false;
     document.getElementById('reset').classList.remove('hidden');
     let bet = parseInt(document.getElementById('betNumber').value);
-
     if (playerWins) playerJack += bet * 2;
-    else if (hostScore === playerScore) playerJack += bet; // Draw, player gets the bet back
-
+    else if (hostScore === playerScore) playerJack += bet;
     updateJackDisplay();
 }
 
@@ -228,7 +225,7 @@ function showResults(playerWins) {
 function resetGame() {
     gameInProgress = false;
     playerHeld = false;
-    isFirstRoll = true; // Zurücksetzen für das nächste Spiel.
+    isFirstRoll = true;
     document.getElementById('reset').classList.add('hidden');
     document.getElementById('playerArea').classList.add('hidden');
     document.getElementById('hostArea').classList.add('hidden');
@@ -241,7 +238,8 @@ function resetGame() {
     document.getElementById('playerScore').innerText = '0';
     document.getElementById('hostScore').innerText = '0';
 }
-   function updateJackDisplay() {
+
+function updateJackDisplay() {
     const jackAmountElement = document.getElementById('jackAmount');
     jackAmountElement.textContent = new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -252,36 +250,28 @@ function resetGame() {
     updateBetLimits();
 }
 
-    function updateBetLimits() {
-        let betSlider = document.getElementById('bet');
-        let betNumber = document.getElementById('betNumber');
+function updateBetLimits() {
+    let betSlider = document.getElementById('bet');
+    let betNumber = document.getElementById('betNumber');
 
-        betSlider.max = playerJack;
-        betNumber.max = playerJack;
+    betSlider.max = playerJack;
+    betNumber.max = playerJack;
 
-        if (playerJack < 10) {
-            betSlider.disabled = true;
-            betNumber.disabled = true;
-        } else {
-            betSlider.disabled = false;
-            betNumber.disabled = false;
-            if (betSlider.value < 10) {
-                betSlider.value = 10;
-                betNumber.value = 10;
-            } else if (betSlider.value > playerJack) {
-                betSlider.value = playerJack;
-                betNumber.value = playerJack;
-            }
+    if (playerJack < 10) {
+        betSlider.disabled = true;
+        betNumber.disabled = true;
+    } else {
+        betSlider.disabled = false;
+        betNumber.disabled = false;
+        if (betSlider.value < 10) {
+            betSlider.value = 10;
+            betNumber.value = 10;
+        } else if (betSlider.value > playerJack) {
+            betSlider.value = playerJack;
+            betNumber.value = playerJack;
         }
     }
-
-    function loadGame(gameName) {
-        // Hier können Sie den Code hinzufügen, um verschiedene Spiele zu laden.
-        // Aktuell ist nur das "DiceJack"-Spiel verfügbar.
-        if (gameName === 'diceJack') {
-            // Fügen Sie hier den Code hinzu, um das "DiceJack"-Spiel zu starten.
-        }
-    }
+}
 </script>
 </body>
 </html>
