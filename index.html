@@ -51,6 +51,31 @@
             border-radius: 10px;
             margin-top: 20px;
         }
+
+        #gameList {
+            margin-top: 20px;
+        }
+
+        #gameList ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #gameList ul li {
+            background-color: #333;
+            padding: 10px;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+
+        #results {
+            display: none;
+            background-color: rgba(51, 51, 51, 0.7);
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 20px;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -86,12 +111,14 @@
         </div>
     </div>
 </div>
+<div id="results"></div>
 <script>
     let playerJack = 1000;
     let playerScore = 0;
     let hostScore = 0;
     let gameInProgress = false;
     let playerHeld = false;
+    let lastRoll = 0;
 
     document.addEventListener('DOMContentLoaded', (event) => {
         let betSlider = document.getElementById('bet');
@@ -107,80 +134,86 @@
         updateBetLimits();
     });
 
-    function startGame() {
-        if (gameInProgress) return; // Das Spiel läuft bereits.
-
-        let bet = parseInt(document.getElementById('betNumber').value);
-        if (isNaN(bet) || playerJack < bet || bet < 10) {
-            alert('Invalid bet!');
-            return;
-        }
-
-        playerJack -= bet;
-        updateJackDisplay();
-        document.getElementById('playerArea').classList.remove('hidden');
-        document.getElementById('startButton').setAttribute('disabled', true);
-        document.getElementById('rollButton').removeAttribute('disabled');
-        document.getElementById('holdButton').removeAttribute('disabled');
-        gameInProgress = true;
-        playerHeld = false;
+   function startGame() {
+    if (gameInProgress) return; // Das Spiel läuft bereits.
+    
+    let bet = parseInt(document.getElementById('betNumber').value);
+    if (isNaN(bet) || playerJack < bet || bet < 10) {
+        alert('Invalid bet!');
+        return;
     }
 
-    function rollDice() {
-        if (!gameInProgress || playerHeld) return;
+    playerJack -= bet;
+    updateJackDisplay();
+    document.getElementById('playerArea').classList.remove('hidden');
+    document.getElementById('startButton').setAttribute('disabled', true);
+    document.getElementById('rollButton').removeAttribute('disabled');
+    document.getElementById('holdButton').removeAttribute('disabled');
+    gameInProgress = true;
+    playerHeld = false;
+    lastRoll = 0; // Zurücksetzen des letzten Wurfs
+}
 
-        let roll = Math.floor(Math.random() * 100) + 1;
 
-        if (playerScore === 0 && (roll >= 1 && roll <= 4)) {
+  function rollDice() {
+    if (!gameInProgress || playerHeld) return;
+
+    let roll = Math.floor(Math.random() * 100) + 1;
+    playerScore += roll;
+    lastRoll = roll; // Speichern des letzten Wurfs
+    document.getElementById('playerScore').innerText = playerScore.toString();
+
+    if (roll <= 4 || playerScore > 100) {
+        setTimeout(function() {
             endGame(false);
-        } else {
-            playerScore += roll;
-            document.getElementById('playerScore').innerText = playerScore.toString();
-
-            if (roll <= 4 || playerScore > 100) {
-                endGame(false);
-            }
-        }
+        }, 2000); // 2 Sekunden Verzögerung, um die Würfe des Hosts anzuzeigen
+        showResults(false); // Anzeige der Gesamtzahlen
     }
+}
 
     function hold() {
         if (!gameInProgress || playerHeld) return;
 
         document.getElementById('hostArea').classList.remove('hidden');
-        hostTurn();
+        hostRoll(); // Start des Hosts, um seine Würfe anzuzeigen
         playerHeld = true;
     }
 
-    function hostTurn() {
-        let hostWins = false;
-
-        while (hostScore <= playerScore && hostScore <= 100) {
+    function hostRoll() {
+        setTimeout(function() {
             let roll = Math.floor(Math.random() * 100) + 1;
             hostScore += roll;
-        }
+            lastRoll = roll; // Speichern des letzten Wurfs
+            document.getElementById('hostScore').innerText = hostScore.toString();
 
-        if (hostScore > 100) {
-            hostWins = false;
-        } else {
-            hostWins = true;
-        }
-
-        document.getElementById('hostScore').innerText = hostScore.toString();
-
-        endGame(hostWins);
+            if (hostScore > 100 || hostScore < playerScore) {
+                setTimeout(function() {
+                    endGame(true);
+                }, 2000); // 2 Sekunden Verzögerung, um die Würfe des Hosts anzuzeigen
+                showResults(true); // Anzeige der Gesamtzahlen
+            } else {
+                hostRoll(); // Fortsetzen der Würfe des Hosts
+            }
+        }, 1000); // 1 Sekunde Verzögerung zwischen den Würfen des Hosts
     }
 
     function endGame(playerWins) {
         gameInProgress = false;
         document.getElementById('reset').classList.remove('hidden');
         let bet = parseInt(document.getElementById('betNumber').value);
-
-        if (playerWins) {
-            playerJack += bet * 2;
-        }
-
+        if (playerWins) playerJack += bet * 2;
         updateJackDisplay();
-        alert(playerWins ? 'You win!' : 'You lose!');
+    }
+
+    function showResults(playerWins) {
+        let resultMessage = playerWins ? 'You win!' : 'You lose!';
+        let resultsDiv = document.getElementById('results');
+        resultsDiv.innerHTML = `
+            <p>${resultMessage}</p>
+            <p>Player Score: ${playerScore}</p>
+            <p>Host Score: ${hostScore}</p>
+        `;
+        resultsDiv.style.display = 'block';
     }
 
     function resetGame() {
@@ -189,6 +222,7 @@
         document.getElementById('reset').classList.add('hidden');
         document.getElementById('playerArea').classList.add('hidden');
         document.getElementById('hostArea').classList.add('hidden');
+        document.getElementById('results').style.display = 'none'; // Ergebnisse ausblenden
         document.getElementById('startButton').removeAttribute('disabled');
         document.getElementById('rollButton').setAttribute('disabled', true);
         document.getElementById('holdButton').setAttribute('disabled', true);
@@ -198,16 +232,16 @@
         document.getElementById('hostScore').innerText = '0';
     }
 
-    function updateJackDisplay() {
-        const jackAmountElement = document.getElementById('jackAmount');
-        jackAmountElement.textContent = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 0
-        }).format(playerJack);
+   function updateJackDisplay() {
+    const jackAmountElement = document.getElementById('jackAmount');
+    jackAmountElement.textContent = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0
+    }).format(playerJack);
 
-        updateBetLimits();
-    }
+    updateBetLimits();
+}
 
     function updateBetLimits() {
         let betSlider = document.getElementById('bet');
