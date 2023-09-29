@@ -179,27 +179,26 @@
     }
 
     function hostRoll() {
-        setTimeout(function() {
+    setTimeout(function() {
+        if (hostScore > 100 || hostScore < playerScore) {
+            setTimeout(function() {
+                endGame(true);
+            }, 2000); // 2 Sekunden Verzögerung, um die Würfe des Hosts anzuzeigen
+            showResults(true); // Anzeige der Gesamtzahlen
+        } else if (hostScore === playerScore) {
+            setTimeout(function() {
+                endGame(null);
+            }, 2000); // 2 Sekunden Verzögerung, um die Würfe des Hosts anzuzeigen
+            showResults(null); // Anzeige der Gesamtzahlen für ein Unentschieden
+        } else {
             let roll = Math.floor(Math.random() * 100) + 1;
             hostScore += roll;
             lastRoll = roll; // Speichern des letzten Wurfs
             document.getElementById('hostScore').innerText = hostScore.toString();
-
-            if (hostScore > 100 || hostScore < playerScore) {
-                setTimeout(function() {
-                    endGame(true);
-                }, 2000); // 2 Sekunden Verzögerung, um die Würfe des Hosts anzuzeigen
-                showResults(true); // Anzeige der Gesamtzahlen
-            } else if (hostScore === playerScore) {
-                setTimeout(function() {
-                    endGame(null);
-                }, 2000); // 2 Sekunden Verzögerung, um die Würfe des Hosts anzuzeigen
-                showResults(null); // Anzeige der Gesamtzahlen für ein Unentschieden
-            } else {
-                hostRoll(); // Fortsetzen der Würfe des Hosts
-            }
-        }, 1000); // 1 Sekunde Verzögerung zwischen den Würfen des Hosts
-    }
+            hostRoll(); // Fortsetzen der Würfe des Hosts
+        }
+    }, 1000); // 1 Sekunde Verzögerung zwischen den Würfen des Hosts
+}
 
     function endGame(playerWins) {
         gameInProgress = false;
