@@ -148,10 +148,11 @@
         document.getElementById('hostScore').innerText = '0';
     }
 
-    function updateJackDisplay() {
-        document.getElementById('jackAmount').innerText = playerJack.toLocaleString('en-US');
-        updateBetLimits();
-    }
+   function updateJackDisplay() {
+    document.getElementById('jackAmount').innerText = playerJack.toLocaleString('en-US', { minimumFractionDigits: 0 });
+    updateBetLimits();
+}
+
 
     function updateBetLimits() {
         let betSlider = document.getElementById('bet');
