@@ -75,22 +75,25 @@
         updateBetLimits();
     });
 
-    function startGame() {
-        let bet = parseInt(document.getElementById('betNumber').value);
-        if (isNaN(bet) || playerJack < bet || bet < 10) {
-            alert('Invalid bet!');
-            return;
-        }
-
-        playerJack -= bet;
-        updateJackDisplay();
-        document.getElementById('playerArea').classList.remove('hidden');
-        document.getElementById('startButton').setAttribute('disabled', true);
-        document.getElementById('rollButton').removeAttribute('disabled');
-        document.getElementById('holdButton').removeAttribute('disabled');
-        gameInProgress = true;
-        playerHeld = false;
+   function startGame() {
+    if (gameInProgress) return; // Das Spiel läuft bereits.
+    
+    let bet = parseInt(document.getElementById('betNumber').value);
+    if (isNaN(bet) || playerJack < bet || bet < 10) {
+        alert('Invalid bet!');
+        return;
     }
+
+    playerJack -= bet;
+    updateJackDisplay();
+    document.getElementById('playerArea').classList.remove('hidden');
+    document.getElementById('startButton').setAttribute('disabled', true);
+    document.getElementById('rollButton').removeAttribute('disabled');
+    document.getElementById('holdButton').removeAttribute('disabled');
+    gameInProgress = true;
+    playerHeld = false;
+}
+
 
   function rollDice() {
     if (!gameInProgress || playerHeld) return;
