@@ -92,7 +92,6 @@
     let hostScore = 0;
     let gameInProgress = false;
     let playerHeld = false;
-    let isFirstRoll = true;
 
     document.addEventListener('DOMContentLoaded', (event) => {
         let betSlider = document.getElementById('bet');
@@ -125,26 +124,18 @@
         document.getElementById('holdButton').removeAttribute('disabled');
         gameInProgress = true;
         playerHeld = false;
-        isFirstRoll = true;
     }
 
     function rollDice() {
         if (!gameInProgress || playerHeld) return;
 
         let roll = Math.floor(Math.random() * 100) + 1;
+        playerScore += roll;
+        document.getElementById('playerScore').innerText = playerScore.toString();
 
-        if (isFirstRoll && (roll >= 1 && roll <= 4)) {
+        if (roll <= 4 || playerScore > 100) {
             endGame(false);
-        } else {
-            playerScore += roll;
-            document.getElementById('playerScore').innerText = playerScore.toString();
-
-            if (roll <= 4 || playerScore > 100) {
-                endGame(false);
-            }
         }
-
-        isFirstRoll = false;
     }
 
     function hold() {
@@ -200,7 +191,6 @@
         hostScore = 0;
         document.getElementById('playerScore').innerText = '0';
         document.getElementById('hostScore').innerText = '0';
-        isFirstRoll = true;
     }
 
     function updateJackDisplay() {
