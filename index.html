@@ -76,7 +76,31 @@
             margin-top: 20px;
             color: #fff;         
         }
-        
+        @media (max-width: 1300px) {
+    .container {
+        width: 90%; /* Verwenden Sie 90% der Bildschirmbreite */
+        height: auto; /* Höhe automatisch setzen, um das Seitenverhältnis zu erhalten */
+    }
+    
+    .game {
+        width: 100%; /* Verwenden Sie 100% der Containerbreite */
+        height: auto; /* Höhe automatisch setzen */
+    }
+
+    #header, #jackCurrency, #gameList, #results {
+        width: 100%; /* Alle Elemente auf die volle Breite setzen, um besser auf kleinen Bildschirmen angezeigt zu werden */
+        text-align: center; /* Zentrieren des Textes für eine bessere Darstellung */
+    }
+    
+    #jackCurrency {
+        margin-right: 0; /* Entfernt den Abstand zum rechten Rand */
+    }
+
+    body {
+        justify-content: flex-start; /* Um zu verhindern, dass der Inhalt in der Mitte des Bildschirms angeordnet ist, wenn es zu viel davon gibt */
+        padding-top: 20px; /* Fügt einen kleinen Abstand oben hinzu, damit der Inhalt nicht zu nah am Rand ist */
+    }
+}
     </style>
 </head>
 <body>
