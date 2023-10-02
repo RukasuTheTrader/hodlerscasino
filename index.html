@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <title>Rukasu's Casino</title>
     <style>
         body {
             background-image: url('casino background.avif');
-            background-size: cover, cover;
+            background-size: cover;
             background-repeat: no-repeat;
             font-family: 'Arial', sans-serif;
             color: #fff;
             margin: 0;
             padding: 0;
-            height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* In der Mitte horizontal und vertikal ausrichten */
+            justify-content: center;
+            overflow: hidden;
         }
 
         #header {
@@ -34,14 +34,17 @@
             color: #75ff5e;
             font-size: 20px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            margin-right: 20px; /* Abstand zum rechten Rand */
+            margin-right: 20px;
         }
 
         .container {
-            width: 30%;
-            height: 30%;
-            margin: auto;
-            text-align: center; /* In der Mitte ausrichten */
+            width: 100%;
+            height: 50vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .game {
@@ -50,6 +53,12 @@
             padding: 20px;
             border-radius: 10px;
             margin-top: 20px;
+            width: 90%;
+            height: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
         }
 
         #gameList {
@@ -74,244 +83,52 @@
             padding: 10px;
             border-radius: 10px;
             margin-top: 20px;
-            color: #fff;         
+            color: #fff;
         }
+
         @media only screen and (max-width: 1300px) {
-    body {
-        overflow: hidden; /* verhindert Scrollen */
-    }
+            .container {
+                height: 50vh;
+            }
 
-    .container {
-        width: 90%;
-        height: 70%;
-    }
-
-    .game, #jackCurrency {
-        font-size: 1.2rem; /* Vergrößert Text */
-    }
-
-    #header h1, #header #jackCurrency {
-        font-size: 1.5rem; /* Vergrößert Überschrift und Währungstext */
-    }
-
-    /* Stellt sicher, dass alle relevanten Elemente auf kleinen Bildschirmen sichtbar sind */
-    #gameList, #gameArea, #results {
-        max-height: 70vh; /* vh steht für viewport height */
-        overflow-y: auto; /* Erlaubt Scrollen innerhalb des Elements, wenn der Inhalt zu groß ist */
-    }
-}
+            .game {
+                height: 90vh;
+            }
+        }
     </style>
 </head>
 <body>
-<div id="header">
-    <h1>Rukasu's Casino</h1>
-    <div id="jackCurrency">
-        <span id="jackAmount">1,000</span> Jack
-    </div>
-</div>
-
-<div class="container">
-    <div id="gameList">
-        <ul>
-            <li onclick="loadGame('diceJack')">DiceJack</li>
-            <!-- Hier können Sie weitere Spiele hinzufügen, wenn sie verfügbar sind -->
-        </ul>
-    </div>
-    <div id="gameArea">
-        <div id="diceJack" class="game">
-            <label for="bet">Bet:</label>
-            <input type="range" id="bet" min="10" max="1000" value="10" step="5">
-            <input type="number" id="betNumber" value="10" min="10">
-            <button id="startButton" onclick="startGame()">Start</button>
-            <div id="playerArea" class="hidden">
-                <button id="rollButton" onclick="rollDice()" disabled>Roll</button>
-                <button id="holdButton" onclick="hold()" disabled>Hold</button>
-                <p id="playerScore">0</p>
-            </div>
-            <div id="hostArea" class="hidden">
-                <p id="hostScore">0</p>
-            </div>
-            <button id="reset" class="hidden" onclick="resetGame()">Reset</button>
+    <div id="header">
+        <h1>Rukasu's Casino</h1>
+        <div id="jackCurrency">
+            <span id="jackAmount">1,000</span> Jack
         </div>
     </div>
-</div>
-<div id="results"></div>
-<script>
-document.addEventListener('DOMContentLoaded', (event) => {
-    let betSlider = document.getElementById('bet');
-    let betNumber = document.getElementById('betNumber');
-    
-    betSlider.addEventListener('input', function (e) {
-        betNumber.value = e.target.value;
-    });
 
-    document.getElementById('startButton').addEventListener('click', startGame);
-    document.getElementById('reset').addEventListener('click', resetGame);
-    document.getElementById('reset').setAttribute('disabled', true);
-    updateBetLimits();
-});
-
-let playerJack = 1000;
-let playerScore = 0;
-let hostScore = 0;
-let gameInProgress = false;
-let playerHeld = false;
-let isFirstRoll = true;
-
-function startGame() {
-    if (gameInProgress) return;
-
-    let bet = parseInt(document.getElementById('betNumber').value);
-    if (isNaN(bet) || playerJack < bet || bet < 10) {
-        alert('Invalid bet!');
-        return;
-    }
-
-    playerJack -= bet;
-    updateJackDisplay();
-
-    // Einsatz-Slider und Einsatz-Feld deaktivieren
-    document.getElementById('bet').setAttribute('disabled', true);
-    document.getElementById('betNumber').setAttribute('disabled', true);
-
-    document.getElementById('playerArea').classList.remove('hidden');
-    document.getElementById('startButton').setAttribute('disabled', true);
-    document.getElementById('rollButton').removeAttribute('disabled');
-    document.getElementById('holdButton').removeAttribute('disabled');
-    gameInProgress = true;
-    playerHeld = false;
-    isFirstRoll = true;
-}
-
-function rollDice() {
-    if (!gameInProgress || playerHeld) return;
-    
-    let roll = Math.floor(Math.random() * 100) + 1; // Dies garantiert, dass roll zwischen 1 und 100 ist.
-    
-    if (isFirstRoll && roll <= 4) {
-        endGame(false);
-        showResults(false);
-        return;
-    }
-
-    isFirstRoll = false;
-    playerScore += roll;
-    document.getElementById('playerScore').innerText = playerScore.toString();
-    
-    if (playerScore > 100) {
-        endGame(false);
-        showResults(false);
-    }
-}
-
-function hold() {
-    if (!gameInProgress || playerHeld) return;
-    document.getElementById('hostArea').classList.remove('hidden');
-    playerHeld = true;
-    hostTurn();
-}
-
-function hostTurn() {
-    if (!gameInProgress || (hostScore > playerScore && hostScore <= 100)) return;
-    
-    let roll = Math.floor(Math.random() * 100) + 1; // Dies garantiert, dass roll zwischen 1 und 100 ist.
-    
-    if (isFirstRoll && roll <= 4) {
-        endGame(true);
-        showResults(true);
-        return;
-    }
-    
-    isFirstRoll = false;
-    hostScore += roll;
-    document.getElementById('hostScore').innerText = hostScore.toString();
-    
-    if (hostScore > 100) {
-        endGame(true);
-        showResults(true);
-    } else if (hostScore > playerScore) {
-        endGame(false);
-        showResults(false);
-    } else {
-        setTimeout(hostTurn, 1000);
-    }
-}
-
-function endGame(playerWins) {
-    gameInProgress = false;
-    document.getElementById('reset').classList.remove('hidden');
-    document.getElementById('reset').removeAttribute('disabled');
-
-    let bet = parseInt(document.getElementById('betNumber').value);
-    if (playerWins) playerJack += bet * 2; // Gewinn des Spielers ist das Zweifache des Einsatzes
-    updateJackDisplay();
-    showResults(playerWins);
-}
-
-function showResults(playerWins) {
-    let resultMessage = playerWins ? 'You win!' : 'You lose!';
-    let resultsDiv = document.getElementById('results');
-    resultsDiv.innerHTML = `<p>${resultMessage}</p><p>Player Score: ${playerScore}</p><p>Host Score: ${hostScore}</p>`;
-    resultsDiv.style.display = 'block';
-}
-
-function resetGame() {
-    gameInProgress = false;
-    playerHeld = false;
-    isFirstRoll = true;
-
-    // Einsatz-Slider und Einsatz-Feld aktivieren
-    document.getElementById('bet').removeAttribute('disabled');
-    document.getElementById('betNumber').removeAttribute('disabled');
-
-    document.getElementById('reset').classList.add('hidden');
-    document.getElementById('playerArea').classList.add('hidden');
-    document.getElementById('hostArea').classList.add('hidden');
-    document.getElementById('results').style.display = 'none';
-    document.getElementById('startButton').removeAttribute('disabled');
-    document.getElementById('reset').setAttribute('disabled', true);
-    document.getElementById('rollButton').setAttribute('disabled', true);
-    document.getElementById('holdButton').setAttribute('disabled', true);
-
-    playerScore = 0;
-    hostScore = 0;
-    document.getElementById('playerScore').innerText = '0';
-    document.getElementById('hostScore').innerText = '0';
-}
-
-function updateJackDisplay() {
-    const jackAmountElement = document.getElementById('jackAmount');
-    jackAmountElement.textContent = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 0
-    }).format(playerJack);
-
-    updateBetLimits();
-}
-
-function updateBetLimits() {
-    let betSlider = document.getElementById('bet');
-    let betNumber = document.getElementById('betNumber');
-
-    betSlider.max = playerJack;
-    betNumber.max = playerJack;
-
-    if (playerJack < 10) {
-        betSlider.disabled = true;
-        betNumber.disabled = true;
-    } else {
-        betSlider.disabled = false;
-        betNumber.disabled = false;
-        if (betSlider.value < 10) {
-            betSlider.value = 10;
-            betNumber.value = 10;
-        } else if (betSlider.value > playerJack) {
-            betSlider.value = playerJack;
-            betNumber.value = playerJack;
-        }
-    }
-}
-</script>
+    <div class="container">
+        <div id="gameList">
+            <ul>
+                <li onclick="loadGame('diceJack')">DiceJack</li>
+            </ul>
+        </div>
+        <div id="gameArea" class="game">
+            <div id="diceJack" class="game">
+                <label for="bet">Bet:</label>
+                <input type="range" id="bet" min="10" max="1000" value="10" step="5">
+                <input type="number" id="betNumber" value="10" min="10">
+                <button id="startButton" onclick="startGame()">Start</button>
+                <div id="playerArea" class="hidden">
+                    <button id="rollButton" onclick="rollDice()" disabled>Roll</button>
+                    <button id="holdButton" onclick="hold()" disabled>Hold</button>
+                    <p id="playerScore">0</p>
+                </div>
+                <div id="hostArea" class="hidden">
+                    <p id="hostScore">0</p>
+                </div>
+                <button id="reset" class="hidden" onclick="resetGame()">Reset</button>
+            </div>
+        </div>
+    </div>
+    <div id="results"></div>
 </body>
 </html>
