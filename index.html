@@ -1,341 +1,113 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Rukasu's Casino</title>
+    <title>Spiel</title>
     <style>
-        body {
-            background-image: url('casino background.avif');
-            background-size: cover, cover;
-            background-repeat: no-repeat;
-            font-family: 'Arial', sans-serif;
-            color: #fff;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center; /* In der Mitte horizontal und vertikal ausrichten */
-        }
-
-        #header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 80%;
-            padding: 10px 0;
-        }
-
-        #jackCurrency {
-            background-color: rgba(51, 51, 51, 0.7);
-            padding: 10px 20px;
-            border-radius: 10px;
-            color: #75ff5e;
-            font-size: 20px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            margin-right: 20px; /* Abstand zum rechten Rand */
-        }
-
-        .container {
-            width: 30%;
-            height: 30%;
-            margin: auto;
-            text-align: center; /* In der Mitte ausrichten */
-        }
-
-        .game {
-            background-image: url('poker_table_background.avif');
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-
-        #gameList {
-            margin-top: 20px;
-        }
-
-        #gameList ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        #gameList ul li {
-            background-color: #333;
-            padding: 10px;
-            margin-bottom: 5px;
-            cursor: pointer;
-        }
-
-        #results {
+        #gameArea, #playerArea, #hostArea, #results {
             display: none;
-            background-color: rgba(51, 51, 51, 0.7);
-            padding: 10px;
-            border-radius: 10px;
-            margin-top: 20px;
-            color: #fff;         
         }
-        @media (max-width: 1300px) {
-    body {
-        font-size: 18px; /* Textgröße erhöhen für bessere Lesbarkeit */
-    }
-
-    #header, .container {
-        width: 95%; /* Containerbreite erhöhen für kleinere Bildschirme */
-    }
-    
-    .container {
-        height: auto; /* Höhe auf auto setzen, um Inhalte besser anzuzeigen */
-    }
-
-    .game {
-        padding: 20px; /* Mehr Polsterung um Spielbereich */
-        margin-top: 20px; /* Mehr oberen Rand für Spielbereich */
-    }
-
-    #gameList ul li {
-        padding: 15px; /* Mehr Polsterung für Listenelemente für bessere Klickbarkeit */
-        font-size: 20px; /* Schriftgröße erhöhen für bessere Lesbarkeit */
-    }
-
-    input[type="range"],
-    input[type="number"] {
-        width: 80%; /* Breite der Inputfelder erhöhen */
-    }
-
-    button {
-        padding: 10px 20px; /* Mehr Polsterung für Buttons */
-        font-size: 18px; /* Schriftgröße erhöhen für Buttons */
-    }
-}
-
-/* Spezifische Stile für Geräte im Hochformat */
-@media (max-width: 1300px) and (orientation: portrait) {
-    .container {
-        width: 100%; /* Containerbreite erhöhen für Hochformat */
-    }
-
-    .game {
-        margin-top: 40px; /* Mehr oberen Rand für Spielbereich im Hochformat */
-    }
-
-    #gameList {
-        margin-top: 30px; /* Mehr oberen Rand für Spielbereich im Hochformat */
-    }
-}
+        #playerArea, #hostArea {
+            margin-top: 20px;
+        }
+        #results {
+            margin-top: 40px;
+            font-size: 20px;
+            color: red;
+        }
     </style>
 </head>
 <body>
-<div id="header">
-    <h1>Rukasu's Casino</h1>
-    <div id="jackCurrency">
-        <span id="jackAmount">1,000</span> Jack
+    <div>
+        <label for="gameSelector">Spiel auswählen:</label>
+        <select id="gameSelector">
+            <option value="1">Spiel 1</option>
+        </select>
     </div>
-</div>
-
-<div class="container">
-    <div id="gameList">
-        <ul>
-            <li onclick="loadGame('diceJack')">DiceJack</li>
-            <!-- Hier können Sie weitere Spiele hinzufügen, wenn sie verfügbar sind -->
-        </ul>
-    </div>
+    <button onclick="loadGame(document.getElementById('gameSelector').value)">Spiel laden</button>
     <div id="gameArea">
-        <div id="diceJack" class="game">
-            <label for="bet">Bet:</label>
-            <input type="range" id="bet" min="10" max="1000" value="10" step="5">
-            <input type="number" id="betNumber" value="10" min="10">
-            <button id="startButton" onclick="startGame()">Start</button>
-            <div id="playerArea" class="hidden">
-                <button id="rollButton" onclick="rollDice()" disabled>Roll</button>
-                <button id="holdButton" onclick="hold()" disabled>Hold</button>
-                <p id="playerScore">0</p>
-            </div>
-            <div id="hostArea" class="hidden">
-                <p id="hostScore">0</p>
-            </div>
-            <button id="reset" class="hidden" onclick="resetGame()">Reset</button>
-        </div>
+        <label for="bet">Einsatz:</label>
+        <input type="number" id="bet" min="1" max="100" value="1">
+        <span id="betAmount">1 Jack</span>
+        <button onclick="startGame()">Spiel starten</button>
     </div>
-</div>
-<div id="results"></div>
-<script>
-document.addEventListener('DOMContentLoaded', (event) => {
-    let betSlider = document.getElementById('bet');
-    let betNumber = document.getElementById('betNumber');
-    
-    betSlider.addEventListener('input', function (e) {
-        betNumber.value = e.target.value;
-    });
+    <div id="playerArea">
+        <button id="rollButton" onclick="rollDice()" disabled>Würfeln</button>
+        <button id="holdButton" onclick="hold()" disabled>Halten</button>
+        <div>Spieler Punkte: <span id="playerScore">0</span></div>
+    </div>
+    <div id="hostArea">
+        <div>Gastgeber Punkte: <span id="hostScore">0</span></div>
+    </div>
+    <div id="results"></div>
+    <div id="jackAmount"></div>
+    <script>
+        let jackAmount = 1000;
+        let playerScore = 0;
+        let hostScore = 0;
+        let gameActive = false;
 
-    document.getElementById('startButton').addEventListener('click', startGame);
-    document.getElementById('reset').addEventListener('click', resetGame);
-    document.getElementById('reset').setAttribute('disabled', true);
-    updateBetLimits();
-});
+        document.getElementById('bet').addEventListener('input', function (e) {
+            document.getElementById('betAmount').textContent = e.target.value + ' Jack';
+        });
 
-let playerJack = 1000;
-let playerScore = 0;
-let hostScore = 0;
-let gameInProgress = false;
-let playerHeld = false;
-let isFirstRoll = true;
-
-function startGame() {
-    if (gameInProgress) return;
-
-    let bet = parseInt(document.getElementById('betNumber').value);
-    if (isNaN(bet) || playerJack < bet || bet < 10) {
-        alert('Invalid bet!');
-        return;
-    }
-
-    playerJack -= bet;
-    updateJackDisplay();
-
-    // Einsatz-Slider und Einsatz-Feld deaktivieren
-    document.getElementById('bet').setAttribute('disabled', true);
-    document.getElementById('betNumber').setAttribute('disabled', true);
-
-    document.getElementById('playerArea').classList.remove('hidden');
-    document.getElementById('startButton').setAttribute('disabled', true);
-    document.getElementById('rollButton').removeAttribute('disabled');
-    document.getElementById('holdButton').removeAttribute('disabled');
-    gameInProgress = true;
-    playerHeld = false;
-    isFirstRoll = true;
-}
-
-function rollDice() {
-    if (!gameInProgress || playerHeld) return;
-    
-    let roll = Math.floor(Math.random() * 100) + 1; // Dies garantiert, dass roll zwischen 1 und 100 ist.
-    
-    if (isFirstRoll && roll <= 4) {
-        endGame(false);
-        showResults(false);
-        return;
-    }
-
-    isFirstRoll = false;
-    playerScore += roll;
-    document.getElementById('playerScore').innerText = playerScore.toString();
-    
-    if (playerScore > 100) {
-        endGame(false);
-        showResults(false);
-    }
-}
-
-function hold() {
-    if (!gameInProgress || playerHeld) return;
-    document.getElementById('hostArea').classList.remove('hidden');
-    playerHeld = true;
-    hostTurn();
-}
-
-function hostTurn() {
-    if (!gameInProgress || (hostScore > playerScore && hostScore <= 100)) return;
-    
-    let roll = Math.floor(Math.random() * 100) + 1; // Dies garantiert, dass roll zwischen 1 und 100 ist.
-    
-    if (isFirstRoll && roll <= 4) {
-        endGame(true);
-        showResults(true);
-        return;
-    }
-    
-    isFirstRoll = false;
-    hostScore += roll;
-    document.getElementById('hostScore').innerText = hostScore.toString();
-    
-    if (hostScore > 100) {
-        endGame(true);
-        showResults(true);
-    } else if (hostScore > playerScore) {
-        endGame(false);
-        showResults(false);
-    } else {
-        setTimeout(hostTurn, 1000);
-    }
-}
-
-function endGame(playerWins) {
-    gameInProgress = false;
-    document.getElementById('reset').classList.remove('hidden');
-    document.getElementById('reset').removeAttribute('disabled');
-
-    let bet = parseInt(document.getElementById('betNumber').value);
-    if (playerWins) playerJack += bet * 2; // Gewinn des Spielers ist das Zweifache des Einsatzes
-    updateJackDisplay();
-    showResults(playerWins);
-}
-
-function showResults(playerWins) {
-    let resultMessage = playerWins ? 'You win!' : 'You lose!';
-    let resultsDiv = document.getElementById('results');
-    resultsDiv.innerHTML = `<p>${resultMessage}</p><p>Player Score: ${playerScore}</p><p>Host Score: ${hostScore}</p>`;
-    resultsDiv.style.display = 'block';
-}
-
-function resetGame() {
-    gameInProgress = false;
-    playerHeld = false;
-    isFirstRoll = true;
-
-    // Einsatz-Slider und Einsatz-Feld aktivieren
-    document.getElementById('bet').removeAttribute('disabled');
-    document.getElementById('betNumber').removeAttribute('disabled');
-
-    document.getElementById('reset').classList.add('hidden');
-    document.getElementById('playerArea').classList.add('hidden');
-    document.getElementById('hostArea').classList.add('hidden');
-    document.getElementById('results').style.display = 'none';
-    document.getElementById('startButton').removeAttribute('disabled');
-    document.getElementById('reset').setAttribute('disabled', true);
-    document.getElementById('rollButton').setAttribute('disabled', true);
-    document.getElementById('holdButton').setAttribute('disabled', true);
-
-    playerScore = 0;
-    hostScore = 0;
-    document.getElementById('playerScore').innerText = '0';
-    document.getElementById('hostScore').innerText = '0';
-}
-
-function updateJackDisplay() {
-    const jackAmountElement = document.getElementById('jackAmount');
-    jackAmountElement.textContent = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 0
-    }).format(playerJack);
-
-    updateBetLimits();
-}
-
-function updateBetLimits() {
-    let betSlider = document.getElementById('bet');
-    let betNumber = document.getElementById('betNumber');
-
-    betSlider.max = playerJack;
-    betNumber.max = playerJack;
-
-    if (playerJack < 10) {
-        betSlider.disabled = true;
-        betNumber.disabled = true;
-    } else {
-        betSlider.disabled = false;
-        betNumber.disabled = false;
-        if (betSlider.value < 10) {
-            betSlider.value = 10;
-            betNumber.value = 10;
-        } else if (betSlider.value > playerJack) {
-            betSlider.value = playerJack;
-            betNumber.value = playerJack;
+        function loadGame(gameId) {
+            document.getElementById('gameArea').removeAttribute('hidden');
+            gameActive = true;
+            resetGame();
         }
-    }
-}
-</script>
+
+        function startGame() {
+            if(gameActive) {
+                document.getElementById('playerArea').removeAttribute('hidden');
+                document.getElementById('rollButton').removeAttribute('disabled');
+                document.getElementById('holdButton').removeAttribute('disabled');
+                resetGame();
+            }
+        }
+
+        function rollDice() {
+            if(gameActive) {
+                const roll = Math.floor(Math.random() * 6) + 1;
+                playerScore += roll;
+                document.getElementById('playerScore').textContent = playerScore;
+                if (playerScore >= 21) endGame();
+            }
+        }
+
+        function hold() {
+            if(gameActive) {
+                document.getElementById('hostArea').removeAttribute('hidden');
+                while(hostScore < playerScore && hostScore < 21) {
+                    const roll = Math.floor(Math.random() * 6) + 1;
+                    hostScore += roll;
+                    document.getElementById('hostScore').textContent = hostScore;
+                }
+                endGame();
+            }
+        }
+
+        function endGame() {
+            gameActive = false;
+            let bet = parseInt(document.getElementById('bet').value);
+            let results = document.getElementById('results');
+            if (playerScore > 21 || (hostScore <= 21 && hostScore >= playerScore)) {
+                jackAmount -= bet;
+                results.textContent = 'You lose!';
+            } else {
+                jackAmount += bet;
+                results.textContent = 'You win!';
+            }
+            document.getElementById('jackAmount').textContent = jackAmount;
+            results.removeAttribute('hidden');
+        }
+
+        function resetGame() {
+            playerScore = 0;
+            hostScore = 0;
+            document.getElementById('playerScore').textContent = '0';
+            document.getElementById('hostScore').textContent = '0';
+        }
+    </script>
 </body>
 </html>
