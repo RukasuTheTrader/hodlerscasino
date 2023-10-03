@@ -332,6 +332,10 @@ function updateBetLimits() {
 function updateMagnitudeBetValue(value) {
     let slider = document.getElementById("magnitudeBetSlider");
     let input = document.getElementById("magnitudeBetInput");
+
+    if (value < 10) {
+        value = 10;
+    }
     
     input.value = value;
     slider.value = value;
@@ -341,12 +345,14 @@ function updateMagnitudeSliderValue(value) {
     let slider = document.getElementById("magnitudeBetSlider");
     let input = document.getElementById("magnitudeBetInput");
     
-    if(value > playerJack) {
+    if (value < 10) {
+        value = 10;
+    } else if(value > playerJack) {
         value = playerJack;
     }
     
     input.value = value;
-    slider.max = playerJack;  // playerJacks wurde durch playerJack ersetzt
+    slider.max = playerJack;
     slider.value = value;
 }
 
@@ -406,7 +412,7 @@ function resetMagnitude() {
 // Diese Funktion soll beim Start des Spiels aufgerufen werden, 
 // um den Slider korrekt zu initialisieren.
 function initMagnitude() {
-    updateMagnitudeSliderValue(10);
+    updateMagnitudeSliderValue(10); // Dies stellt sicher, dass der Anfangswert 10 ist
 }
 
 initMagnitude();
