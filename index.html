@@ -90,6 +90,7 @@
     <div id="gameList">
         <ul>
             <li onclick="loadGame('diceJack')">DiceJack</li>
+            <li onclick="loadGame('magnitude')">Magnitude</li>
             <!-- Hier können Sie weitere Spiele hinzufügen, wenn sie verfügbar sind -->
         </ul>
     </div>
@@ -108,6 +109,19 @@
                 <p id="hostScore">0</p>
             </div>
             <button id="reset" class="hidden" onclick="resetGame()">Reset</button>
+        </div>
+        <div id="magnitude" class="game">
+            <label for="magnitudeBet">Bet:</label>
+            <input type="range" id="magnitudeBet" min="10" max="1000" value="10" step="5">
+            <input type="number" id="magnitudeBetNumber" value="10" min="10">
+            <button id="magnitudeRollButton" onclick="magnitudeRoll()">Roll</button>
+            <div id="magnitudePlayerArea" class="hidden">
+                <p id="magnitudePlayerScore">0</p>
+            </div>
+            <div id="magnitudeHostArea" class="hidden">
+                <p id="magnitudeHostScore">0</p>
+            </div>
+            <button id="magnitudeReset" class="hidden" onclick="magnitudeResetGame()">Reset</button>
         </div>
     </div>
 </div>
@@ -287,6 +301,80 @@ function updateBetLimits() {
             betNumber.value = playerJack;
         }
     }
+}
+    let magnitudePlayerScore = 0;
+let magnitudeHostScore = 0;
+let magnitudeGameInProgress = false;
+
+function magnitudeRoll() {
+    if (magnitudeGameInProgress) return;
+
+    let bet = parseInt(document.getElementById('magnitudeBetNumber').value);
+    if (isNaN(bet) || playerJack < bet || bet < 10) {
+        alert('Invalid bet!');
+        return;
+    }
+
+    playerJack -= bet;
+    updateJackDisplay();
+
+    // Einsatz-Slider und Einsatz-Feld deaktivieren
+    document.getElementById('magnitudeBet').setAttribute('disabled', true);
+    document.getElementById('magnitudeBetNumber').setAttribute('disabled', true);
+    document.getElementById('magnitudeRollButton').setAttribute('disabled', true);
+    magnitudeGameInProgress = true;
+
+    magnitudePlayerScore = quersumme(Math.floor(Math.random() * 100) + 1);
+    document.getElementById('magnitudePlayerScore').innerText = magnitudePlayerScore.toString();
+
+    setTimeout(() => {
+        magnitudeHostScore = quersumme(Math.floor(Math.random() * 100) + 1);
+        document.getElementById('magnitudeHostScore').innerText = magnitudeHostScore.toString();
+
+        if (magnitudeHostScore === 1 || (magnitudeHostScore > magnitudePlayerScore && magnitudeHostScore !== 1)) {
+            endMagnitudeGame(false);
+        } else if (magnitudeHostScore === magnitudePlayerScore) {
+            playerJack += bet; // Einsatz zurück
+            endMagnitudeGame();
+        } else {
+            playerJack += bet * 2;
+            endMagnitudeGame(true);
+        }
+
+        updateJackDisplay();
+    }, 1000);
+}
+
+function quersumme(num) {
+    return num.toString().split('').reduce((acc, curr) => acc + parseInt(curr), 0);
+}
+
+function endMagnitudeGame(playerWins) {
+    magnitudeGameInProgress = false;
+    document.getElementById('magnitudeReset').classList.remove('hidden');
+    document.getElementById('magnitudeRollButton').setAttribute('disabled', false);
+    
+    let resultMessage = playerWins ? 'You win!' : 'You lose!';
+    if (playerWins === undefined) resultMessage = 'It\'s a tie!';
+    let resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = `<p>${resultMessage}</p><p>Player Score: ${magnitudePlayerScore}</p><p>Host Score: ${magnitudeHostScore}</p>`;
+    resultsDiv.style.display = 'block';
+}
+
+function magnitudeResetGame() {
+    magnitudeGameInProgress = false;
+
+    // Einsatz-Slider und Einsatz-Feld aktivieren
+    document.getElementById('magnitudeBet').removeAttribute('disabled');
+    document.getElementById('magnitudeBetNumber').removeAttribute('disabled');
+    document.getElementById('magnitudeRollButton').removeAttribute('disabled');
+    document.getElementById('magnitudeReset').classList.add('hidden');
+    document.getElementById('results').style.display = 'none';
+    
+    magnitudePlayerScore = 0;
+    magnitudeHostScore = 0;
+    document.getElementById('magnitudePlayerScore').innerText = '0';
+    document.getElementById('magnitudeHostScore').innerText = '0';
 }
 </script>
 </body>
