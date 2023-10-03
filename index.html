@@ -327,9 +327,8 @@ function updateBetLimits() {
         }
     }
 }
-let playerJacks = 100;  // Beispielwert für den Anfang. 
-                        // Dieser Wert sollte variabel sein je nach Spielerstand.
-
+    
+//magnitude:
 function updateMagnitudeBetValue(value) {
     let slider = document.getElementById("magnitudeBetSlider");
     let input = document.getElementById("magnitudeBetInput");
@@ -342,12 +341,12 @@ function updateMagnitudeSliderValue(value) {
     let slider = document.getElementById("magnitudeBetSlider");
     let input = document.getElementById("magnitudeBetInput");
     
-    if(value > playerJacks) {
-        value = playerJacks;
+    if(value > playerJack) {
+        value = playerJack;
     }
     
     input.value = value;
-    slider.max = playerJacks;
+    slider.max = playerJack;  // playerJacks wurde durch playerJack ersetzt
     slider.value = value;
 }
 
@@ -358,7 +357,7 @@ function rollMagnitude() {
     document.getElementById("magnitudeRollBtn").disabled = true;
     
     let bet = parseInt(document.getElementById("magnitudeBetInput").value);
-    playerJacks -= bet;
+    playerJack -= bet;  // playerJacks wurde durch playerJack ersetzt
 
     let playerNumber = Math.floor(Math.random() * 100) + 1;
     let hostNumber = Math.floor(Math.random() * 100) + 1;
@@ -378,12 +377,12 @@ function determineWinner(player, host, bet) {
     if (hostSum == 1) {
         document.getElementById("magnitudeResult").innerText = "Du hast verloren!";
     } else if (playerSum > hostSum) {
-        playerJacks += bet * 2;
+        playerJack += bet * 2;  // playerJacks wurde durch playerJack ersetzt
         document.getElementById("magnitudeResult").innerText = "Du hast gewonnen!";
     } else if (playerSum < hostSum) {
         document.getElementById("magnitudeResult").innerText = "Du hast verloren!";
     } else {
-        playerJacks += bet;
+        playerJack += bet;  // playerJacks wurde durch playerJack ersetzt
         document.getElementById("magnitudeResult").innerText = "Unentschieden!";
     }
 }
