@@ -85,6 +85,9 @@
             margin-top: 20px;
             color: #fff;         
         }
+        #diceJack, #magnitude {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -96,12 +99,9 @@
 </div>
 
 <div class="container">
-    <div id="gameList">
-        <ul>
-            <li onclick="loadGame('diceJack')">DiceJack</li>
-            <li onclick="loadGame('magnitude')">Magnitude</li>
-            <!-- Hier können Sie weitere Spiele hinzufügen, wenn sie verfügbar sind -->
-        </ul>
+    <div class="game-bar" id="gameList">
+        <button onclick="showGame('diceJack')">DiceJack</button>
+        <button onclick="showGame('magnitude')">Magnitude</button>
     </div>
     <div id="gameArea">
         <div id="diceJack" class="game">
@@ -119,23 +119,32 @@
             </div>
             <button id="reset" class="hidden" onclick="resetGame()">Reset</button>
         </div>
-        <div id="magnitude" class="game">
-            <label for="magnitudeBet">Bet:</label>
-            <input type="range" id="magnitudeBet" min="10" max="1000" value="10" step="5">
-            <input type="number" id="magnitudeBetNumber" value="10" min="10">
-            <button id="magnitudeRollButton" onclick="magnitudeRoll()">Roll</button>
-            <div id="magnitudePlayerArea" class="hidden">
-                <p id="magnitudePlayerScore">0</p>
-            </div>
-            <div id="magnitudeHostArea" class="hidden">
-                <p id="magnitudeHostScore">0</p>
-            </div>
-            <button id="magnitudeReset" class="hidden" onclick="magnitudeResetGame()">Reset</button>
+        <div id="magnitude" style="display:none;">
+            <h2>Magnitude</h2>
+            <label for="magnitudeBet">Setze deinen Einsatz:</label>
+            <input type="range" min="10" max="100" value="10" id="magnitudeBetSlider" oninput="updateMagnitudeBetValue(this.value);">
+            <input type="number" id="magnitudeBetInput" value="10" oninput="updateMagnitudeSliderValue(this.value);">
+            <button id="magnitudeRollBtn" onclick="rollMagnitude()">Roll</button>  
+            <h3>Deine Zahl: <span id="playerRoll"></span></h3>
+            <h3>Host Zahl: <span id="hostRoll"></span></h3>
+            <h4>Ergebnis: <span id="magnitudeResult"></span></h4>
+            <button id="magnitudeResetBtn" onclick="resetMagnitude()" disabled>Reset</button>
         </div>
     </div>
 </div>
 <div id="results"></div>
 <script>
+function showGame(gameId) {
+    // Verberge alle Spiele
+    let games = document.querySelectorAll('#diceJack, #magnitude');
+    games.forEach(game => {
+        game.style.display = 'none';
+    });
+
+    // Zeige das ausgewählte Spiel
+    document.getElementById(gameId).style.display = 'block';
+}
+
 function loadGame(gameId) {
     let games = ["diceJack", "magnitude"];
     games.forEach(game => {
@@ -318,80 +327,90 @@ function updateBetLimits() {
         }
     }
 }
-    let magnitudePlayerScore = 0;
-let magnitudeHostScore = 0;
-let magnitudeGameInProgress = false;
+let playerJacks = 100;  // Beispielwert für den Anfang. 
+                        // Dieser Wert sollte variabel sein je nach Spielerstand.
 
-function magnitudeRoll() {
-    if (magnitudeGameInProgress) return;
+function updateMagnitudeBetValue(value) {
+    let slider = document.getElementById("magnitudeBetSlider");
+    let input = document.getElementById("magnitudeBetInput");
+    
+    input.value = value;
+    slider.value = value;
+}
 
-    let bet = parseInt(document.getElementById('magnitudeBetNumber').value);
-    if (isNaN(bet) || playerJack < bet || bet < 10) {
-        alert('Invalid bet!');
-        return;
+function updateMagnitudeSliderValue(value) {
+    let slider = document.getElementById("magnitudeBetSlider");
+    let input = document.getElementById("magnitudeBetInput");
+    
+    if(value > playerJacks) {
+        value = playerJacks;
     }
+    
+    input.value = value;
+    slider.max = playerJacks;
+    slider.value = value;
+}
 
-    playerJack -= bet;
-    updateJackDisplay();
+function rollMagnitude() {
+    // Setze den Slider und das Inputfeld auf unveränderlich
+    document.getElementById("magnitudeBetSlider").disabled = true;
+    document.getElementById("magnitudeBetInput").disabled = true;
+    document.getElementById("magnitudeRollBtn").disabled = true;
+    
+    let bet = parseInt(document.getElementById("magnitudeBetInput").value);
+    playerJacks -= bet;
 
-    // Einsatz-Slider und Einsatz-Feld deaktivieren
-    document.getElementById('magnitudeBet').setAttribute('disabled', true);
-    document.getElementById('magnitudeBetNumber').setAttribute('disabled', true);
-    document.getElementById('magnitudeRollButton').setAttribute('disabled', true);
-    magnitudeGameInProgress = true;
+    let playerNumber = Math.floor(Math.random() * 100) + 1;
+    let hostNumber = Math.floor(Math.random() * 100) + 1;
 
-    magnitudePlayerScore = quersumme(Math.floor(Math.random() * 100) + 1);
-    document.getElementById('magnitudePlayerScore').innerText = magnitudePlayerScore.toString();
-
+    document.getElementById("playerRoll").innerText = playerNumber;
     setTimeout(() => {
-        magnitudeHostScore = quersumme(Math.floor(Math.random() * 100) + 1);
-        document.getElementById('magnitudeHostScore').innerText = magnitudeHostScore.toString();
-
-        if (magnitudeHostScore === 1 || (magnitudeHostScore > magnitudePlayerScore && magnitudeHostScore !== 1)) {
-            endMagnitudeGame(false);
-        } else if (magnitudeHostScore === magnitudePlayerScore) {
-            playerJack += bet; // Einsatz zurück
-            endMagnitudeGame();
-        } else {
-            playerJack += bet * 2;
-            endMagnitudeGame(true);
-        }
-
-        updateJackDisplay();
+        document.getElementById("hostRoll").innerText = hostNumber;
+        determineWinner(playerNumber, hostNumber, bet);
+        document.getElementById("magnitudeResetBtn").disabled = false;
     }, 1000);
+}
+
+function determineWinner(player, host, bet) {
+    let playerSum = quersumme(player);
+    let hostSum = quersumme(host);
+
+    if (hostSum == 1) {
+        document.getElementById("magnitudeResult").innerText = "Du hast verloren!";
+    } else if (playerSum > hostSum) {
+        playerJacks += bet * 2;
+        document.getElementById("magnitudeResult").innerText = "Du hast gewonnen!";
+    } else if (playerSum < hostSum) {
+        document.getElementById("magnitudeResult").innerText = "Du hast verloren!";
+    } else {
+        playerJacks += bet;
+        document.getElementById("magnitudeResult").innerText = "Unentschieden!";
+    }
 }
 
 function quersumme(num) {
     return num.toString().split('').reduce((acc, curr) => acc + parseInt(curr), 0);
 }
 
-function endMagnitudeGame(playerWins) {
-    magnitudeGameInProgress = false;
-    document.getElementById('magnitudeReset').classList.remove('hidden');
-    document.getElementById('magnitudeRollButton').setAttribute('disabled', false);
-    
-    let resultMessage = playerWins ? 'You win!' : 'You lose!';
-    if (playerWins === undefined) resultMessage = 'It\'s a tie!';
-    let resultsDiv = document.getElementById('results');
-    resultsDiv.innerHTML = `<p>${resultMessage}</p><p>Player Score: ${magnitudePlayerScore}</p><p>Host Score: ${magnitudeHostScore}</p>`;
-    resultsDiv.style.display = 'block';
+function resetMagnitude() {
+    document.getElementById("magnitudeBetSlider").disabled = false;
+    document.getElementById("magnitudeBetInput").disabled = false;
+    document.getElementById("magnitudeRollBtn").disabled = false;
+    document.getElementById("magnitudeResetBtn").disabled = true;
+
+    document.getElementById("magnitudeResult").innerText = "";
+    document.getElementById("playerRoll").innerText = "";
+    document.getElementById("hostRoll").innerText = "";
+    updateMagnitudeSliderValue(10);
 }
 
-function magnitudeResetGame() {
-    magnitudeGameInProgress = false;
-
-    // Einsatz-Slider und Einsatz-Feld aktivieren
-    document.getElementById('magnitudeBet').removeAttribute('disabled');
-    document.getElementById('magnitudeBetNumber').removeAttribute('disabled');
-    document.getElementById('magnitudeRollButton').removeAttribute('disabled');
-    document.getElementById('magnitudeReset').classList.add('hidden');
-    document.getElementById('results').style.display = 'none';
-    
-    magnitudePlayerScore = 0;
-    magnitudeHostScore = 0;
-    document.getElementById('magnitudePlayerScore').innerText = '0';
-    document.getElementById('magnitudeHostScore').innerText = '0';
+// Diese Funktion soll beim Start des Spiels aufgerufen werden, 
+// um den Slider korrekt zu initialisieren.
+function initMagnitude() {
+    updateMagnitudeSliderValue(10);
 }
+
+initMagnitude();
 </script>
 </body>
 </html>
