@@ -367,8 +367,8 @@ function rollMagnitude() {
     document.getElementById("magnitudeRollBtn").disabled = true;
     
     let bet = parseInt(document.getElementById("magnitudeBetInput").value);
-    playerJack -= bet;  // playerJacks wurde durch playerJack ersetzt
-    updatePlayerJacksDisplay();
+    playerJack -= bet;
+    updatePlayerJackDisplay();
 
     let playerNumber = Math.floor(Math.random() * 100) + 1;
     let hostNumber = Math.floor(Math.random() * 100) + 1;
@@ -388,15 +388,15 @@ function determineWinner(player, host, bet) {
     if (hostSum == 1) {
         document.getElementById("magnitudeResult").innerText = "Du hast verloren!";
     } else if (playerSum > hostSum) {
-        playerJack += bet * 2;  // playerJacks wurde durch playerJack ersetzt
+        playerJack += bet * 2;
         document.getElementById("magnitudeResult").innerText = "Du hast gewonnen!";
     } else if (playerSum < hostSum) {
         document.getElementById("magnitudeResult").innerText = "Du hast verloren!";
     } else {
-        playerJack += bet;  // playerJacks wurde durch playerJack ersetzt
+        playerJack += bet;
         document.getElementById("magnitudeResult").innerText = "Unentschieden!";
     }
-    updatePlayerJacksDisplay();
+    updatePlayerJackDisplay();
 }
 
 function quersumme(num) {
@@ -413,14 +413,14 @@ function resetMagnitude() {
     document.getElementById("playerRoll").innerText = "";
     document.getElementById("hostRoll").innerText = "";
     updateMagnitudeSliderValue(10);
-    updatePlayerJacksDisplay();
+    updatePlayerJackDisplay();
 }
 
 // Diese Funktion soll beim Start des Spiels aufgerufen werden, 
 // um den Slider korrekt zu initialisieren.
 function initMagnitude() {
     updateMagnitudeSliderValue(10); // Dies stellt sicher, dass der Anfangswert 10 ist
-    updatePlayerJacksDisplay();
+    updatePlayerJackDisplay();
 }
 
 initMagnitude();
