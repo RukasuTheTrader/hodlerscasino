@@ -38,7 +38,6 @@
         }
 
         .container {
-            background-image: url('poker_table_background.avif');
             width: 30%;
             height: 30%;
             margin: auto;
@@ -46,6 +45,7 @@
         }
 
         .game {
+            background-image: url('poker_table_background.avif');
             background-color: rgba(0, 0, 0, 0.7);
             padding: 20px;
             border-radius: 10px;
@@ -356,6 +356,10 @@ function updateMagnitudeSliderValue(value) {
     slider.value = value;
 }
 
+function updatePlayerJackDisplay() {
+    document.getElementById("playerJackDisplay").innerText = playerJack;
+}
+
 function rollMagnitude() {
     // Setze den Slider und das Inputfeld auf unveränderlich
     document.getElementById("magnitudeBetSlider").disabled = true;
@@ -364,6 +368,7 @@ function rollMagnitude() {
     
     let bet = parseInt(document.getElementById("magnitudeBetInput").value);
     playerJack -= bet;  // playerJacks wurde durch playerJack ersetzt
+    updatePlayerJacksDisplay();
 
     let playerNumber = Math.floor(Math.random() * 100) + 1;
     let hostNumber = Math.floor(Math.random() * 100) + 1;
@@ -391,6 +396,7 @@ function determineWinner(player, host, bet) {
         playerJack += bet;  // playerJacks wurde durch playerJack ersetzt
         document.getElementById("magnitudeResult").innerText = "Unentschieden!";
     }
+    updatePlayerJacksDisplay();
 }
 
 function quersumme(num) {
@@ -407,12 +413,14 @@ function resetMagnitude() {
     document.getElementById("playerRoll").innerText = "";
     document.getElementById("hostRoll").innerText = "";
     updateMagnitudeSliderValue(10);
+    updatePlayerJacksDisplay();
 }
 
 // Diese Funktion soll beim Start des Spiels aufgerufen werden, 
 // um den Slider korrekt zu initialisieren.
 function initMagnitude() {
     updateMagnitudeSliderValue(10); // Dies stellt sicher, dass der Anfangswert 10 ist
+    updatePlayerJacksDisplay();
 }
 
 initMagnitude();
