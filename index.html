@@ -53,7 +53,16 @@
         }
 
         #gameList {
-            margin-top: 20px;
+            display: flex;
+            justify-content: space-between; /* verteilt die Listenelemente gleichmäßig */
+            width: 100%;
+            padding: 0 10%; /* gibt den Abstand zu den Seiten an */
+        }
+
+        #gameList li {
+            flex: 1;
+            text-align: center;
+            margin: 0 5px; /* gibt einen kleinen Abstand zwischen den Spielen */
         }
 
         #gameList ul {
