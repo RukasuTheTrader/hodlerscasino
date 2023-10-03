@@ -127,6 +127,13 @@
 </div>
 <div id="results"></div>
 <script>
+function loadGame(gameId) {
+    let games = ["diceJack", "magnitude"];
+    games.forEach(game => {
+        document.getElementById(game).style.display = game == gameId ? "block" : "none";
+    });
+}
+
 document.addEventListener('DOMContentLoaded', (event) => {
     let betSlider = document.getElementById('bet');
     let betNumber = document.getElementById('betNumber');
