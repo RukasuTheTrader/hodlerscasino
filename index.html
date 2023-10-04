@@ -87,7 +87,7 @@
 #gameList ul li {
     background-color: #9e2f50; 
     color: #ffe066;
-    padding: 20px 0; 
+    padding: 20px 0;
     margin-bottom: 5px;
     cursor: pointer;
     border-radius: 50%;
@@ -95,27 +95,35 @@
     height: 80px;
     line-height: 80px;
     position: relative;
-    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.8), 0 2px 5px rgba(0, 0, 0, 0.5); /* Inner und outer shadow für 3D-Effekt */
-    overflow: hidden;
-    border: 5px solid #ffe066; /* Goldener Rand */
-    font-size: 14px; /* Verkleinern Sie die Schriftgröße, um in den Chip zu passen */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    font-size: 14px;
+    border: 5px double #ffe066;  /* Doppeltes Bordendesign für den dekorativen inneren Rand */
     transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
 }
 
-#gameList ul li:before {
+#gameList ul li::before, #gameList ul li::after {
     content: '';
     position: absolute;
-    top: 10%;
-    left: 10%;
-    width: 80%;
-    height: 80%;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
     border-radius: 50%;
-    background: radial-gradient(circle at center, #9e2f50 0%, transparent 80%);
     z-index: -1;
 }
 
+#gameList ul li::before {
+    background: radial-gradient(circle at center, rgba(255, 224, 102, 0.5) 0%, transparent 60%);
+}
+
+#gameList ul li::after {
+    background: repeating-radial-gradient(transparent, transparent 3px, rgba(255, 224, 102, 0.5) 3px, rgba(255, 224, 102, 0.5) 6px);
+}
+
 #gameList ul li:hover {
-    box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.8), 0 3px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
+    transform: translateY(-5px);
 }
 
 #gameList ul li:active {
