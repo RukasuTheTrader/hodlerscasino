@@ -120,6 +120,30 @@
                 <h3>Host's score:<p id="hostScore">0</p></h3>
             </div>
             <button id="reset" class="hidden" onclick="resetGame()">Reset</button>
+            <br/>
+            <hr/>
+            <br/>
+            <p><strong>Objective:</strong></p>
+            <p>Get a score as close to 100 as possible without going over. If you cross 100, you lose instantly. If your score is greater than the host's score without crossing 100, you win.</p>
+            <p><strong>How to Play:</strong></p>
+            <ul>
+                <li>Start by placing a bet. You can adjust the amount using the slider or input the amount directly.</li>
+                <li>Click "Start" to begin the game.</li>
+                <li>You have the option to "Roll" the dice or "Hold".</li>
+                <li>If you choose to roll, a number between 1-100 will be added to your score.</li>
+                <li>If you choose to hold, it's then the host's turn to roll.</li>
+                <li>On the first roll, if the dice lands between 1 and 4, the game ends and you lose.</li>
+                <li>The host tries to beat your score without going over 100.</li>
+                <li>The game ends when:</li>
+                <ul>
+                    <li>You go over 100.</li>
+                    <li>The host goes over 100.</li>
+                    <li>The host beats your score.</li>
+                    <li>You decide to hold and the host's subsequent rolls don't exceed your score.</li>
+               </ul>
+               <li>Click "Reset" to play again.</li>
+           </ul>
+
         </div>
         <div id="magnitude" class="game">
             <h2>Magnitude</h2>
@@ -131,6 +155,21 @@
             <h3>Host's score: <span id="hostRoll"></span></h3>
             <h4>Result: <span id="magnitudeResult"></span></h4>
             <button id="magnitudeResetBtn" onclick="resetMagnitude()" disabled>Reset</button>
+            <br/>
+            <hr/>
+            <br/>
+            <p><strong>Objective:</strong></p>
+            <p>Roll a number and have its digits' sum be greater than the host's. If the host's sum is 1, you lose instantly.</p>
+            <p><strong>How to Play:</strong></p>
+            <ul>
+                <li>Begin by placing a bet. Adjust the amount using the slider or input it directly.</li>
+                <li>Click "Roll" to generate a random number between 1-100 for both you and the host.</li>
+                <li>The digits of the rolled number are summed up.</li>
+                <li>If the host's sum is 1, you lose instantly.</li>
+                <li>Compare the sum of your digits to the sum of the host's digits.</li>
+                <li>If your sum is greater, you win double your bet. If not, you lose your bet.</li>
+                <li>Click "Reset" to play again.</li>
+           </ul>
         </div>
     </div>
 </div>
