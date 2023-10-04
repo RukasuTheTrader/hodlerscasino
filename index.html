@@ -67,17 +67,16 @@
 }
 
 .game-bar button {
-    background-color: #FFFFFF;
+    background-color: #FFFFFF; /* Weißer Hintergrund */
     color: #000000; /* Schwarze Schrift */
     padding: 20px 0;
     cursor: pointer;
-    border-radius: 50%;
-    width: 100px;
+    border-radius: 50%; 
+    width: 100px; 
     height: 100px;
     line-height: 100px;
     text-align: center; 
     position: relative;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     font-size: 16px;
     outline: none;
     border: none;
@@ -85,41 +84,14 @@
     display: flex; 
     justify-content: center; 
     align-items: center;
-    z-index: 2;
-}
-
-/* Schwarz-weiß gestreifter äußerer Rand */
-.game-bar button::before {
-    content: '';
-    position: absolute;
-    width: 110%; 
-    height: 110%;
-    top: -5%;
-    left: -5%;
-    border-radius: 50%;
-    background: repeating-linear-gradient(-45deg, black, black 10%, white 10%, white 20%);
-    z-index: 0;
-}
-
-/* Goldene Linie, die das Innere vom Rand trennt */
-.game-bar button::after {
-    content: '';
-    position: absolute;
-    width: 104%; 
-    height: 104%;
-    top: -2%;
-    left: -2%;
-    border-radius: 50%;
-    border: 2px solid gold;
-    z-index: 1;
+    border: 2px solid gold; /* Goldener Trennring */
+    box-shadow: 0 0 0 10px repeating-linear-gradient(45deg, black, black 2.5%, white 2.5%, white 5%); /* 20 Schwarz-Weiß-Streifen */
+    transition: transform 0.3s, color 0.3s; /* Sanfte Übergänge */
 }
 
 .game-bar button:hover {
-    color: gold; /* Goldene Schrift beim Hovern */
-}
-
-.game-bar button:active {
-    transform: scale(0.95);
+    color: gold; /* Goldene Schrift */
+    transform: scale(1.2); /* 20% Vergrößerung */
 }
 
         #results {
