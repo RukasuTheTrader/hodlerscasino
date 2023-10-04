@@ -66,44 +66,23 @@
     gap: 20px;
 }
 
-.game-bar button {
-    background-color: #FFFFFF; /* Weißer Hintergrund */
-    color: #000000; /* Schwarze Schrift */
-    padding: 20px 0;
-    cursor: pointer;
-    border-radius: 50%; 
-    width: 100px; 
+.chip {
+    background-color: transparent;
+    background-size: cover;
+    width: 100px; /* oder welche Größe Ihr Chip hat */
     height: 100px;
-    line-height: 100px;
-    text-align: center; 
-    position: relative;
-    font-size: 16px;
-    outline: none;
-    border: 2px solid gold; /* Goldener Trennring */
-    font-family: 'Arial', sans-serif;
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
-    transition: transform 0.3s, color 0.3s; /* Sanfte Übergänge */
-    overflow: visible; /* Dies stellt sicher, dass ::before und ::after Pseudoelemente sichtbar sind */
-}
-
-.game-bar button::before {
-    content: "";
-    position: absolute;
-    width: 110%;
-    height: 110%;
     border-radius: 50%;
-    transform: translate(-5%, -5%);
-    border: 5px solid;
-    border-image-source: repeating-linear-gradient(45deg, black, black 2.5%, white 2.5%, white 5%);
-    border-image-slice: 1;
-    z-index: -1;
+    border: none;
+    color: #000;
+    font-size: 16px;
+    text-align: center;
+    line-height: 100px; 
+    transition: transform 0.3s, color 0.3s;
 }
 
-.game-bar button:hover {
-    color: gold; /* Goldene Schrift */
-    transform: scale(1.2); /* 20% Vergrößerung */
+.chip:hover {
+    color: gold;
+    transform: scale(1.2);
 }
 
         #results {
@@ -130,8 +109,8 @@
 
 <div class="container">
     <div class="game-bar" id="gameList">
-        <button onclick="showGame('diceJack')">DiceJack</button>
-        <button onclick="showGame('magnitude')">Magnitude</button>
+        <button class="chip" onclick="showGame('diceJack')" style="background-image: url('chip-design.png');">DiceJack</button>
+        <button class="chip" onclick="showGame('magnitude')" style="background-image: url('chip-design.png');">Magnitude</button>
     </div>
     <div id="gameArea">
         <div id="diceJack" class="game">
