@@ -452,10 +452,10 @@ function rollMagnitude() {
 }
 
 function determineWinner(player, host, bet) {
-    let playerSum = quersumme(player);
-    let hostSum = quersumme(host);
-
     setTimeout(() => {
+        let playerSum = quersumme(player);
+        let hostSum = quersumme(host);
+
         if (hostSum == 1) {
             document.getElementById("magnitudeResult").innerText = "You lose!";
         } else if (playerSum > hostSum) {
