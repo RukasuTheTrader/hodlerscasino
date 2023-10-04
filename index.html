@@ -273,46 +273,67 @@ function hold() {
 }
 
 function hostTurn() {
-    if (!gameInProgress || (hostScore > playerScore && hostScore <= 100)) return;
-    
-    let roll = Math.floor(Math.random() * 100) + 1; // Dies garantiert, dass roll zwischen 1 und 100 ist.
-    
-    if (isFirstRoll && roll <= 4) {
-        hostScore += roll;  // Zeige den Wurf an.
+    if (!gameInProgress) return;
+
+    setTimeout(() => {
+        let roll = Math.floor(Math.random() * 100) + 1;
+
+        if (isFirstRoll && roll <= 4) {
+            hostScore += roll;
+            document.getElementById('hostScore').innerText = hostScore.toString();
+            endGame(false);
+            showResults(false);
+            return;
+        }
+
+        isFirstRoll = false;
+        hostScore += roll;
         document.getElementById('hostScore').innerText = hostScore.toString();
-        endGame(false);
-        showResults(false);
-        return;
-    }
-    
-    isFirstRoll = false;
-    hostScore += roll;
-    document.getElementById('hostScore').innerText = hostScore.toString();
-    
-    if (hostScore > 100) {
-        endGame(true);
-        showResults(true);
-    } else if (hostScore > playerScore) {
-        endGame(false);
-        showResults(false);
-    } else {
-        setTimeout(hostTurn, 1000);
-    }
+
+        // Überprüfe nach dem Würfeln des Hosts die Ergebnisse
+        if (hostScore > 100) {
+            endGame(true);
+            showResults(true);
+        } else if (hostScore > playerScore) {
+            endGame(false);
+            showResults(false);
+        } else if (hostScore == playerScore) {
+            endGame('draw');
+            showResults('draw');
+        } else {
+            hostTurn();
+        }
+    }, 1000);  // 1 Sekunde Verzögerung
 }
 
-function endGame(playerWins) {
+function endGame(result) {
     gameInProgress = false;
     document.getElementById('reset').classList.remove('hidden');
     document.getElementById('reset').removeAttribute('disabled');
 
     let bet = parseInt(document.getElementById('betNumber').value);
-    if (playerWins) playerJack += bet * 2; // Gewinn des Spielers ist das Zweifache des Einsatzes
+
+    if (result === true) {
+        playerJack += bet * 2;
+    } else if (result === 'draw') {
+        playerJack += bet;  // Spieler bekommt bei Unentschieden seinen Einsatz zurück
+    }
+
     updateJackDisplay();
-    showResults(playerWins);
+    showResults(result);
 }
 
-function showResults(playerWins) {
-    let resultMessage = playerWins ? 'You win!' : 'You lose!';
+function showResults(result) {
+    let resultMessage;
+
+    if (result === true) {
+        resultMessage = 'You win!';
+    } else if (result === false) {
+        resultMessage = 'You lose!';
+    } else if (result === 'draw') {
+        resultMessage = "It's a draw";
+    }
+
     let resultsDiv = document.getElementById('results');
     resultsDiv.innerHTML = `<p>${resultMessage}</p><p>Player Score: ${playerScore}</p><p>Host Score: ${hostScore}</p>`;
     resultsDiv.style.display = 'block';
