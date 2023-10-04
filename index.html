@@ -58,29 +58,49 @@
         }
 
         #gameList {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            padding: 0 10%; /* gibt den Abstand zu den Seiten an */
-        }
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 10%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Schatten für die gesamte Spieleleiste */
+    background-color: rgba(255, 255, 255, 0.05); /* Ein leicht transparenter Hintergrund */
+    border-radius: 15px;
+    overflow: hidden; /* Um sicherzustellen, dass die inneren Elemente innerhalb des border-radius bleiben */
+}
 
-        #gameList li {
-            flex: 1;
-            text-align: center;
-            margin: 0 5px; /* gibt einen kleinen Abstand zwischen den Spielen */
-        }
+#gameList ul {
+    list-style-type: none;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
 
-        #gameList ul {
-            list-style-type: none;
-            padding: 0;
-        }
+#gameList li {
+    flex: 1;
+    text-align: center;
+    margin: 0 5px;
+    transition: transform 0.2s; /* Animationseffekt */
+}
 
-        #gameList ul li {
-            background-color: #333;
-            padding: 10px;
-            margin-bottom: 5px;
-            cursor: pointer;
-        }
+#gameList ul li {
+    background: linear-gradient(45deg, #ff0066, #ff7700);
+    padding: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Schatten für jedes Spiel */
+    transition: background 0.3s, transform 0.2s; /* Weiche Übergänge */
+}
+
+#gameList ul li:hover {
+    background: linear-gradient(45deg, #e6005c, #e65c00);
+    transform: scale(1.05); /* leicht vergrößert beim Darüberfahren */
+}
+
+#gameList ul li:active {
+    transform: scale(0.95); /* schrumpft leicht beim Klicken */
+}
 
         #results {
             display: none;
