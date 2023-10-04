@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rukasu's Casino</title>
     <style>
         body {
@@ -121,16 +119,17 @@
             </div>
             <button id="reset" class="hidden" onclick="resetGame()">Reset</button>
         </div>
-        <div id="magnitudeGame" class="hidden">
-    <h2>Magnitude</h2>
-    <p>Jack: <span id="jackAmount">100</span></p>
-    <p>Bet: <input type="number" id="magnitudeBetInput" min="10" value="10"> 
-        <input type="range" id="magnitudeBetSlider" min="10" value="10"></p>
-    <p><button id="magnitudeRollBtn">Roll</button> <button id="magnitudeResetBtn" class="hidden">Reset</button></p>
-    <p>Your Roll: <span id="playerRoll"></span></p>
-    <p>Host Roll: <span id="hostRoll"></span></p>
-    <p><span id="magnitudeResult"></span></p>
-</div>
+        <div id="magnitude" style="display:none;">
+            <h2>Magnitude</h2>
+            <label for="magnitudeBet">Setze deinen Einsatz:</label>
+            <input type="range" min="10" max="100" value="10" id="magnitudeBetSlider" oninput="updateMagnitudeBetValue(this.value);">
+            <input type="number" id="magnitudeBetInput" value="10" oninput="updateMagnitudeSliderValue(this.value);">
+            <button id="magnitudeRollBtn" onclick="rollMagnitude()">Roll</button>  
+            <h3>Deine Zahl: <span id="playerRoll"></span></h3>
+            <h3>Host Zahl: <span id="hostRoll"></span></h3>
+            <h4>Ergebnis: <span id="magnitudeResult"></span></h4>
+            <button id="magnitudeResetBtn" onclick="resetMagnitude()" disabled>Reset</button>
+        </div>
     </div>
 </div>
 <div id="results"></div>
@@ -330,9 +329,6 @@ function updateBetLimits() {
 }
     
 //magnitude:
-updateJackDisplay();
-updateBetLimits();
-    
 function updateMagnitudeBetValue(value) {
     let slider = document.getElementById("magnitudeBetSlider");
     let input = document.getElementById("magnitudeBetInput");
@@ -373,7 +369,6 @@ function rollMagnitude() {
     let bet = parseInt(document.getElementById("magnitudeBetInput").value);
     playerJack -= bet;
     updateJackDisplay();
-    updateBetLimits();
 
     let playerNumber = Math.floor(Math.random() * 100) + 1;
     let hostNumber = Math.floor(Math.random() * 100) + 1;
@@ -384,10 +379,6 @@ function rollMagnitude() {
         determineWinner(playerNumber, hostNumber, bet);
         document.getElementById("magnitudeResetBtn").disabled = false;
     }, 1000);
-}
-
-function quersumme(number) {
-    return number.toString().split('').reduce((sum, digit) => sum + parseInt(digit, 10), 0);
 }
 
 function determineWinner(player, host, bet) {
@@ -406,7 +397,10 @@ function determineWinner(player, host, bet) {
         document.getElementById("magnitudeResult").innerText = "Unentschieden!";
     }
     updateJackDisplay();
-    updateBetLimits();
+}
+
+function quersumme(num) {
+    return num.toString().split('').reduce((acc, curr) => acc + parseInt(curr), 0);
 }
 
 function resetMagnitude() {
@@ -420,7 +414,6 @@ function resetMagnitude() {
     document.getElementById("hostRoll").innerText = "";
     updateMagnitudeSliderValue(10);
     updateJackDisplay();
-    updateBetLimits();
 }
 
 // Diese Funktion soll beim Start des Spiels aufgerufen werden, 
@@ -428,7 +421,6 @@ function resetMagnitude() {
 function initMagnitude() {
     updateMagnitudeSliderValue(10); // Dies stellt sicher, dass der Anfangswert 10 ist
     updateJackDisplay();
-    updateBetLimits();
 }
 
 initMagnitude();
