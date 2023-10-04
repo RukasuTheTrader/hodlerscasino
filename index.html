@@ -214,6 +214,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 
     document.getElementById('startButton').addEventListener('click', startGame);
+    document.getElementById('rollButton').addEventListener('click', rollDice);
+    document.getElementById('holdButton').addEventListener('click', hold);
     document.getElementById('reset').addEventListener('click', resetGame);
     document.getElementById('reset').setAttribute('disabled', true);
     updateBetLimits();
@@ -330,7 +332,24 @@ function endGame(result) {
     }
 
     updateJackDisplay();
-    document.getElementById('diceJackResult').textContent = 'You won!';
+    showResults(result);
+}
+
+function showResults(result) {
+    setTimeout(() => {
+        let resultMessage;
+        if (result === true) {
+            resultMessage = 'You win!';
+        } else if (result === false) {
+            resultMessage = 'You lose!';
+        } else if (result === 'draw') {
+            resultMessage = "It's a draw";
+        }
+
+        let resultsDiv = document.getElementById('results');
+        resultsDiv.innerHTML = `<p>${resultMessage}</p><p>Player Score: ${playerScore}</p><p>Host Score: ${hostScore}</p>`;
+        resultsDiv.style.display = 'block';
+    }, 1000); // 1 Sekunde Verzögerung
 }
 
 function resetGame() {
@@ -355,7 +374,6 @@ function resetGame() {
     hostScore = 0;
     document.getElementById('playerScore').innerText = '0';
     document.getElementById('hostScore').innerText = '0';
-    document.getElementById('diceJackResult').textContent = '';
 }
 
 function updateJackDisplay() {
