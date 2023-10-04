@@ -455,18 +455,20 @@ function determineWinner(player, host, bet) {
     let playerSum = quersumme(player);
     let hostSum = quersumme(host);
 
-    if (hostSum == 1) {
-        document.getElementById("magnitudeResult").innerText = "You lose!";
-    } else if (playerSum > hostSum) {
-        playerJack += bet * 2;
-        document.getElementById("magnitudeResult").innerText = "You win!";
-    } else if (playerSum < hostSum) {
-        document.getElementById("magnitudeResult").innerText = "You lose!";
-    } else {
-        playerJack += bet;
-        document.getElementById("magnitudeResult").innerText = "It's a draw!";
-    }
-    updateJackDisplay();
+    setTimeout(() => {
+        if (hostSum == 1) {
+            document.getElementById("magnitudeResult").innerText = "You lose!";
+        } else if (playerSum > hostSum) {
+            playerJack += bet * 2;
+            document.getElementById("magnitudeResult").innerText = "You win!";
+        } else if (playerSum < hostSum) {
+            document.getElementById("magnitudeResult").innerText = "You lose!";
+        } else {
+            playerJack += bet;
+            document.getElementById("magnitudeResult").innerText = "It's a draw!";
+        }
+        updateJackDisplay();
+    }, 1000);
 }
 
 function quersumme(num) {
