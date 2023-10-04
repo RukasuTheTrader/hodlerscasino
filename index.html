@@ -451,8 +451,8 @@ function rollMagnitude() {
     }, 1000);
 }
 
-function determineWinner(player, host, bet) {
-    setTimeout(() => {
+setTimeout(() => {
+    function determineWinner(player, host, bet) {
         let playerSum = quersumme(player);
         let hostSum = quersumme(host);
 
@@ -468,8 +468,8 @@ function determineWinner(player, host, bet) {
             document.getElementById("magnitudeResult").innerText = "It's a draw!";
         }
         updateJackDisplay();
-    }, 1000);
-}
+    }
+}, 1000);
 
 function quersumme(num) {
     let sum = 0;
