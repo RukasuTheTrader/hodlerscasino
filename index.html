@@ -247,6 +247,8 @@ function rollDice() {
     let roll = Math.floor(Math.random() * 100) + 1; // Dies garantiert, dass roll zwischen 1 und 100 ist.
     
     if (isFirstRoll && roll <= 4) {
+        playerScore += roll;  // Zeige den Wurf an.
+        document.getElementById('playerScore').innerText = playerScore.toString();
         endGame(false);
         showResults(false);
         return;
@@ -276,6 +278,8 @@ function hostTurn() {
     let roll = Math.floor(Math.random() * 100) + 1; // Dies garantiert, dass roll zwischen 1 und 100 ist.
     
     if (isFirstRoll && roll <= 4) {
+        hostScore += roll;  // Zeige den Wurf an.
+        document.getElementById('hostScore').innerText = hostScore.toString();
         endGame(false);
         showResults(false);
         return;
