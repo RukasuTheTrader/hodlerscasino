@@ -324,19 +324,20 @@ function endGame(result) {
 }
 
 function showResults(result) {
-    let resultMessage;
+    setTimeout(() => {
+        let resultMessage;
+        if (result === true) {
+            resultMessage = 'You win!';
+        } else if (result === false) {
+            resultMessage = 'You lose!';
+        } else if (result === 'draw') {
+            resultMessage = "It's a draw";
+        }
 
-    if (result === true) {
-        resultMessage = 'You win!';
-    } else if (result === false) {
-        resultMessage = 'You lose!';
-    } else if (result === 'draw') {
-        resultMessage = "It's a draw";
-    }
-
-    let resultsDiv = document.getElementById('results');
-    resultsDiv.innerHTML = `<p>${resultMessage}</p><p>Player Score: ${playerScore}</p><p>Host Score: ${hostScore}</p>`;
-    resultsDiv.style.display = 'block';
+        let resultsDiv = document.getElementById('results');
+        resultsDiv.innerHTML = `<p>${resultMessage}</p><p>Player Score: ${playerScore}</p><p>Host Score: ${hostScore}</p>`;
+        resultsDiv.style.display = 'block';
+    }, 1000); // 1 Sekunde Verzögerung
 }
 
 function resetGame() {
