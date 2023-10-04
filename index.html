@@ -51,6 +51,7 @@
             background-image: url('360_F_325384191_sg1D5lYWfRedGQsBm8xIHnsSAUUUVxGE.jpg');
             background-repeat: no-repeat;
             background-attachement: fixed;
+            background-position: center;
             background-color: rgba(0, 0, 0, 0.7);
             padding: 20px;
             border-radius: 10px;
@@ -58,50 +59,55 @@
         }
 
         #gameList {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    padding: 0 10%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Schatten für die gesamte Spieleleiste */
-    background-color: rgba(255, 255, 255, 0.05); /* Ein leicht transparenter Hintergrund */
-    border-radius: 15px;
-    overflow: hidden; /* Um sicherzustellen, dass die inneren Elemente innerhalb des border-radius bleiben */
-}
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 10%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            background-color: rgba(0, 0, 0, 0.7); 
+            border-radius: 15px;
+            overflow: hidden;
+        }
 
-#gameList ul {
-    list-style-type: none;
-    padding: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-}
+        #gameList ul {
+            list-style-type: none;
+            padding: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
 
-#gameList li {
-    flex: 1;
-    text-align: center;
-    margin: 0 5px;
-    transition: transform 0.2s; /* Animationseffekt */
-}
+        #gameList li {
+            flex: 1;
+            text-align: center;
+            margin: 0 5px;
+            transition: transform 0.2s;
+        }
 
-#gameList ul li {
-    background: linear-gradient(45deg, #ff0066, #ff7700);
-    padding: 10px;
-    margin-bottom: 5px;
-    cursor: pointer;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Schatten für jedes Spiel */
-    transition: background 0.3s, transform 0.2s; /* Weiche Übergänge */
-}
+        #gameList ul li {
+            background-color: #9e2f50; /* Dunkler Rotton für das Chip-Grunddesign */
+            color: #ffe066; /* Goldtext */
+            padding: 20px 0; /* Da es rund ist, setzen wir nur vertikales Padding */
+            margin-bottom: 5px;
+            cursor: pointer;
+            border-radius: 50%; /* Rundes Design */
+            width: 60px; /* Feste Breite für das runde Design */
+            height: 60px; /* Feste Höhe für das runde Design */
+            line-height: 60px; /* Damit der Text vertikal zentriert ist */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5), /* Dunkler Schatten für den 3D-Effekt */
+                        0 0 15px #ff4500 inset; /* Innenleuchten-Effekt */
+            transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+            position: relative; /* Vorbereitung für Glitzer-Effekte */
+        }
 
-#gameList ul li:hover {
-    background: linear-gradient(45deg, #e6005c, #e65c00);
-    transform: scale(1.05); /* leicht vergrößert beim Darüberfahren */
-}
-
-#gameList ul li:active {
-    transform: scale(0.95); /* schrumpft leicht beim Klicken */
-}
-
+        #gameList ul li:hover {
+            background-color: #b03a5b; /* Ein hellerer Rotton für den Hover-Effekt */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7), 0 0 25px #ff4500 inset; /* Erhöhte Leuchtkraft beim Überfahren */
+        }
+    
+        #gameList ul li:active {
+            transform: scale(0.95);
+        }
         #results {
             display: none;
             background-color: rgba(51, 51, 51, 0.7);
