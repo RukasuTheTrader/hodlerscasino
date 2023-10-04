@@ -401,7 +401,12 @@ function determineWinner(player, host, bet) {
 }
 
 function quersumme(num) {
-    return num.toString().split('').reduce((acc, curr) => acc + parseInt(curr), 0);
+    let sum = 0;
+    while (num) {
+        sum += num % 10;
+        num = Math.floor(num / 10);
+    }
+    return sum;
 }
 
 function resetMagnitude() {
