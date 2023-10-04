@@ -449,29 +449,31 @@ function rollMagnitude() {
     document.getElementById("playerRoll").innerText = playerNumber;
     setTimeout(() => {
         document.getElementById("hostRoll").innerText = hostNumber;
-        determineWinner(playerNumber, hostNumber, bet);
-        document.getElementById("magnitudeResetBtn").disabled = false;
+        setTimeout(() => {
+            determineWinner(playerNumber, hostNumber, bet);
+        }, 1000);
+        setTimeout(() => {
+            document.getElementById("magnitudeResetBtn").disabled = false;
+        }, 1000);
     }, 1000);
 }
 
 function determineWinner(player, host, bet) {
-    setTimeout(() => {
-        let playerSum = quersumme(player);
-        let hostSum = quersumme(host);
-
-        if (hostSum == 1) {
-            document.getElementById("magnitudeResult").innerText = "You lose!";
-        } else if (playerSum > hostSum) {
-            playerJack += bet * 2;
-            document.getElementById("magnitudeResult").innerText = "You win!";
-        } else if (playerSum < hostSum) {
-            document.getElementById("magnitudeResult").innerText = "You lose!";
-        } else {
-            playerJack += bet;
-            document.getElementById("magnitudeResult").innerText = "It's a draw!";
-        }
-        updateJackDisplay();
-    }, 1000);
+    let playerSum = quersumme(player);
+    let hostSum = quersumme(host);
+    
+    if (hostSum == 1) {
+        document.getElementById("magnitudeResult").innerText = "You lose!";
+    } else if (playerSum > hostSum) {
+        playerJack += bet * 2;
+        document.getElementById("magnitudeResult").innerText = "You win!";
+    } else if (playerSum < hostSum) {
+        document.getElementById("magnitudeResult").innerText = "You lose!";
+    } else {
+        playerJack += bet;
+        document.getElementById("magnitudeResult").innerText = "It's a draw!";
+    }
+    updateJackDisplay();
 }
 
 function quersumme(num) {
