@@ -67,8 +67,8 @@
 }
 
 .game-bar button {
-    background-color: #FFFFFF; /* Weißer Inhalt */
-    color: #000000;
+    background-color: #FFFFFF; 
+    color: #000000; /* Schwarze Schrift */
     padding: 20px 0;
     cursor: pointer;
     border-radius: 50%;
@@ -85,39 +85,20 @@
     display: flex; 
     justify-content: center; 
     align-items: center;
-}
-
-/* Schaffung des schwarz-weißen Rand-Effekts */
-.game-bar button::before,
-.game-bar button::after {
-    content: '';
-    position: absolute;
-    border-radius: 50%;
-    width: 90%; 
-    height: 90%;
-    top: 5%;
-    left: 5%;
-}
-
-.game-bar button::before {
-    background: repeating-linear-gradient(45deg, white, white 10px, black 10px, black 20px);
-    z-index: -1;
-}
-
-.game-bar button::after {
-    background: repeating-linear-gradient(135deg, white, white 10px, black 10px, black 20px);
-    z-index: -2;
+    border: 8px solid; /* Erstellen Sie einen gestreiften Rand */
+    border-image: repeating-linear-gradient(45deg, white, white 10px, black 10px, black 20px) 0 fill / 1 / 0 stretch;
 }
 
 .game-bar button:hover {
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
+    color: gold; /* Goldene Schrift beim Hovern */
     transform: translateY(-5px);
 }
 
 .game-bar button:active {
     transform: scale(0.95);
 }
-
+        
         #results {
             display: none;
             background-color: rgba(51, 51, 51, 0.7);
