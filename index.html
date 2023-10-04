@@ -89,11 +89,22 @@
     transition: transform 0.3s, color 0.3s; /* Sanfte Übergänge */
 }
 
+.game-bar button::before {
+    content: "";
+    position: absolute;
+    width: calc(100% + 14px);
+    height: calc(100% + 14px);
+    top: -7px;
+    left: -7px;
+    border-radius: 50%;
+    z-index: -1;
+    border: 5px solid repeating-linear-gradient(45deg, black, black 2.5%, white 2.5%, white 5%);
+}
+
 .game-bar button:hover {
     color: gold; /* Goldene Schrift */
     transform: scale(1.2); /* 20% Vergrößerung */
 }
-
         #results {
             display: none;
             background-color: rgba(51, 51, 51, 0.7);
@@ -136,7 +147,7 @@
             <div id="hostArea" class="hidden">
                 <h3>Host's score:<p id="hostScore">0</p></h3>
             </div>
-            <button id="reset" class="hidden" onclick="resetGame()">Reset</button>
+            <button id="reset" class="hidden" onclick="resetGame()">Reset</button> <br/>
             <br/>
             <hr/>
             <br/>
@@ -171,7 +182,7 @@
             <h3>Your score: <span id="playerRoll"></span></h3>
             <h3>Host's score: <span id="hostRoll"></span></h3>
             <h4>Result: <span id="magnitudeResult"></span></h4>
-            <button id="magnitudeResetBtn" onclick="resetMagnitude()" disabled>Reset</button>
+            <button id="magnitudeResetBtn" onclick="resetMagnitude()" disabled>Reset</button> <br/>
             <br/>
             <hr/>
             <br/>
