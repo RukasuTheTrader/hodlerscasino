@@ -67,30 +67,50 @@
 }
 
 .game-bar button {
-    background-color: #9e2f50;
-    color: #ffe066;
+    background-color: #FFFFFF; /* Weißer Inhalt */
+    color: #000000;
     padding: 20px 0;
     cursor: pointer;
     border-radius: 50%;
     width: 100px;
     height: 100px;
     line-height: 100px;
-    text-align: center; /* Schrift zentrieren */
+    text-align: center; 
     position: relative;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5), 0 2px 5px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     font-size: 16px;
-    border: 8px double #ffe066; /* Doppellinienrand für mehr Casino-Chip-Feeling */
-    transition: transform 0.2s, box-shadow 0.2s;
     outline: none;
     border: none;
     font-family: 'Arial', sans-serif;
-    display: flex; /* Flexbox hinzufügen */
-    justify-content: center; /* Horizontal zentrieren */
-    align-items: center; /* Vertikal zentrieren */
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+}
+
+/* Schaffung des schwarz-weißen Rand-Effekts */
+.game-bar button::before,
+.game-bar button::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    width: 90%; 
+    height: 90%;
+    top: 5%;
+    left: 5%;
+}
+
+.game-bar button::before {
+    background: repeating-linear-gradient(45deg, white, white 10px, black 10px, black 20px);
+    z-index: -1;
+}
+
+.game-bar button::after {
+    background: repeating-linear-gradient(135deg, white, white 10px, black 10px, black 20px);
+    z-index: -2;
 }
 
 .game-bar button:hover {
-    box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.7), 0 4px 10px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
     transform: translateY(-5px);
 }
 
@@ -98,26 +118,6 @@
     transform: scale(0.95);
 }
 
-.game-bar button::before, 
-.game-bar button::after {
-    content: '';
-    position: absolute;
-    width: 5px;
-    height: 5px;
-    background-color: #ffe066;
-    border-radius: 50%;
-    z-index: 1;
-}
-
-.game-bar button::before {
-    top: 10px;
-    left: 10px;
-}
-
-.game-bar button::after {
-    bottom: 10px;
-    right: 10px;
-}
         #results {
             display: none;
             background-color: rgba(51, 51, 51, 0.7);
