@@ -266,13 +266,11 @@ function hold() {
     if (!gameInProgress || playerHeld) return;
     document.getElementById('hostArea').classList.remove('hidden');
     playerHeld = true;
+    isFirstRoll = true;
     hostTurn();
 }
 
 function hostTurn() {
-
-    isFirstRoll = true;
-    
     if (!gameInProgress || (hostScore > playerScore && hostScore <= 100)) return;
     
     let roll = Math.floor(Math.random() * 100) + 1; // Dies garantiert, dass roll zwischen 1 und 100 ist.
