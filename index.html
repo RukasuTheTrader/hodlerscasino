@@ -123,10 +123,13 @@
             <div id="playerArea" class="hidden">
                 <button id="rollButton" onclick="rollDice()" disabled>Roll</button>
                 <button id="holdButton" onclick="hold()" disabled>Hold</button>
-                <h3>Your score:<p id="playerScore">0</p></h3>
+                <h3>Your score: <span id="playerScoreValue">0</span></h3>
             </div>
             <div id="hostArea" class="hidden">
-                <h3>Host's score:<p id="hostScore">0</p></h3>
+                <h3>Host's score: <span id="hostScoreValue">0</span></h3>
+            </div>
+            <div id="resultArea" class="hidden">
+                <h4>Result: <span id="diceJackResult"></span></h4>
             </div>
             <button id="reset" class="hidden" onclick="resetGame()">Reset</button> <br/>
             <br/>
@@ -327,24 +330,7 @@ function endGame(result) {
     }
 
     updateJackDisplay();
-    showResults(result);
-}
-
-function showResults(result) {
-    setTimeout(() => {
-        let resultMessage;
-        if (result === true) {
-            resultMessage = 'You win!';
-        } else if (result === false) {
-            resultMessage = 'You lose!';
-        } else if (result === 'draw') {
-            resultMessage = "It's a draw";
-        }
-
-        let resultsDiv = document.getElementById('results');
-        resultsDiv.innerHTML = `<p>${resultMessage}</p><p>Player Score: ${playerScore}</p><p>Host Score: ${hostScore}</p>`;
-        resultsDiv.style.display = 'block';
-    }, 1000); // 1 Sekunde Verzögerung
+    document.getElementById('diceJackResult').textContent = 'You won!';
 }
 
 function resetGame() {
@@ -369,6 +355,7 @@ function resetGame() {
     hostScore = 0;
     document.getElementById('playerScore').innerText = '0';
     document.getElementById('hostScore').innerText = '0';
+    document.getElementById('diceJackResult').textContent = '';
 }
 
 function updateJackDisplay() {
