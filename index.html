@@ -79,26 +79,26 @@
     position: relative;
     font-size: 16px;
     outline: none;
-    border: none;
+    border: 2px solid gold; /* Goldener Trennring */
     font-family: 'Arial', sans-serif;
     display: flex; 
     justify-content: center; 
     align-items: center;
-    border: 2px solid gold; /* Goldener Trennring */
-    box-shadow: 0 0 0 10px repeating-linear-gradient(45deg, black, black 2.5%, white 2.5%, white 5%); /* 20 Schwarz-Weiß-Streifen */
     transition: transform 0.3s, color 0.3s; /* Sanfte Übergänge */
+    overflow: visible; /* Dies stellt sicher, dass ::before und ::after Pseudoelemente sichtbar sind */
 }
 
 .game-bar button::before {
     content: "";
     position: absolute;
-    width: calc(100% + 14px);
-    height: calc(100% + 14px);
-    top: -7px;
-    left: -7px;
+    width: 110%;
+    height: 110%;
     border-radius: 50%;
+    transform: translate(-5%, -5%);
+    border: 5px solid;
+    border-image-source: repeating-linear-gradient(45deg, black, black 2.5%, white 2.5%, white 5%);
+    border-image-slice: 1;
     z-index: -1;
-    border: 5px solid repeating-linear-gradient(45deg, black, black 2.5%, white 2.5%, white 5%);
 }
 
 .game-bar button:hover {
