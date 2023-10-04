@@ -85,35 +85,33 @@
     display: flex; 
     justify-content: center; 
     align-items: center;
-    z-index: 1;
-}
-
-.game-bar button::before, 
-.game-bar button::after {
-    content: '';
-    position: absolute;
-    border-radius: 50%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: -1;
+    z-index: 2;
 }
 
 /* Schwarz-weiß gestreifter äußerer Rand */
 .game-bar button::before {
-    background: repeating-linear-gradient(45deg, white 0%, white 50%, black 50%, black 100%);
-    width: calc(100% + 16px);
-    height: calc(100% + 16px);
-    top: -8px;
-    left: -8px;
+    content: '';
+    position: absolute;
+    width: 110%; 
+    height: 110%;
+    top: -5%;
+    left: -5%;
+    border-radius: 50%;
+    background: repeating-linear-gradient(-45deg, black, black 10%, white 10%, white 20%);
+    z-index: 0;
 }
 
 /* Goldene Linie, die das Innere vom Rand trennt */
 .game-bar button::after {
-    border: 4px solid gold;
-    width: calc(100% - 4px);
-    height: calc(100% - 4px);
+    content: '';
+    position: absolute;
+    width: 104%; 
+    height: 104%;
+    top: -2%;
+    left: -2%;
+    border-radius: 50%;
+    border: 2px solid gold;
+    z-index: 1;
 }
 
 .game-bar button:hover {
@@ -123,7 +121,7 @@
 .game-bar button:active {
     transform: scale(0.95);
 }
-        
+
         #results {
             display: none;
             background-color: rgba(51, 51, 51, 0.7);
