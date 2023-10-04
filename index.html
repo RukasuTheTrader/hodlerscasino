@@ -60,55 +60,66 @@
         }
 
         #gameList {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            padding: 0 10%;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            background-color: rgba(0, 0, 0, 0.7); 
-            border-radius: 15px;
-            overflow: hidden;
-        }
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 10%;
+    background-color: rgba(0, 0, 0, 0.8); 
+    border-radius: 15px;
+    overflow: hidden;
+}
 
-        #gameList ul {
-            list-style-type: none;
-            padding: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-        }
+#gameList ul {
+    list-style-type: none;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
 
-        #gameList li {
-            flex: 1;
-            text-align: center;
-            margin: 0 5px;
-            transition: transform 0.2s;
-        }
+#gameList li {
+    flex: 1;
+    text-align: center;
+    margin: 0 5px;
+}
 
-        #gameList ul li {
-            background-color: #9e2f50; /* Dunkler Rotton für das Chip-Grunddesign */
-            color: #ffe066; /* Goldtext */
-            padding: 20px 0; /* Da es rund ist, setzen wir nur vertikales Padding */
-            margin-bottom: 5px;
-            cursor: pointer;
-            border-radius: 50%; /* Rundes Design */
-            width: 60px; /* Feste Breite für das runde Design */
-            height: 60px; /* Feste Höhe für das runde Design */
-            line-height: 60px; /* Damit der Text vertikal zentriert ist */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5), /* Dunkler Schatten für den 3D-Effekt */
-                        0 0 15px #ff4500 inset; /* Innenleuchten-Effekt */
-            transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
-            position: relative; /* Vorbereitung für Glitzer-Effekte */
-        }
+#gameList ul li {
+    background-color: #9e2f50; 
+    color: #ffe066;
+    padding: 20px 0; 
+    margin-bottom: 5px;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 80px; 
+    height: 80px;
+    line-height: 80px;
+    position: relative;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.8), 0 2px 5px rgba(0, 0, 0, 0.5); /* Inner und outer shadow für 3D-Effekt */
+    overflow: hidden;
+    border: 5px solid #ffe066; /* Goldener Rand */
+    font-size: 14px; /* Verkleinern Sie die Schriftgröße, um in den Chip zu passen */
+    transition: transform 0.2s, box-shadow 0.2s;
+}
 
-        #gameList ul li:hover {
-            background-color: #b03a5b; /* Ein hellerer Rotton für den Hover-Effekt */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7), 0 0 25px #ff4500 inset; /* Erhöhte Leuchtkraft beim Überfahren */
-        }
-    
-        #gameList ul li:active {
-            transform: scale(0.95);
-        }
+#gameList ul li::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, #9e2f50 0%, transparent 80%);
+    z-index: -1;
+}
+
+#gameList ul li:hover {
+    box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.8), 0 3px 8px rgba(0, 0, 0, 0.5);
+}
+
+#gameList ul li:active {
+    transform: scale(0.95);
+}
         #results {
             display: none;
             background-color: rgba(51, 51, 51, 0.7);
