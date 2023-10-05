@@ -157,7 +157,7 @@
         </div>
         <div id="magnitude" class="game">
             <h2>Magnitude</h2>
-            <label for="magnitudeBet">Bet:</label>
+            <label for="bet">Bet:</label>
             <input type="range" id="bet" min="10" max="1000" value="1" step="1">
             <input type="number" id="betNumber" value="1" min="1">
             <button id="magnitudeRollBtn" onclick="rollMagnitude()">Roll</button>  
@@ -393,15 +393,15 @@ function updateBetLimits() {
     betSlider.max = playerJack;
     betNumber.max = playerJack;
 
-    if (playerJack < 10) {
+    if (playerJack < 1) {
         betSlider.disabled = true;
         betNumber.disabled = true;
     } else {
         betSlider.disabled = false;
         betNumber.disabled = false;
-        if (betSlider.value < 10) {
-            betSlider.value = 10;
-            betNumber.value = 10;
+        if (betSlider.value < 1) {
+            betSlider.value = 1;
+            betNumber.value = 1;
         } else if (betSlider.value > playerJack) {
             betSlider.value = playerJack;
             betNumber.value = playerJack;
@@ -410,8 +410,8 @@ function updateBetLimits() {
 }
     
 //magnitude:
-function updateMagnitudeBetValue(value) {
-    let slider = document.getElementById("magnitudeBetSlider");
+function updatebetValue(value) {
+    let slider = document.getElementById("betSlider");
     let input = document.getElementById("betNumber");
 
     if (value < 10) {
@@ -423,7 +423,7 @@ function updateMagnitudeBetValue(value) {
 }
 
 function updateMagnitudeSliderValue(value) {
-    let slider = document.getElementById("magnitudeBetSlider");
+    let slider = document.getElementById("bet");
     let input = document.getElementById("betNumber");
     
     if (value < 10) {
@@ -443,7 +443,7 @@ function updatePlayerJackDisplay() {
 
 function rollMagnitude() {
     // Setze den Slider und das Inputfeld auf unveränderlich
-    document.getElementById("magnitudeBetSlider").disabled = true;
+    document.getElementById("bet").disabled = true;
     document.getElementById("betNumber").disabled = true;
     document.getElementById("magnitudeRollBtn").disabled = true;
     
@@ -499,7 +499,7 @@ function quersumme(num) {
 }
 
 function resetMagnitude() {
-    document.getElementById("magnitudeBetSlider").disabled = false;
+    document.getElementById("bet").disabled = false;
     document.getElementById("betNumber").disabled = false;
     document.getElementById("magnitudeRollBtn").disabled = false;
     document.getElementById("magnitudeResetBtn").disabled = true;
