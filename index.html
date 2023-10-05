@@ -361,9 +361,12 @@ function endGame(result) {
 
 function showResults(result) {
         let resultMessage;
+    setTimeout(() => {
         if (result === true) {
             resultMessage = 'You win!';
-        } else if (result === false) {
+        }
+    }, 1000);
+        else if (result === false) {
             resultMessage = 'You lose!';
         } else if (result === 'draw') {
             resultMessage = "It's a draw";
