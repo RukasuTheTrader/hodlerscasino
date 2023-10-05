@@ -220,6 +220,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 let playerJack = 1000;
+let playerScore = 0;
+let hostScore = 0;
 let gameInProgress = false;
 let playerHeld = false;
 let isFirstRoll = true;
@@ -409,8 +411,13 @@ function updateBetLimits() {
 function updateMagnitudeBetValue(value) {
     let slider = document.getElementById("magnitudeBetSlider");
     let input = document.getElementById("magnitudeBetInput");
+
+    if(value > playerJack) {
+        value = playerJack;
+    }
     
     input.value = value;
+    input.max = playerJack;
     slider.value = value;
     updateJackDisplay();
 }
@@ -419,7 +426,7 @@ function updateMagnitudeSliderValue(value) {
     let slider = document.getElementById("magnitudeBetSlider");
     let input = document.getElementById("magnitudeBetInput");
     
-    else if(value > playerJack) {
+    if(value > playerJack) {
         value = playerJack;
     }
 
