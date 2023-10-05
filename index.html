@@ -161,8 +161,8 @@
             <input type="range" min="1" max="1000" value="1" step="1" id="magnitudeBetSlider">
             <input type="number" id="magnitudeBetInput" value="1" min="1">
             <button id="magnitudeRollBtn" onclick="rollMagnitude()">Roll</button>  
-            <h3>Your score: <span id="playerRoll"></span></h3>
-            <h3>Host's score: <span id="hostRoll"></span></h3>
+            <h3>Your score: <span id="playerRoll">0</span></h3>
+            <h3>Host's score: <span id="hostRoll">0</span></h3>
             <h4>Result: <span id="magnitudeResult"></span></h4>
             <button id="magnitudeResetBtn" onclick="resetMagnitude()" disabled>Reset</button> <br/>
             <br/>
@@ -211,6 +211,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
     
     betSlider.addEventListener('input', function (e) {
         betNumber.value = e.target.value;
+    });
+    
+    betNumber.addEventListener('input', function (e) {
+        betSlider.value = e.target.value;
     });
 
     document.getElementById('startButton').addEventListener('click', startGame);
@@ -370,7 +374,6 @@ function resetGame() {
     // Einsatz-Slider und Einsatz-Feld aktivieren
     document.getElementById('bet').removeAttribute('disabled');
     document.getElementById('betNumber').removeAttribute('disabled');
-
     document.getElementById('reset').classList.add('hidden');
     document.getElementById('playerArea').classList.add('hidden');
     document.getElementById('hostArea').classList.add('hidden');
@@ -379,7 +382,6 @@ function resetGame() {
     document.getElementById('reset').setAttribute('disabled', true);
     document.getElementById('rollButton').setAttribute('disabled', true);
     document.getElementById('holdButton').setAttribute('disabled', true);
-
     playerScore = 0;
     hostScore = 0;
     document.getElementById('playerScore').innerText = '0';
@@ -418,6 +420,12 @@ function updateBetLimits() {
             betSlider.value = playerJack;
             betNumber.value = playerJack;
         }
+    }
+    if (betSlider.value > playerJack) {
+        betSlider.value = playerJack;
+    }
+    if (betNumber.value > playerJack) {
+        betNumber.value = playerJack;
     }
 }
     
