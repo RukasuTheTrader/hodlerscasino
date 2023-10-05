@@ -296,6 +296,8 @@ function rollDice() {
 
 function hold() {
     if (!gameInProgress || playerHeld) return;
+    document.getElementById('rollButton').setAttribute('disabled', true);
+    document.getElementById('holdButton').setAttribute('disabled', true);
     document.getElementById('hostArea').classList.remove('hidden');
     playerHeld = true;
     isFirstRoll = true;
