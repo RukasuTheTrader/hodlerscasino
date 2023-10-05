@@ -508,9 +508,11 @@ function resetMagnitude() {
 // Diese Funktion soll beim Start des Spiels aufgerufen werden, 
 // um den Slider korrekt zu initialisieren.
 function initMagnitude() {
-    updateMagnitudeSliderValue();
+    let initialSliderValue = document.getElementById("magnitudeBetSlider").value;
+    updateMagnitudeSliderValue(initialSliderValue);
     updateJackDisplay();
 }
+
 
 initMagnitude();
 </script>
