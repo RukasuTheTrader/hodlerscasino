@@ -274,7 +274,6 @@ function rollDice() {
         playerScore += roll;  // Zeige den Wurf an.
         document.getElementById('playerScore').innerText = playerScore.toString();
         endGame(false);
-        showResults(false);
 
         document.getElementById('rollButton').setAttribute('disabled', true);
         document.getElementById('holdButton').setAttribute('disabled', true);
@@ -287,7 +286,6 @@ function rollDice() {
     
     if (playerScore > 100) {
         endGame(false);
-        showResults(false);
         
         document.getElementById('rollButton').setAttribute('disabled', true);
         document.getElementById('holdButton').setAttribute('disabled', true);
@@ -314,7 +312,6 @@ function hostTurn() {
             hostScore += roll;
             document.getElementById('hostScore').innerText = hostScore.toString();
             endGame(false);
-            showResults(false);
             document.getElementById('rollButton').setAttribute('disabled', true);
             document.getElementById('holdButton').setAttribute('disabled', true);
             return;
@@ -327,13 +324,10 @@ function hostTurn() {
         // Überprüfe nach dem Würfeln des Hosts die Ergebnisse
         if (hostScore > 100) {
             endGame(true);
-            showResults(true);
         } else if (hostScore > playerScore) {
             endGame(false);
-            showResults(false);
         } else if (hostScore == playerScore) {
             endGame('draw');
-            showResults('draw');
         } else {
             hostTurn();
         }
@@ -361,17 +355,14 @@ function endGame(result) {
 
 function showResults(result) {
         let resultMessage;
-    setTimeout(() => {
         if (result === true) {
             resultMessage = 'You win!';
-        }
-    }, 1000);
-        else if (result === false) {
+        } else if (result === false) {
             resultMessage = 'You lose!';
         } else if (result === 'draw') {
             resultMessage = "It's a draw";
         }
-
+    
         document.getElementById('gameResult').innerText = resultMessage;
 }
 
