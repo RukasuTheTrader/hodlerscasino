@@ -317,12 +317,19 @@ function hostTurn() {
 }
 
 function endGame(result) {
-    gameInProgress = false;
-    document.getElementById('reset').classList.remove('hidden');
-    document.getElementById('reset').removeAttribute('disabled');
+    setTimeout(() => {
+        gameInProgress = false;
+        document.getElementById('reset').classList.remove('hidden');
+        document.getElementById('reset').removeAttribute('disabled');
 
-    let bet = parseInt(document.getElementById('betNumber').value);
+        let bet = parseInt(document.getElementById('betNumber').value);
 
+        if (result === true) {
+            playerJack += bet * 2;
+        } else if (result === 'draw') {
+            playerJack += bet;  // Spieler bekommt bei Unentschieden seinen Einsatz zurück
+        }
+    }, 1000);
     updateJackDisplay();
     showResults(result);
 }
@@ -336,14 +343,7 @@ function showResults(result) {
             resultMessage = 'You lose!';
         } else if (result === 'draw') {
             resultMessage = "It's a draw";
-        }
-
-        if (result === true) {
-            playerJack += bet * 2;
-        } else if (result === 'draw') {
-            playerJack += bet;  // Spieler bekommt bei Unentschieden seinen Einsatz zurück
-        }
-            
+        }   
 
         document.getElementById('gameResult').innerText = resultMessage;
     }, 1000); // 1 Sekunde Verzögerung
