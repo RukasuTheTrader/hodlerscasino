@@ -323,12 +323,6 @@ function endGame(result) {
 
     let bet = parseInt(document.getElementById('betNumber').value);
 
-    if (result === true) {
-        playerJack += bet * 2;
-    } else if (result === 'draw') {
-        playerJack += bet;  // Spieler bekommt bei Unentschieden seinen Einsatz zurück
-    }
-
     updateJackDisplay();
     showResults(result);
 }
@@ -338,10 +332,12 @@ function showResults(result) {
         let resultMessage;
         if (result === true) {
             resultMessage = 'You win!';
+            playerJack += bet * 2;
         } else if (result === false) {
             resultMessage = 'You lose!';
         } else if (result === 'draw') {
             resultMessage = "It's a draw";
+            playerJack += bet;  // Spieler bekommt bei Unentschieden seinen Einsatz zurück
         }
 
         document.getElementById('gameResult').innerText = resultMessage;
