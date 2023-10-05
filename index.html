@@ -128,6 +128,7 @@
             <div id="hostArea" class="hidden">
                 <h3>Host's score:<p id="hostScore">0</p></h3>
             </div>
+            <p id="diceJackResult"></p>
             <button id="reset" class="hidden" onclick="resetGame()">Reset</button> <br/>
             <br/>
             <hr/>
@@ -227,10 +228,11 @@ function startGame() {
     if (gameInProgress) return;
 
     let bet = parseInt(document.getElementById('betNumber').value);
-    if (isNaN(bet) || playerJack < bet || bet < 10) {
+    if (isNaN(bet) || playerJack < bet || bet < 1) {
         alert('Invalid bet!');
         return;
     }
+
 
     playerJack -= bet;
     updateJackDisplay();
@@ -364,11 +366,10 @@ function resetGame() {
     document.getElementById('reset').setAttribute('disabled', true);
     document.getElementById('rollButton').setAttribute('disabled', true);
     document.getElementById('holdButton').setAttribute('disabled', true);
-
-    playerScore = 0;
-    hostScore = 0;
+    
     document.getElementById('playerScore').innerText = '0';
     document.getElementById('hostScore').innerText = '0';
+    document.getElementById('diceJackResult').textContent = '';
 }
 
 function updateJackDisplay() {
@@ -444,8 +445,11 @@ function rollMagnitude() {
     document.getElementById("magnitudeRollBtn").disabled = true;
     
     let bet = parseInt(document.getElementById("magnitudeBetInput").value);
-    playerJack -= bet;
-    updateJackDisplay();
+    if (isNaN(bet) || playerJack < bet || bet < 1) {
+        alert('Invalid bet!');
+        return;
+    }
+
 
     let playerNumber = Math.floor(Math.random() * 100) + 1;
     let hostNumber = Math.floor(Math.random() * 100) + 1;
