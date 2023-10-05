@@ -157,7 +157,7 @@
         </div>
         <div id="magnitude" class="game">
             <h2>Magnitude</h2>
-            <label for="magnitudeBet">Bet:</label>
+            <label for="magnitudeBetSlider">Bet:</label>
             <input type="range" min="1" max="1000" value="1" step="1" id="magnitudeBetSlider">
             <input type="number" id="magnitudeBetInput" value="1" min="1">
             <button id="magnitudeRollBtn" onclick="rollMagnitude()">Roll</button>  
@@ -409,8 +409,8 @@ function updateBetLimits() {
     
 //magnitude:
 function updateMagnitudeBetValue(value) {
-    let slider = document.getElementById("magnitudeBetSlider");
-    let input = document.getElementById("magnitudeBetInput");
+    let magnitudeBetSlider = document.getElementById("magnitudeBetSlider");
+    let magnitudeBetInput = document.getElementById("magnitudeBetInput");
 
     if(value > playerJack) {
         value = playerJack;
@@ -423,8 +423,8 @@ function updateMagnitudeBetValue(value) {
 }
 
 function updateMagnitudeSliderValue(value) {
-    let slider = document.getElementById("magnitudeBetSlider");
-    let input = document.getElementById("magnitudeBetInput");
+    let magnitudeBetSlider = document.getElementById("magnitudeBetSlider");
+    let magnitudeBetInput = document.getElementById("magnitudeBetInput");
     
     if(value > playerJack) {
         value = playerJack;
