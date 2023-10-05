@@ -194,6 +194,11 @@ function showGame(gameId) {
 
     // Zeige das ausgewählte Spiel
     document.getElementById(gameId).style.display = 'block';
+    
+    // Wenn zu "magnitude" gewechselt wird, aktualisieren Sie den Slider
+    if (gameId === 'magnitude') {
+        updateMagnitudeBetLimits();
+    }
 }
 
 function loadGame(gameId) {
@@ -528,6 +533,29 @@ function initMagnitude() {
 }
 
 initMagnitude();
+
+function updateMagnitudeBetLimits() {
+    let magnitudeBetSlider = document.getElementById('magnitudeBetSlider');
+    let magnitudeBetInput = document.getElementById('magnitudeBetInput');
+
+    magnitudeBetSlider.max = playerJack;
+    magnitudeBetInput.max = playerJack;
+
+    if (playerJack < 1) {
+        magnitudeBetSlider.disabled = true;
+        magnitudeBetInput.disabled = true;
+    } else {
+        magnitudeBetSlider.disabled = false;
+        magnitudeBetInput.disabled = false;
+        if (magnitudeBetSlider.value < 1) {
+            magnitudeBetSlider.value = 1;
+            magnitudeBetInput.value = 1;
+        } else if (magnitudeBetSlider.value > playerJack) {
+            magnitudeBetSlider.value = playerJack;
+            magnitudeBetInput.value = playerJack;
+        }
+    }
+}
 </script>
 </body>
 </html>
