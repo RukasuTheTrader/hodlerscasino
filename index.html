@@ -445,6 +445,7 @@ function rollMagnitude() {
     let bet = parseInt(document.getElementById('magnitudeBetInput').value);
     if (isNaN(bet) || playerJack < bet || bet <= 0) {
         alert('Invalid bet!');
+        resetMagnitude();
         return;
     };
     
@@ -500,8 +501,8 @@ function resetMagnitude() {
     document.getElementById("magnitudeResetBtn").disabled = true;
 
     document.getElementById("magnitudeResult").innerText = "";
-    document.getElementById("playerRoll").innerText = "";
-    document.getElementById("hostRoll").innerText = "";
+    document.getElementById("playerRoll").innerText = "0";
+    document.getElementById("hostRoll").innerText = "0";
     initMagnitude();
 }
 
