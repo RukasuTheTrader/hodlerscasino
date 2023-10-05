@@ -336,16 +336,18 @@ function endGame(result) {
 }
 
 function showResults(result) {
-    let resultMessage;
-    if (result === true) {
-        resultMessage = 'You win!';
-    } else if (result === false) {
-        resultMessage = 'You lose!';
-    } else if (result === 'draw') {
-        resultMessage = "It's a draw";
-    }
+    setTimeout(() => {
+        let resultMessage;
+        if (result === true) {
+            resultMessage = 'You win!';
+        } else if (result === false) {
+            resultMessage = 'You lose!';
+        } else if (result === 'draw') {
+            resultMessage = "It's a draw";
+        }
 
-    document.getElementById('gameResult').innerText = resultMessage;
+        document.getElementById('gameResult').innerText = resultMessage;
+    }, 1000);  // 1 Sekunde Verzögerung
 }
 
 function resetGame() {
