@@ -358,7 +358,6 @@ function endGame(result) {
 }
 
 function showResults(result) {
-    setTimeout(() => {
         let resultMessage;
         if (result === true) {
             resultMessage = 'You win!';
@@ -369,7 +368,6 @@ function showResults(result) {
         }
 
         document.getElementById('gameResult').innerText = resultMessage;
-    }, 1000);  // 1 Sekunde Verzögerung
 }
 
 function resetGame() {
