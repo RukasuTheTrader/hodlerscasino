@@ -179,7 +179,7 @@
                 <li>Compare the sum of your digits to the sum of the host's digits.</li>
                 <li>If your sum is greater, you win double your bet. If not, you lose your bet.</li>
                 <li>Click "Reset" to play again.</li>
-           </ul>
+            </ul>
         </div>
     </div>
 </div>
@@ -216,6 +216,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
     document.getElementById('startButton').addEventListener('click', startGame);
     document.getElementById('reset').addEventListener('click', resetGame);
     document.getElementById('reset').setAttribute('disabled', true);
+    
+    document.getElementById("magnitudeBetSlider").addEventListener("input", function() {
+    updateMagnitudeInputValue(this.value);
+    });
+    
+    document.getElementById("magnitudeBetInput").addEventListener("input", function() {
+    updateMagnitudeSliderValue(this.value);
+    });
+    
     updateBetLimits();
 });
 
@@ -413,32 +422,21 @@ function updateBetLimits() {
 }
     
 //magnitude:
-function updateMagnitudeBetValue(value) {
-    let magnitudeBetSlider = document.getElementById("magnitudeBetSlider");
+function updateMagnitudeInputValue(value) {
     let magnitudeBetInput = document.getElementById("magnitudeBetInput");
-
     if(value > playerJack) {
         value = playerJack;
     }
-    
     magnitudeBetInput.value = value;
-    magnitudeBetInput.max = playerJack;
-    magnitudeBetSlider.value = value;
-    resetMagnitude();
 }
 
 function updateMagnitudeSliderValue(value) {
     let magnitudeBetSlider = document.getElementById("magnitudeBetSlider");
-    let magnitudeBetInput = document.getElementById("magnitudeBetInput");
-    
     if(value > playerJack) {
         value = playerJack;
     }
-
-    magnitudeBetInput.value = value;
     magnitudeBetSlider.max = playerJack;
     magnitudeBetSlider.value = value;
-    resetMagnitude();
 }
 
 function rollMagnitude() {
@@ -511,15 +509,15 @@ function resetMagnitude() {
     initMagnitude();
 }
 
-// Diese Funktion soll beim Start des Spiels aufgerufen werden, 
-// um den Slider korrekt zu initialisieren.
 function initMagnitude() {
     let initialSliderValue = document.getElementById("magnitudeBetSlider").value;
     updateMagnitudeSliderValue(initialSliderValue);
-    updateMagnitudeBetValue(initialBetValue);
-    updateJackDisplay();
+    updateMagnitudeInputValue(initialSliderValue);
+    // Hinweis: Die folgenden Zeilen fehlen in Ihrem bereitgestellten Code.
+    // Sie sind hier zur Verdeutlichung hinzugefügt.
+    // playerJack = ...; // initialisieren Sie playerJack
+    // updateJackDisplay(); // initialisieren Sie die Anzeige von playerJack
 }
-
 
 initMagnitude();
 </script>
