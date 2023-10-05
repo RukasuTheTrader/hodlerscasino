@@ -206,6 +206,8 @@ function loadGame(gameId) {
 document.addEventListener('DOMContentLoaded', (event) => {
     let betSlider = document.getElementById('bet');
     let betNumber = document.getElementById('betNumber');
+    let magnitudeBetSlider = document.getElementById('magnitudeBetSlider');
+    let magnitudeBetInput = document.getElementById('magnitudeBetInput');
     
     betSlider.addEventListener('input', function (e) {
         betNumber.value = e.target.value;
@@ -218,8 +220,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 let playerJack = 1000;
-let playerScore = 0;
-let hostScore = 0;
 let gameInProgress = false;
 let playerHeld = false;
 let isFirstRoll = true;
@@ -228,7 +228,7 @@ function startGame() {
     if (gameInProgress) return;
 
     let bet = parseInt(document.getElementById('betNumber').value);
-    if (isNaN(bet) || playerJack < bet || bet < 1) {
+    if (isNaN(bet) || playerJack < bet || bet <= 0) {
         alert('Invalid bet!');
         return;
     }
@@ -409,10 +409,6 @@ function updateBetLimits() {
 function updateMagnitudeBetValue(value) {
     let slider = document.getElementById("magnitudeBetSlider");
     let input = document.getElementById("magnitudeBetInput");
-
-    if (value < 1) {
-        value = 1;
-    }
     
     input.value = value;
     slider.value = value;
@@ -423,9 +419,7 @@ function updateMagnitudeSliderValue(value) {
     let slider = document.getElementById("magnitudeBetSlider");
     let input = document.getElementById("magnitudeBetInput");
     
-    if (value < 1) {
-        value = 1;
-    } else if(value > playerJack) {
+    else if(value > playerJack) {
         value = playerJack;
     }
 
@@ -441,7 +435,12 @@ function rollMagnitude() {
     document.getElementById("magnitudeBetInput").disabled = true;
     document.getElementById("magnitudeRollBtn").disabled = true;
     
-    let bet = parseInt(document.getElementById("magnitudeBetInput").value);
+    let bet = parseInt(document.getElementById('magnitudeBetInput').value);
+    if (isNaN(bet) || playerJack < bet || bet <= 0) {
+        alert('Invalid bet!');
+        return;
+    };
+    
     playerJack -= bet;
     updateJackDisplay();
 
@@ -496,14 +495,13 @@ function resetMagnitude() {
     document.getElementById("magnitudeResult").innerText = "";
     document.getElementById("playerRoll").innerText = "";
     document.getElementById("hostRoll").innerText = "";
-    updateMagnitudeSliderValue(10);
     updateJackDisplay();
 }
 
 // Diese Funktion soll beim Start des Spiels aufgerufen werden, 
 // um den Slider korrekt zu initialisieren.
 function initMagnitude() {
-    updateMagnitudeSliderValue(1); // Dies stellt sicher, dass der Anfangswert 1 ist
+    updateMagnitudeSliderValue();
     updateJackDisplay();
 }
 
