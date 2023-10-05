@@ -317,35 +317,35 @@ function hostTurn() {
 }
 
 function endGame(result) {
-    gameInProgress = false;
-    document.getElementById('reset').classList.remove('hidden');
-    document.getElementById('reset').removeAttribute('disabled');
+    setTimeout(() => {
+        gameInProgress = false;
+        document.getElementById('reset').classList.remove('hidden');
+        document.getElementById('reset').removeAttribute('disabled');
 
-    let bet = parseInt(document.getElementById('betNumber').value);
+        let bet = parseInt(document.getElementById('betNumber').value);
 
-    if (result === true) {
-        playerJack += bet * 2;
-    } else if (result === 'draw') {
-        playerJack += bet;  // Spieler bekommt bei Unentschieden seinen Einsatz zurück
-    }
-
-    updateJackDisplay();
-    showResults(result);
+        if (result === true) {
+            playerJack += bet * 2;
+        } else if (result === 'draw') {
+            playerJack += bet;  // Spieler bekommt bei Unentschieden seinen Einsatz zurück
+        }
+        
+        updateJackDisplay();
+        showResults(result);
+    }, 1000);  // 1 Sekunde Verzögerung
 }
 
 function showResults(result) {
-    setTimeout(() => {
-        let resultMessage;
-        if (result === true) {
-            resultMessage = 'You win!';
-        } else if (result === false) {
-            resultMessage = 'You lose!';
-        } else if (result === 'draw') {
-            resultMessage = "It's a draw";
-        }
+    let resultMessage;
+    if (result === true) {
+        resultMessage = 'You win!';
+    } else if (result === false) {
+        resultMessage = 'You lose!';
+    } else if (result === 'draw') {
+        resultMessage = "It's a draw";
+    }
 
-        document.getElementById('gameResult').innerText = resultMessage;
-    }, 1000); // 1 Sekunde Verzögerung
+    document.getElementById('gameResult').innerText = resultMessage;
 }
 
 function resetGame() {
@@ -511,6 +511,7 @@ function resetMagnitude() {
 function initMagnitude() {
     let initialSliderValue = document.getElementById("magnitudeBetSlider").value;
     updateMagnitudeSliderValue(initialSliderValue);
+    updateMagnitudeBetValue(initialBetValue);
     updateJackDisplay();
 }
 
