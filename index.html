@@ -213,10 +213,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         betNumber.value = e.target.value;
     });
 
-    magnitudeBetSlider.addEventListener('magnitudeBetInput', function (e) {
-        magnitudeBetNumber.value = e.target.value;
-    });
-
     document.getElementById('startButton').addEventListener('click', startGame);
     document.getElementById('reset').addEventListener('click', resetGame);
     document.getElementById('reset').setAttribute('disabled', true);
@@ -424,7 +420,6 @@ function updateMagnitudeBetValue(value) {
     magnitudeBetInput.max = playerJack;
     magnitudeBetSlider.value = value;
     resetMagnitude();
-    initMagnitude();
 }
 
 function updateMagnitudeSliderValue(value) {
@@ -439,7 +434,6 @@ function updateMagnitudeSliderValue(value) {
     magnitudeBetSlider.max = playerJack;
     magnitudeBetSlider.value = value;
     resetMagnitude();
-    initMagnitude();
 }
 
 function rollMagnitude() {
