@@ -419,7 +419,7 @@ function updateMagnitudeBetValue(value) {
     input.value = value;
     input.max = playerJack;
     slider.value = value;
-    updateJackDisplay();
+    initMagnitude();
 }
 
 function updateMagnitudeSliderValue(value) {
@@ -433,7 +433,7 @@ function updateMagnitudeSliderValue(value) {
     input.value = value;
     slider.max = playerJack;
     slider.value = value;
-    updateJackDisplay();
+    initMagnitude();
 }
 
 function rollMagnitude() {
@@ -502,7 +502,7 @@ function resetMagnitude() {
     document.getElementById("magnitudeResult").innerText = "";
     document.getElementById("playerRoll").innerText = "";
     document.getElementById("hostRoll").innerText = "";
-    updateJackDisplay();
+    initMagnitude();
 }
 
 // Diese Funktion soll beim Start des Spiels aufgerufen werden, 
