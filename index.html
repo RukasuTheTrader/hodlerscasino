@@ -333,10 +333,8 @@ function hostTurn() {
 function endGame(result) {
     setTimeout(() => {
         gameInProgress = false;
-        setTimeout(() => {
-            document.getElementById('reset').classList.remove('hidden');
-            document.getElementById('reset').removeAttribute('disabled');
-        }, 1000);
+        document.getElementById('reset').classList.remove('hidden');
+        document.getElementById('reset').removeAttribute('disabled');
 
         let bet = parseInt(document.getElementById('betNumber').value);
 
