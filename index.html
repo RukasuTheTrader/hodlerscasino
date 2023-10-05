@@ -117,7 +117,7 @@
         <div id="diceJack" class="game">
             <h2>DiceJack</h2>
             <label for="bet">Bet:</label>
-            <input type="range" id="bet" min="10" max="1000" value="10" step="5">
+            <input type="range" id="bet" min="10" max="1000" value="10" step="1">
             <input type="number" id="betNumber" value="10" min="10">
             <button id="startButton" onclick="startGame()">Start</button>
             <div id="playerArea" class="hidden">
@@ -156,8 +156,8 @@
         <div id="magnitude" class="game">
             <h2>Magnitude</h2>
             <label for="magnitudeBet">Bet:</label>
-            <input type="range" min="10" max="100" value="10" id="magnitudeBetSlider" oninput="updateMagnitudeBetValue(this.value);">
-            <input type="number" id="magnitudeBetInput" value="10" oninput="updateMagnitudeSliderValue(this.value);">
+            <input type="range" min="10" max="1000" value="10" id="magnitudeBetSlider" step="1">
+            <input type="number" id="magnitudeBetInput" value="10" min="10">
             <button id="magnitudeRollBtn" onclick="rollMagnitude()">Roll</button>  
             <h3>Your score: <span id="playerRoll"></span></h3>
             <h3>Host's score: <span id="hostRoll"></span></h3>
