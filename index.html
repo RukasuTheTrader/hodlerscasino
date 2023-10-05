@@ -275,6 +275,9 @@ function rollDice() {
         document.getElementById('playerScore').innerText = playerScore.toString();
         endGame(false);
         showResults(false);
+
+        document.getElementById('rollButton').setAttribute('disabled', true);
+        document.getElementById('holdButton').setAttribute('disabled', true);
         return;
     }
 
@@ -310,6 +313,8 @@ function hostTurn() {
             document.getElementById('hostScore').innerText = hostScore.toString();
             endGame(false);
             showResults(false);
+            document.getElementById('rollButton').setAttribute('disabled', true);
+            document.getElementById('holdButton').setAttribute('disabled', true);
             return;
         }
 
