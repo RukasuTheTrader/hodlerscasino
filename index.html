@@ -158,8 +158,8 @@
         <div id="magnitude" class="game">
             <h2>Magnitude</h2>
             <label for="magnitudeBet">Bet:</label>
-            <input type="range" min="1" max="1000" value="1" id="magnitudeBetSlider" oninput="updateMagnitudeBetValue(this.value);">
-            <input type="number" id="magnitudeBetInput" value="1" oninput="updateMagnitudeSliderValue(this.value);">
+            <input type="range" min="1" max="1000" value="1" step="1" id="magnitudeBetSlider">
+            <input type="number" id="magnitudeBetInput" value="1" min="1">
             <button id="magnitudeRollBtn" onclick="rollMagnitude()">Roll</button>  
             <h3>Your score: <span id="playerRoll"></span></h3>
             <h3>Host's score: <span id="hostRoll"></span></h3>
@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     updateBetLimits();
 });
 
-let playerJack = 1000;
+let playerJack = document.getElementById('jackAmountElement').value;
 let playerScore = 0;
 let hostScore = 0;
 let gameInProgress = false;
