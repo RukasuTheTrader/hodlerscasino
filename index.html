@@ -285,6 +285,9 @@ function rollDice() {
     if (playerScore > 100) {
         endGame(false);
         showResults(false);
+        
+        document.getElementById('rollButton').setAttribute('disabled', true);
+        document.getElementById('holdButton').setAttribute('disabled', true);
     }
 }
 
