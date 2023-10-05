@@ -419,6 +419,7 @@ function updateMagnitudeBetValue(value) {
     magnitudeBetInput.value = value;
     magnitudeBetInput.max = playerJack;
     magnitudeBetSlider.value = value;
+    resetMagnitude();
     initMagnitude();
 }
 
@@ -433,6 +434,7 @@ function updateMagnitudeSliderValue(value) {
     magnitudeBetInput.value = value;
     magnitudeBetSlider.max = playerJack;
     magnitudeBetSlider.value = value;
+    resetMagnitude();
     initMagnitude();
 }
 
