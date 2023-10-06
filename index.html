@@ -356,6 +356,7 @@ function endGame(result) {
         }
         
         updateJackDisplay();
+        updateBetLimits();
         showResults(result);
     }, 1000);  // 1 Sekunde Verzögerung
 }
@@ -403,8 +404,6 @@ function updateJackDisplay() {
         currency: 'USD',
         minimumFractionDigits: 0
     }).format(playerJack);
-
-    updateBetLimits();
 }
 
 function updateBetLimits() {
@@ -501,6 +500,7 @@ function determineWinner(player, host, bet) {
         document.getElementById("magnitudeResult").innerText = "It's a draw!";
     }
     updateJackDisplay();
+    updateBetLimits();
 }
 
 function quersumme(num) {
