@@ -329,10 +329,10 @@ function hostTurn() {
         document.getElementById('hostScore').innerText = hostScore.toString();
 
         // Überprüfe nach dem Würfeln des Hosts die Ergebnisse
-        if (hostScore > playerScore) {
-            endGame(false);
-        } else if (hostScore > 100) {
+        if (hostScore > 100) {
             endGame(true);
+        } else if (hostScore > playerScore) {
+            endGame(false);
         } else if (hostScore == playerScore) {
             endGame('draw');
         } else {
@@ -369,7 +369,7 @@ function showResults(result) {
         } else if (result === 'draw') {
             resultMessage = "It's a draw";
         }
-    
+
         document.getElementById('gameResult').innerText = resultMessage;
 }
 
