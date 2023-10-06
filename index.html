@@ -249,7 +249,7 @@ let isFirstRoll = true;
 function startGame() {
     if (gameInProgress) return;
 
-    bet = parseInt(document.getElementById('betNumber').value);
+    let bet = parseInt(document.getElementById('betNumber').value);
     if (isNaN(bet) || playerJack < bet || bet <= 0) {
         alert('Invalid bet!');
         resetGame();
@@ -329,10 +329,10 @@ function hostTurn() {
         document.getElementById('hostScore').innerText = hostScore.toString();
 
         // Überprüfe nach dem Würfeln des Hosts die Ergebnisse
-        if (hostScore > 100) {
-            endGame(true);
-        } else if (hostScore > playerScore) {
+        if (hostScore > playerScore) {
             endGame(false);
+        } else if (hostScore > 100) {
+            endGame(true);
         } else if (hostScore == playerScore) {
             endGame('draw');
         } else {
