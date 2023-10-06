@@ -239,7 +239,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     updateBetLimits();
 });
 
-let bet = parseInt(document.getElementById('betNumber').value);
 let playerJack = 1000;
 let playerScore = 0;
 let hostScore = 0;
@@ -249,6 +248,8 @@ let isFirstRoll = true;
 
 function startGame() {
     if (gameInProgress) return;
+
+    bet = parseInt(document.getElementById('betNumber').value);
     if (isNaN(bet) || playerJack < bet || bet <= 0) {
         alert('Invalid bet!');
         resetGame();
