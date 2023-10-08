@@ -409,6 +409,7 @@ function resetGame() {
     document.getElementById('playerScore').innerText = '0';
     document.getElementById('hostScore').innerText = '0';
     document.getElementById('gameResult').innerText = '';
+    updateBetLimits();
 }
 
 function updateJackDisplay() {
@@ -542,10 +543,6 @@ function initMagnitude() {
     let initialSliderValue = document.getElementById("magnitudeBetSlider").value;
     updateMagnitudeSliderValue(initialSliderValue);
     updateMagnitudeInputValue(initialSliderValue);
-    // Hinweis: Die folgenden Zeilen fehlen in Ihrem bereitgestellten Code.
-    // Sie sind hier zur Verdeutlichung hinzugefügt.
-    // playerJack = ...; // initialisieren Sie playerJack
-    // updateJackDisplay(); // initialisieren Sie die Anzeige von playerJack
 }
 
 initMagnitude();
