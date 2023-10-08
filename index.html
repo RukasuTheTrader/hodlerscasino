@@ -206,14 +206,16 @@
                 <li>If you choose to hold, it's then the host's turn to roll.</li>
                 <li>On the first roll, if the dice lands between 1 and 4, the game ends and you lose.</li>
                 <li>The host tries to beat your score without going over 100.</li>
+                <br/>
                 <li>The game ends when:</li>
                 <ul>
                     <li>You go over 100.</li>
                     <li>The host goes over 100.</li>
                     <li>The host beats your score.</li>
                     <li>A participant rolls 1 - 4 on their first roll.</li>
-               </ul>
-               <li>Click "Reset" to play again.</li>
+                </ul>
+                <br/>
+                <li>Click "Reset" to play again.</li>
            </ul>
 
         </div>
@@ -240,6 +242,7 @@
                 <li>If the host's sum is 1, you lose instantly.</li>
                 <li>Compare the sum of your digits to the sum of the host's digits.</li>
                 <li>If your sum is greater, you win double your bet. If not, you lose your bet.</li>
+                <br/>
                 <li>Click "Reset" to play again.</li>
             </ul>
         </div>
@@ -630,10 +633,17 @@ function alert(message) {
     document.getElementById("modalText").textContent = message;
     document.getElementById("myModal").style.display = "block";
 }
+
+document.getElementById("closeModalBtn").addEventListener("click", function() {
+document.getElementById("myModal").style.display = "none";
+});
+
 </script>
 <div class="modal" id="myModal">
     <div class="modal-content">
-        <p id="modalText">Ihr Alert-Text hier.</p>
+        <p id="modalText">Alert text</p>
+        <br/>
+        <button id="closeModalBtn">Okay</button>
     </div>
 </div>
 </body>
