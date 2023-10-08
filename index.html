@@ -515,7 +515,7 @@ function determineWinner(player, host, bet) {
         document.getElementById("magnitudeResult").innerText = "It's a draw!";
     }
     updateJackDisplay();
-    updateBetLimits();
+    updateMagnitudeBetLimits();
 }
 
 function quersumme(num) {
@@ -567,6 +567,12 @@ function updateMagnitudeBetLimits() {
             magnitudeBetSlider.value = playerJack;
             magnitudeBetInput.value = playerJack;
         }
+    }
+    if (magnitudeBetSlider.value > playerJack) {
+        magnitudeBetSlider.value = playerJack;
+    }
+    if (magnitudeBetInput.value > playerJack) {
+        magnitudeBetInput.value = playerJack;
     }
 }
 </script>
