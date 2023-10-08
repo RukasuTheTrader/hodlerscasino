@@ -214,7 +214,8 @@ function showGame(gameId) {
     // Wenn zu "magnitude" gewechselt wird, aktualisieren Sie den Slider
     if (gameId === 'diceJack') {
         updateBetLimits();
-    else if (gameId === 'magnitude') {
+    }
+    if (gameId === 'magnitude') {
         updateMagnitudeBetLimits();
     }
 }
