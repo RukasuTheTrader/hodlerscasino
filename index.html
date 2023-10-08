@@ -121,6 +121,30 @@
             display: none;
         }
 
+        .modal {
+    display: none; /* Versteckt das Modalfenster standardmäßig */
+    position: fixed; /* Verhindert das Scrollen und fixiert das Modalfenster */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.6); /* Schwarzer Hintergrund mit 60% Deckkraft */
+    z-index: 2000; /* Hohe z-Index, um sicherzustellen, dass es über anderen Elementen angezeigt wird */
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fefefe;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    max-width: 80%;
+    text-align: center;
+}
+
 @media (max-width: 1300px) {
     .container {
         width: 90%;
@@ -144,7 +168,6 @@
         <span id="jackAmount">1,000</span> Jack
     </div>
 </div>
-
 <div class="container">
     <div class="game-bar" id="gameList">
         <button class="chip" onclick="showGame('diceJack')" style="background-image: url('chip-design.png');">DiceJack</button>
@@ -602,6 +625,16 @@ function updateMagnitudeBetLimits() {
         magnitudeBetInput.value = playerJack;
     }
 }
+
+function showAlert(message) {
+    document.getElementById("modalText").textContent = message;
+    document.getElementById("myModal").style.display = "block";
+}
 </script>
+<div class="modal" id="myModal">
+    <div class="modal-content">
+        <p id="modalText">Ihr Alert-Text hier.</p>
+    </div>
+</div>
 </body>
 </html>
