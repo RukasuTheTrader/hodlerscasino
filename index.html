@@ -45,10 +45,12 @@
         }
 
         #header p {
-            flex: 1;
-            text-align: center;
-            margin: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateY(-50%) translateX(-50%);
         }
+
         
         #jackCurrency {
             background-color: rgba(51, 51, 51, 0.7);
@@ -79,6 +81,7 @@
             border-radius: 10px;
             margin-bottom: 20px;
             margin-top: 38px;
+            max-width: 50%;
         }
 
         .game-bar {
