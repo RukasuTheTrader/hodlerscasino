@@ -4,6 +4,8 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const expressSession = require('express-session');
 const mongoose = require('mongoose');
+const fs = require('fs');
+
 
 const app = express();
 
@@ -48,6 +50,24 @@ passport.deserializeUser(function(id, done) {
 });
 
 // Hier fügen Sie Ihre Routen hinzu...
+
+app.get('/', function(req, res) {
+    fs.readFile('./index.html', 'utf8', function(err, data) {
+        if (err) {
+            return res.status(500).send('Server Error');
+        }
+
+        if (req.isAuthenticated()) {
+            // Benutzer ist eingeloggt
+            data = data.replace('<a href="/login" class="login-button">Login</a>', '<a href="/logout" class="login-button">Logout</a>');
+        } else {
+            // Benutzer ist nicht eingeloggt
+            // (Behalten Sie den Login-Button so wie er ist oder fügen Sie zusätzlichen Code hier hinzu, wenn benötigt)
+        }
+
+        res.send(data);
+    });
+});
 
 app.listen(3000, function() {
     console.log('Server läuft auf Port 3000!');
