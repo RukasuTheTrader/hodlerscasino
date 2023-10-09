@@ -59,10 +59,10 @@ app.get('/', function(req, res) {
 
         if (req.isAuthenticated()) {
             // Benutzer ist eingeloggt
-            data = data.replace('<a href="/login" class="login-button">Login</a>', '<a href="/logout" class="login-button">Logout</a>');
+            data = data.replace('<body>', '<body class="logged-in">');
         } else {
             // Benutzer ist nicht eingeloggt
-            // (Behalten Sie den Login-Button so wie er ist oder fügen Sie zusätzlichen Code hier hinzu, wenn benötigt)
+            data = data.replace('<body>', '<body class="not-logged-in">');
         }
 
         res.send(data);
