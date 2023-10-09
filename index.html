@@ -92,10 +92,6 @@
     margin-left: 10px; /* Neues Margin hinzugefügt, damit ein kleiner Abstand zum Login-Button besteht */
 }
 
-        .not-logged-in #jackCurrency {
-            display: none;
-        }
-
         .container {
             width: 50%;
             height: auto;
@@ -207,6 +203,16 @@
     display: inline-block; /* macht den Link blockartig, aber in der Größe des Inhalts */
 }
 
+/* Wenn Benutzer nicht eingeloggt ist, wird das Jack-Konto ausgeblendet */
+body.not-logged-in #jackCurrency {
+    display: none;
+}
+
+/* Wenn Benutzer eingeloggt ist, wird der Login-Button ausgeblendet */
+body.logged-in .login-button {
+    display: none;
+}
+        
 @media (max-width: 1300px) {
     .container {
         width: 90%;
