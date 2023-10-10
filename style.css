@@ -211,6 +211,74 @@ body.not-logged-in #jackCurrency {
 body.logged-in .login-button {
     display: none;
 }
+
+.casino-form {
+    font-family: 'Arial', sans-serif;
+    max-width: 300px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #232323;
+    border: 2px solid #ffd700;
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    color: #ffd700;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ffd700;
+    border-radius: 10px;
+    background-color: #333;
+    color: #ffd700;
+    font-size: 16px;
+    outline: none;
+}
+
+.casino-button {
+    display: inline-block;
+    background-color: #ffd700;
+    color: #232323;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 15px;
+    text-decoration: none;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+.casino-button:hover {
+    background-color: #e5c100;
+}
+
+.register-prompt {
+    text-align: center;
+    color: #fff;
+    margin-top: 20px;
+}
+
+.register-button {
+    display: inline-block;
+    background-color: transparent;
+    border: 2px solid #ffd700;
+    color: #ffd700;
+    transition: all 0.3s ease;
+}
+
+.register-button:hover {
+    background-color: #ffd700;
+    color: #232323;
+}
+
         
 @media (max-width: 1300px) {
     .container {
