@@ -36,7 +36,7 @@
             display: flex;
             align-items: center;
         }
-
+        
         #logo {
             width: 80px;
             height: 80px;
@@ -67,9 +67,11 @@
     border-radius: 10px;
     text-decoration: none;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    margin-right: 30px;  /* Hier wurde das Margin geändert, sodass der Login-Button rechts vom Jack-Konto ist */
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
-    float: right;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 30px;
 }
 
 .login-button:hover {
@@ -90,8 +92,10 @@
     border-radius: 10px;
     color: #75ff5e;
     font-size: 20px;
-    margin-right: 30px; /* Neues Margin hinzugefügt, damit ein kleiner Abstand zum Login-Button besteht */
-    float: right;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 180px;
 }
 
         .container {
