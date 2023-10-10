@@ -225,6 +225,7 @@ body.logged-in .login-button {
 
 .input-group {
     margin-bottom: 20px;
+    margin-right: 20px;
 }
 
 .input-group label {
