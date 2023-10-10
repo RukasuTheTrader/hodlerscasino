@@ -22,20 +22,20 @@
         </div>
         <a href="./login" class="login-button">Login</a>
     </div>
-    <form action="/register" method="post">
-        <div>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-        </div>
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <div>
-            <button type="submit">Register</button>
-        </div>
-    </form>
-    <p>Already have an account? <a href="./login">Login</a></p>
+    <form action="/register" method="post" class="casino-form">
+    <div class="input-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+    </div>
+    <div class="input-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <div>
+        <button type="submit" class="casino-button">Register</button>
+    </div>
+</form>
+<p class="login-prompt">Already have an account? <a href="./login" class="casino-button register-button">Login</a></p>
     <script src="scripts/index.html"></script>
 </body>
 </html>
