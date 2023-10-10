@@ -1,0 +1,228 @@
+<style>
+        body {
+            background-image: url('casino-background.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachement: fixed;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #header {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100px;
+            z-index: 1000;
+            background-image: url('header-background.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachement: fixed;
+            background-position: center;
+            display: flex;
+            align-items: center;
+        }
+        
+        #logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0px 10px;
+        }
+
+        #heading {
+            height: 80px;
+        }
+
+        h1 {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Vesper Libre', serif;
+            color: #ffb938;
+            font-size: 16px;
+        }
+        
+.login-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: rgba(51, 51, 51, 0.7);
+    color: #75ff5e;
+    font-size: 20px;
+    border: none;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 30px;
+}
+
+.login-button:hover {
+    background-color: rgba(41, 41, 41, 0.7);  /* Etwas dunklerer Hintergrund beim Überfahren */
+    transform: translateY(-2px);
+    cursor: pointer;
+}
+
+.login-button:active {
+    background-color: rgba(31, 31, 31, 0.7);  /* Noch dunklerer Hintergrund beim Klicken */
+    transform: translateY(0px);
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2);
+}
+        
+#jackCurrency {
+    background-color: rgba(51, 51, 51, 0.7);
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: #75ff5e;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 180px;
+}
+
+        .container {
+            width: 50%;
+            height: auto;
+            margin-top: 138px;
+            text-align: center;
+            position: center;
+        }
+
+        .game {
+            background-image: url('360_F_325384191_sg1D5lYWfRedGQsBm8xIHnsSAUUUVxGE.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachement: fixed;
+            background-position: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            margin-top: 38px;
+        }
+
+        .game-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.chip {
+    background-color: transparent;
+    background-size: cover;
+    width: 180px; /* oder welche Größe Ihr Chip hat */
+    height: 180px;
+    border-radius: 50%;
+    border: none;
+    color: #000;
+    font-size: 16px;
+    text-align: center;
+    line-height: 180px; 
+    transition: transform 0.3s, color 0.3s;
+}
+
+.chip:hover {
+    color: gold;
+    transform: scale(1.2);
+}
+
+        #results {
+            display: none;
+            background-color: rgba(51, 51, 51, 0.7);
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 20px;
+            color: #fff;         
+        }
+        
+        #diceJack, #magnitude {
+            display: none;
+        }
+
+        .modal {
+    display: none; /* Versteckt das Modalfenster standardmäßig */
+    position: fixed; /* Verhindert das Scrollen und fixiert das Modalfenster */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.6); /* Schwarzer Hintergrund mit 60% Deckkraft */
+    z-index: 2000; /* Hohe z-Index, um sicherzustellen, dass es über anderen Elementen angezeigt wird */
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ff3333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    max-width: 80%;
+    text-align: center;
+}
+
+#closeModalBtn {
+    background-color: #ff4747; /* Roter Hintergrund */
+    border: none; /* Kein Rand */
+    color: #ffffff; /* Weiße Schrift */
+    padding: 10px 20px; /* Polsterung um den Text */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer; /* Hand-Cursor beim Darüberfahren */
+    border-radius: 12px; /* Abgerundete Ecken */
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1); /* Leichter Schatten */
+    transition: all 0.3s ease 0s; /* Sanfte Übergänge */
+}
+
+#closeModalBtn:hover {
+    background-color: #d43f3f; /* Ein dunklerer Rotton beim Darüberfahren */
+    box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.2); /* Tieferer Schatten beim Darüberfahren */
+    transform: translateY(-7px); /* Eine leichte Aufwärtsbewegung beim Darüberfahren */
+}
+        
+        #homeLink {
+    text-decoration: none; /* entfernt Unterstreichungen */
+    display: inline-block; /* macht den Link blockartig, aber in der Größe des Inhalts */
+}
+
+/* Wenn Benutzer nicht eingeloggt ist, wird das Jack-Konto ausgeblendet */
+body.not-logged-in #jackCurrency {
+    display: none;
+}
+
+/* Wenn Benutzer eingeloggt ist, wird der Login-Button ausgeblendet */
+body.logged-in .login-button {
+    display: none;
+}
+        
+@media (max-width: 1300px) {
+    .container {
+        width: 90%;
+    }
+    
+    .chip {
+        width: 100px; 
+        height: 100px; 
+        line-height: 100px;
+        font-size: 9px;
+    }
+}
+    </style>
