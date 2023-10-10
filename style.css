@@ -68,14 +68,14 @@ body {
 }
 
 .login-button:hover {
-    background-color: rgba(41, 41, 41, 0.7);  /* Etwas dunklerer Hintergrund beim Überfahren */
-    transform: translateY(-2px);
+    background-color: rgba(41, 41, 41, 0.7);
+    transform: translateY(calc(-50% - 2px));  /* Button leicht nach oben verschieben */
     cursor: pointer;
 }
 
 .login-button:active {
-    background-color: rgba(31, 31, 31, 0.7);  /* Noch dunklerer Hintergrund beim Klicken */
-    transform: translateY(0px);
+    background-color: rgba(31, 31, 31, 0.7);
+    transform: translateY(calc(-50% - 4px));  /* Button beim Klicken weiter nach oben verschieben */
     box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2);
 }
         
