@@ -1,5 +1,4 @@
-<style>
-        body {
+body {
             background-image: url('casino-background.jpeg');
             background-size: cover;
             background-position: center;
@@ -225,4 +224,3 @@ body.logged-in .login-button {
         font-size: 9px;
     }
 }
-    </style>
